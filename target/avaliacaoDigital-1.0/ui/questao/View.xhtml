@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewQuestaoTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewQuestaoLabel_codigo}"/>
+                    <h:outputText value="#{questaoController.selected.codigo}" title="#{bundle.ViewQuestaoTitle_codigo}"/>
+                    <h:outputText value="#{bundle.ViewQuestaoLabel_texto}"/>
+                    <h:outputText value="#{questaoController.selected.texto}" title="#{bundle.ViewQuestaoTitle_texto}"/>
+                    <h:outputText value="#{bundle.ViewQuestaoLabel_criacao}"/>
+                    <h:outputText value="#{questaoController.selected.criacao}" title="#{bundle.ViewQuestaoTitle_criacao}">
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:outputText>
+                    <h:outputText value="#{bundle.ViewQuestaoLabel_modificacao}"/>
+                    <h:outputText value="#{questaoController.selected.modificacao}" title="#{bundle.ViewQuestaoTitle_modificacao}">
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:outputText>
+                    <h:outputText value="#{bundle.ViewQuestaoLabel_topicoquestao}"/>
+                    <h:outputText value="#{questaoController.selected.topicoquestao}" title="#{bundle.ViewQuestaoTitle_topicoquestao}"/>
+                    <h:outputText value="#{bundle.ViewQuestaoLabel_administradorCodigo}"/>
+                    <h:outputText value="#{questaoController.selected.administradorCodigo}" title="#{bundle.ViewQuestaoTitle_administradorCodigo}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{questaoController.destroyAndView}" value="#{bundle.ViewQuestaoDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewQuestaoEditLink}"/>
+                <br />
+                <h:commandLink action="#{questaoController.prepareCreate}" value="#{bundle.ViewQuestaoCreateLink}" />
+                <br />
+                <h:commandLink action="#{questaoController.prepareList}" value="#{bundle.ViewQuestaoShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewQuestaoIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

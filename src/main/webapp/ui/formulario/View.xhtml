@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewFormularioTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewFormularioLabel_codigo}"/>
+                    <h:outputText value="#{formularioController.selected.codigo}" title="#{bundle.ViewFormularioTitle_codigo}"/>
+                    <h:outputText value="#{bundle.ViewFormularioLabel_nomeAluno}"/>
+                    <h:outputText value="#{formularioController.selected.nomeAluno}" title="#{bundle.ViewFormularioTitle_nomeAluno}"/>
+                    <h:outputText value="#{bundle.ViewFormularioLabel_matriculaAluno}"/>
+                    <h:outputText value="#{formularioController.selected.matriculaAluno}" title="#{bundle.ViewFormularioTitle_matriculaAluno}"/>
+                    <h:outputText value="#{bundle.ViewFormularioLabel_nomeModulo}"/>
+                    <h:outputText value="#{formularioController.selected.nomeModulo}" title="#{bundle.ViewFormularioTitle_nomeModulo}"/>
+                    <h:outputText value="#{bundle.ViewFormularioLabel_comentariosSugestoes}"/>
+                    <h:outputText value="#{formularioController.selected.comentariosSugestoes}" title="#{bundle.ViewFormularioTitle_comentariosSugestoes}"/>
+                    <h:outputText value="#{bundle.ViewFormularioLabel_turmaCodigo}"/>
+                    <h:outputText value="#{formularioController.selected.turmaCodigo}" title="#{bundle.ViewFormularioTitle_turmaCodigo}"/>
+                    <h:outputText value="#{bundle.ViewFormularioLabel_nomeProfessor}"/>
+                    <h:outputText value="#{formularioController.selected.nomeProfessor}" title="#{bundle.ViewFormularioTitle_nomeProfessor}"/>
+                    <h:outputText value="#{bundle.ViewFormularioLabel_avaliacaoCodigo}"/>
+                    <h:outputText value="#{formularioController.selected.avaliacaoCodigo}" title="#{bundle.ViewFormularioTitle_avaliacaoCodigo}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{formularioController.destroyAndView}" value="#{bundle.ViewFormularioDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewFormularioEditLink}"/>
+                <br />
+                <h:commandLink action="#{formularioController.prepareCreate}" value="#{bundle.ViewFormularioCreateLink}" />
+                <br />
+                <h:commandLink action="#{formularioController.prepareList}" value="#{bundle.ViewFormularioShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewFormularioIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

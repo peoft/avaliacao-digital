@@ -1,0 +1,4 @@
+1) Exception while preparing the app : org.jboss.logging.Logger.debugf(Ljava/lang/String;I)V:
+	* copiei jboss-logging-3.3.0.Final.jar para o diretório do glassfish;
+	* retirei jboss-logging.jar do diretório do glassfish;
+

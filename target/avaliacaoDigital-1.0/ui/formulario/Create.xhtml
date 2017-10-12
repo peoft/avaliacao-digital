@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateFormularioTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateFormularioLabel_codigo}" for="codigo" />
+                    <h:inputText id="codigo" value="#{formularioController.selected.codigo}" title="#{bundle.CreateFormularioTitle_codigo}" required="true" requiredMessage="#{bundle.CreateFormularioRequiredMessage_codigo}"/>
+                    <h:outputLabel value="#{bundle.CreateFormularioLabel_nomeAluno}" for="nomeAluno" />
+                    <h:inputText id="nomeAluno" value="#{formularioController.selected.nomeAluno}" title="#{bundle.CreateFormularioTitle_nomeAluno}" />
+                    <h:outputLabel value="#{bundle.CreateFormularioLabel_matriculaAluno}" for="matriculaAluno" />
+                    <h:inputText id="matriculaAluno" value="#{formularioController.selected.matriculaAluno}" title="#{bundle.CreateFormularioTitle_matriculaAluno}" />
+                    <h:outputLabel value="#{bundle.CreateFormularioLabel_nomeModulo}" for="nomeModulo" />
+                    <h:inputText id="nomeModulo" value="#{formularioController.selected.nomeModulo}" title="#{bundle.CreateFormularioTitle_nomeModulo}" required="true" requiredMessage="#{bundle.CreateFormularioRequiredMessage_nomeModulo}"/>
+                    <h:outputLabel value="#{bundle.CreateFormularioLabel_comentariosSugestoes}" for="comentariosSugestoes" />
+                    <h:inputText id="comentariosSugestoes" value="#{formularioController.selected.comentariosSugestoes}" title="#{bundle.CreateFormularioTitle_comentariosSugestoes}" />
+                    <h:outputLabel value="#{bundle.CreateFormularioLabel_turmaCodigo}" for="turmaCodigo" />
+                    <h:inputText id="turmaCodigo" value="#{formularioController.selected.turmaCodigo}" title="#{bundle.CreateFormularioTitle_turmaCodigo}" required="true" requiredMessage="#{bundle.CreateFormularioRequiredMessage_turmaCodigo}"/>
+                    <h:outputLabel value="#{bundle.CreateFormularioLabel_nomeProfessor}" for="nomeProfessor" />
+                    <h:inputText id="nomeProfessor" value="#{formularioController.selected.nomeProfessor}" title="#{bundle.CreateFormularioTitle_nomeProfessor}" />
+                    <h:outputLabel value="#{bundle.CreateFormularioLabel_avaliacaoCodigo}" for="avaliacaoCodigo" />
+                    <h:selectOneMenu id="avaliacaoCodigo" value="#{formularioController.selected.avaliacaoCodigo}" title="#{bundle.CreateFormularioTitle_avaliacaoCodigo}" required="true" requiredMessage="#{bundle.CreateFormularioRequiredMessage_avaliacaoCodigo}">
+                        <f:selectItems value="#{avaliacaoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{formularioController.create}" value="#{bundle.CreateFormularioSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{formularioController.prepareList}" value="#{bundle.CreateFormularioShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateFormularioIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>
