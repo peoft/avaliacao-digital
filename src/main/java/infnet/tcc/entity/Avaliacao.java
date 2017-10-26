@@ -104,9 +104,6 @@ public class Avaliacao implements Serializable {
         })
     @ManyToMany
     private Collection<Turmaaluno> turmaalunoCollection;
-    @JoinColumn(name = "administradorCodigo", referencedColumnName = "usuarioCodigo")
-    @ManyToOne(optional = false)
-    private Administrador administradorCodigo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "avaliacao")
     private Collection<Avaliacaotopico> avaliacaotopicoCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "avaliacaoCodigo")
@@ -203,14 +200,6 @@ public class Avaliacao implements Serializable {
 
     public void setTurmaalunoCollection(Collection<Turmaaluno> turmaalunoCollection) {
         this.turmaalunoCollection = turmaalunoCollection;
-    }
-
-    public Administrador getAdministradorCodigo() {
-        return administradorCodigo;
-    }
-
-    public void setAdministradorCodigo(Administrador administradorCodigo) {
-        this.administradorCodigo = administradorCodigo;
     }
 
     @XmlTransient

@@ -16,7 +16,7 @@
             <h:form>
                 <h:panelGrid columns="2">
                     <h:outputLabel value="#{bundle.EditTopicoLabel_codigo}" for="codigo" />
-                    <h:inputText id="codigo" value="#{topicoController.selected.codigo}" title="#{bundle.EditTopicoTitle_codigo}" required="true" requiredMessage="#{bundle.EditTopicoRequiredMessage_codigo}"/>
+                    <h:inputText id="codigo" value="#{topicoController.selected.codigo}" title="#{bundle.EditTopicoTitle_codigo}" disabled="true"/>
                     <h:outputLabel value="#{bundle.EditTopicoLabel_titulo}" for="titulo" />
                     <h:inputText id="titulo" value="#{topicoController.selected.titulo}" title="#{bundle.EditTopicoTitle_titulo}" required="true" requiredMessage="#{bundle.EditTopicoRequiredMessage_titulo}"/>
                 </h:panelGrid>

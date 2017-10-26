@@ -49,7 +49,7 @@ public class Questao implements Serializable {
     private Integer codigo;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 45)
+    @Size(min = 1, max = 200)
     @Column(name = "texto")
     private String texto;
     @Basic(optional = false)
@@ -64,9 +64,6 @@ public class Questao implements Serializable {
     private Date modificacao;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "questao")
     private Topicoquestao topicoquestao;
-    @JoinColumn(name = "administradorCodigo", referencedColumnName = "usuarioCodigo")
-    @ManyToOne(optional = false)
-    private Administrador administradorCodigo;
 
     public Questao() {
     }
@@ -120,14 +117,6 @@ public class Questao implements Serializable {
 
     public void setTopicoquestao(Topicoquestao topicoquestao) {
         this.topicoquestao = topicoquestao;
-    }
-
-    public Administrador getAdministradorCodigo() {
-        return administradorCodigo;
-    }
-
-    public void setAdministradorCodigo(Administrador administradorCodigo) {
-        this.administradorCodigo = administradorCodigo;
     }
 
     @Override

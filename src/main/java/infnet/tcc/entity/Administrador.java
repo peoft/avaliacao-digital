@@ -61,10 +61,6 @@ public class Administrador implements Serializable {
     @JoinColumn(name = "usuarioCodigo", referencedColumnName = "codigo", insertable = false, updatable = false)
     @OneToOne(optional = false)
     private Usuario usuario;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "administradorCodigo")
-    private Collection<Avaliacao> avaliacaoCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "administradorCodigo")
-    private Collection<Questao> questaoCollection;
 
     public Administrador() {
     }
@@ -109,24 +105,6 @@ public class Administrador implements Serializable {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
-    }
-
-    @XmlTransient
-    public Collection<Avaliacao> getAvaliacaoCollection() {
-        return avaliacaoCollection;
-    }
-
-    public void setAvaliacaoCollection(Collection<Avaliacao> avaliacaoCollection) {
-        this.avaliacaoCollection = avaliacaoCollection;
-    }
-
-    @XmlTransient
-    public Collection<Questao> getQuestaoCollection() {
-        return questaoCollection;
-    }
-
-    public void setQuestaoCollection(Collection<Questao> questaoCollection) {
-        this.questaoCollection = questaoCollection;
     }
 
     @Override

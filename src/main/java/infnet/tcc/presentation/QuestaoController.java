@@ -1,11 +1,14 @@
 package infnet.tcc.presentation;
 
+import infnet.tcc.entity.Administrador;
 import infnet.tcc.entity.Questao;
 import infnet.tcc.presentation.util.JsfUtil;
 import infnet.tcc.presentation.util.PaginationHelper;
 import infnet.tcc.facade.QuestaoFacade;
 
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -81,6 +84,11 @@ public class QuestaoController implements Serializable {
 
     public String create() {
         try {
+            Date currentDate = Calendar.getInstance().getTime();
+            
+            current.setCriacao(currentDate);
+            current.setModificacao(currentDate);
+            
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("QuestaoCreated"));
             return prepareCreate();

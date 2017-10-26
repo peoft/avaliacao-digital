@@ -16,25 +16,9 @@
             <h:form>
                 <h:panelGrid columns="2">
                     <h:outputLabel value="#{bundle.EditQuestaoLabel_codigo}" for="codigo" />
-                    <h:inputText id="codigo" value="#{questaoController.selected.codigo}" title="#{bundle.EditQuestaoTitle_codigo}" required="true" requiredMessage="#{bundle.EditQuestaoRequiredMessage_codigo}"/>
+                    <h:inputText id="codigo" value="#{questaoController.selected.codigo}" title="#{bundle.EditQuestaoTitle_codigo}" disabled="true"/>
                     <h:outputLabel value="#{bundle.EditQuestaoLabel_texto}" for="texto" />
                     <h:inputText id="texto" value="#{questaoController.selected.texto}" title="#{bundle.EditQuestaoTitle_texto}" required="true" requiredMessage="#{bundle.EditQuestaoRequiredMessage_texto}"/>
-                    <h:outputLabel value="#{bundle.EditQuestaoLabel_criacao}" for="criacao" />
-                    <h:inputText id="criacao" value="#{questaoController.selected.criacao}" title="#{bundle.EditQuestaoTitle_criacao}" required="true" requiredMessage="#{bundle.EditQuestaoRequiredMessage_criacao}">
-                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
-                    </h:inputText>
-                    <h:outputLabel value="#{bundle.EditQuestaoLabel_modificacao}" for="modificacao" />
-                    <h:inputText id="modificacao" value="#{questaoController.selected.modificacao}" title="#{bundle.EditQuestaoTitle_modificacao}" required="true" requiredMessage="#{bundle.EditQuestaoRequiredMessage_modificacao}">
-                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
-                    </h:inputText>
-                    <h:outputLabel value="#{bundle.EditQuestaoLabel_topicoquestao}" for="topicoquestao" />
-                    <h:selectOneMenu id="topicoquestao" value="#{questaoController.selected.topicoquestao}" title="#{bundle.EditQuestaoTitle_topicoquestao}" >
-                        <f:selectItems value="#{topicoquestaoController.itemsAvailableSelectOne}"/>
-                    </h:selectOneMenu>
-                    <h:outputLabel value="#{bundle.EditQuestaoLabel_administradorCodigo}" for="administradorCodigo" />
-                    <h:selectOneMenu id="administradorCodigo" value="#{questaoController.selected.administradorCodigo}" title="#{bundle.EditQuestaoTitle_administradorCodigo}" required="true" requiredMessage="#{bundle.EditQuestaoRequiredMessage_administradorCodigo}">
-                        <f:selectItems value="#{administradorController.itemsAvailableSelectOne}"/>
-                    </h:selectOneMenu>
                 </h:panelGrid>
                 <h:commandLink action="#{questaoController.update}" value="#{bundle.EditQuestaoSaveLink}"/>
                 <br />
@@ -44,6 +28,7 @@
                 <h:commandLink action="#{questaoController.prepareList}" value="#{bundle.EditQuestaoShowAllLink}" immediate="true"/>
                 <br />
                 <br />
+                <a href="../topicoquestao/Create.xhtml"></a>
                 <h:link outcome="/index" value="#{bundle.EditQuestaoIndexLink}" />
             </h:form>
         </ui:define>

@@ -15,8 +15,6 @@
             </h:panelGroup>
             <h:form>
                 <h:panelGrid columns="2">
-                    <h:outputLabel value="#{bundle.CreateTopicoquestaoLabel_questaoCodigo}" for="questaoCodigo" />
-                    <h:inputText id="questaoCodigo" value="#{topicoquestaoController.selected.questaoCodigo}" title="#{bundle.CreateTopicoquestaoTitle_questaoCodigo}" required="true" requiredMessage="#{bundle.CreateTopicoquestaoRequiredMessage_questaoCodigo}"/>
                     <h:outputLabel value="#{bundle.CreateTopicoquestaoLabel_questao}" for="questao" />
                     <h:selectOneMenu id="questao" value="#{topicoquestaoController.selected.questao}" title="#{bundle.CreateTopicoquestaoTitle_questao}" required="true" requiredMessage="#{bundle.CreateTopicoquestaoRequiredMessage_questao}">
                         <f:selectItems value="#{questaoController.itemsAvailableSelectOne}"/>
