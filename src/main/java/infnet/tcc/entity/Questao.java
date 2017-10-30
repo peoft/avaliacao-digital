@@ -6,25 +6,25 @@
 package infnet.tcc.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -48,22 +48,21 @@ public class Questao implements Serializable {
     @Column(name = "codigo")
     private Integer codigo;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 200)
     @Column(name = "texto")
     private String texto;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "criacao")
     @Temporal(TemporalType.TIMESTAMP)
     private Date criacao;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "modificacao")
     @Temporal(TemporalType.TIMESTAMP)
     private Date modificacao;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "questao")
-    private Topicoquestao topicoquestao;
+    @JoinTable(name = "topicoquestao", joinColumns = {
+        @JoinColumn(name = "questaoCodigo", referencedColumnName = "codigo")}, inverseJoinColumns = {
+        @JoinColumn(name = "topicoCodigo", referencedColumnName = "codigo")})
+    @ManyToMany
+    private Collection<Topico> topicoCollection = new ArrayList<Topico>();
 
     public Questao() {
     }
@@ -111,12 +110,13 @@ public class Questao implements Serializable {
         this.modificacao = modificacao;
     }
 
-    public Topicoquestao getTopicoquestao() {
-        return topicoquestao;
+    @XmlTransient
+    public Collection<Topico> getTopicoCollection() {
+        return topicoCollection;
     }
 
-    public void setTopicoquestao(Topicoquestao topicoquestao) {
-        this.topicoquestao = topicoquestao;
+    public void setTopicoCollection(Collection<Topico> topicoCollection) {
+        this.topicoCollection = topicoCollection;
     }
 
     @Override

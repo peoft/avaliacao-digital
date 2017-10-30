@@ -1,10 +1,11 @@
 package infnet.tcc.presentation;
 
-import infnet.tcc.entity.Administrador;
 import infnet.tcc.entity.Questao;
+import infnet.tcc.entity.Topico;
 import infnet.tcc.presentation.util.JsfUtil;
 import infnet.tcc.presentation.util.PaginationHelper;
 import infnet.tcc.facade.QuestaoFacade;
+import infnet.tcc.facade.TopicoFacade;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -20,10 +21,16 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 @Named("questaoController")
 @SessionScoped
 public class QuestaoController implements Serializable {
+
+    @EJB
+    private TopicoFacade topicoFacade;
 
     private Questao current;
     private DataModel items = null;
@@ -31,6 +38,7 @@ public class QuestaoController implements Serializable {
     private infnet.tcc.facade.QuestaoFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
+    private Topico topico;
 
     public QuestaoController() {
     }
@@ -41,6 +49,14 @@ public class QuestaoController implements Serializable {
             selectedItemIndex = -1;
         }
         return current;
+    }
+    
+    public Topico getSelectedTopico() {
+        if (topico == null) {
+            topico = new Topico();
+            selectedItemIndex = -1;
+        }
+        return topico;
     }
 
     private QuestaoFacade getFacade() {
@@ -81,15 +97,21 @@ public class QuestaoController implements Serializable {
         selectedItemIndex = -1;
         return "Create";
     }
-
+    
     public String create() {
         try {
             Date currentDate = Calendar.getInstance().getTime();
-            
+            TopicoController topicoController = new TopicoController();
+
             current.setCriacao(currentDate);
             current.setModificacao(currentDate);
             
+            topicoController.setFacade(topicoFacade);
+            Topico topicoTitulo = topicoController.getTopicoByTitulo(topico.getTitulo());
+            topico.setCodigo(topicoTitulo.getCodigo());
+            current.getTopicoCollection().add(topico);
             getFacade().create(current);
+            
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("QuestaoCreated"));
             return prepareCreate();
         } catch (Exception e) {

@@ -17,10 +17,10 @@
                 <h:panelGrid columns="2">
                     <h:outputLabel value="#{bundle.CreateQuestaoLabel_texto}" for="texto" />
                     <h:inputText id="texto" value="#{questaoController.selected.texto}" title="#{bundle.CreateQuestaoTitle_texto}" required="true" requiredMessage="#{bundle.CreateQuestaoRequiredMessage_texto}"/>
-                    <!-- <h:outputLabel value="#{bundle.CreateQuestaoLabel_topicoquestao}" for="topicoquestao" />
-                    <h:selectOneMenu id="topicoquestao" value="#{questaoController.selected.topicoquestao}" title="#{bundle.CreateQuestaoTitle_topicoquestao}" >
-                        <f:selectItems value="#{topicoquestaoController.itemsAvailableSelectOne}"/>
-                    </h:selectOneMenu> -->
+                    <h:outputLabel value="#{bundle.CreateTopicoLabel_titulo}" for="titulos" />
+                    <h:selectOneMenu id="titulos" value="#{questaoController.selectedTopico.titulo}" title="#{bundle.CreateTopicoLabel_titulo}" >
+                        <f:selectItems value="#{topicoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
                 </h:panelGrid>
                 <br />
                 <h:commandLink action="#{questaoController.create}" value="#{bundle.CreateQuestaoSaveLink}" />

@@ -3,7 +3,6 @@ D:\Users\peof\GitHub\avaliacaoDigital\src\main\java\infnet\tcc\facade\AbstractFa
 D:\Users\peof\GitHub\avaliacaoDigital\src\main\java\infnet\tcc\service\TurmaFacadeREST.java
 D:\Users\peof\GitHub\avaliacaoDigital\src\main\java\infnet\tcc\facade\AvaliacaotopicoFacade.java
 D:\Users\peof\GitHub\avaliacaoDigital\src\main\java\infnet\tcc\facade\AvaliacaoFacade.java
-D:\Users\peof\GitHub\avaliacaoDigital\src\main\java\infnet\tcc\presentation\TopicoquestaoController.java
 D:\Users\peof\GitHub\avaliacaoDigital\src\main\java\infnet\tcc\presentation\AvaliacaoController.java
 D:\Users\peof\GitHub\avaliacaoDigital\src\main\java\infnet\tcc\presentation\TopicoController.java
 D:\Users\peof\GitHub\avaliacaoDigital\src\main\java\infnet\tcc\facade\QuestaoFacade.java
@@ -19,7 +18,6 @@ D:\Users\peof\GitHub\avaliacaoDigital\src\main\java\infnet\tcc\presentation\Turm
 D:\Users\peof\GitHub\avaliacaoDigital\src\main\java\infnet\tcc\entity\RespostaPK.java
 D:\Users\peof\GitHub\avaliacaoDigital\src\main\java\infnet\tcc\service\QuestaoFacadeREST.java
 D:\Users\peof\GitHub\avaliacaoDigital\src\main\java\infnet\tcc\presentation\AdministradorController.java
-D:\Users\peof\GitHub\avaliacaoDigital\src\main\java\infnet\tcc\facade\TopicoquestaoFacade.java
 D:\Users\peof\GitHub\avaliacaoDigital\src\main\java\infnet\tcc\entity\Avaliacao.java
 D:\Users\peof\GitHub\avaliacaoDigital\src\main\java\infnet\tcc\entity\TurmaPK.java
 D:\Users\peof\GitHub\avaliacaoDigital\src\main\java\infnet\tcc\service\AdministradorFacadeREST.java
@@ -27,7 +25,6 @@ D:\Users\peof\GitHub\avaliacaoDigital\src\main\java\infnet\tcc\entity\Modulo.jav
 D:\Users\peof\GitHub\avaliacaoDigital\src\main\java\infnet\tcc\facade\TurmaalunoFacade.java
 D:\Users\peof\GitHub\avaliacaoDigital\src\main\java\infnet\tcc\entity\Aluno.java
 D:\Users\peof\GitHub\avaliacaoDigital\src\main\java\infnet\tcc\facade\UsuarioFacade.java
-D:\Users\peof\GitHub\avaliacaoDigital\src\main\java\infnet\tcc\service\TopicoquestaoFacadeREST.java
 D:\Users\peof\GitHub\avaliacaoDigital\src\main\java\infnet\tcc\facade\AdministradorFacade.java
 D:\Users\peof\GitHub\avaliacaoDigital\src\main\java\infnet\tcc\service\TopicoFacadeREST.java
 D:\Users\peof\GitHub\avaliacaoDigital\src\main\java\infnet\tcc\presentation\util\PaginationHelper.java
@@ -39,7 +36,6 @@ D:\Users\peof\GitHub\avaliacaoDigital\src\main\java\infnet\tcc\entity\Turmaaluno
 D:\Users\peof\GitHub\avaliacaoDigital\src\main\java\infnet\tcc\presentation\TurmaalunoController.java
 D:\Users\peof\GitHub\avaliacaoDigital\src\main\java\infnet\tcc\facade\ProfessorFacade.java
 D:\Users\peof\GitHub\avaliacaoDigital\src\main\java\infnet\tcc\service\AvaliacaoFacadeREST.java
-D:\Users\peof\GitHub\avaliacaoDigital\src\main\java\infnet\tcc\entity\Topicoquestao.java
 D:\Users\peof\GitHub\avaliacaoDigital\src\main\java\infnet\tcc\presentation\ModuloController.java
 D:\Users\peof\GitHub\avaliacaoDigital\src\main\java\infnet\tcc\entity\Topico.java
 D:\Users\peof\GitHub\avaliacaoDigital\src\main\java\infnet\tcc\entity\Questao.java

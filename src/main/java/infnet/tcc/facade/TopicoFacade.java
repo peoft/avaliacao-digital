@@ -24,7 +24,11 @@ public class TopicoFacade extends AbstractFacade<Topico> {
     protected EntityManager getEntityManager() {
         return em;
     }
-
+    
+    public Topico findByTitulo(String titulo) {
+        return (Topico) em.createNamedQuery("Topico.findByTitulo").setParameter("titulo", titulo).getSingleResult();
+    }
+    
     public TopicoFacade() {
         super(Topico.class);
     }

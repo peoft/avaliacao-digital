@@ -39,7 +39,6 @@ public class ApplicationConfig extends Application {
         resources.add(infnet.tcc.service.QuestaoFacadeREST.class);
         resources.add(infnet.tcc.service.RespostaFacadeREST.class);
         resources.add(infnet.tcc.service.TopicoFacadeREST.class);
-        resources.add(infnet.tcc.service.TopicoquestaoFacadeREST.class);
         resources.add(infnet.tcc.service.TurmaFacadeREST.class);
         resources.add(infnet.tcc.service.TurmaalunoFacadeREST.class);
         resources.add(infnet.tcc.service.UsuarioFacadeREST.class);

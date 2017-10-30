@@ -43,6 +43,10 @@ public class TopicoController implements Serializable {
     private TopicoFacade getFacade() {
         return ejbFacade;
     }
+    
+    public void setFacade(TopicoFacade topicoFacade) {
+        ejbFacade = topicoFacade;
+    }
 
     public PaginationHelper getPagination() {
         if (pagination == null) {
@@ -188,9 +192,13 @@ public class TopicoController implements Serializable {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
 
-    public Topico getTopico(java.lang.Integer id) {
+    public Topico getTopicoByCodigo(java.lang.Integer id) {
         return ejbFacade.find(id);
     }
+    
+    public Topico getTopicoByTitulo(String titulo) {
+        return ejbFacade.findByTitulo(titulo);
+    }    
 
     @FacesConverter(forClass = Topico.class)
     public static class TopicoControllerConverter implements Converter {
@@ -202,7 +210,7 @@ public class TopicoController implements Serializable {
             }
             TopicoController controller = (TopicoController) facesContext.getApplication().getELResolver().
                     getValue(facesContext.getELContext(), null, "topicoController");
-            return controller.getTopico(getKey(value));
+            return controller.getTopicoByCodigo(getKey(value));
         }
 
         java.lang.Integer getKey(String value) {
@@ -224,7 +232,7 @@ public class TopicoController implements Serializable {
             }
             if (object instanceof Topico) {
                 Topico o = (Topico) object;
-                return getStringKey(o.getCodigo());
+                return o.getTitulo();
             } else {
                 throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Topico.class.getName());
             }

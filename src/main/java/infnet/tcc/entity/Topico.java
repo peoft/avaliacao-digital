@@ -8,18 +8,15 @@ package infnet.tcc.entity;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -43,14 +40,10 @@ public class Topico implements Serializable {
     @Column(name = "codigo")
     private Integer codigo;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
     @Column(name = "titulo")
     private String titulo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "topicoCodigo")
-    private Collection<Topicoquestao> topicoquestaoCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "topico")
-    private Collection<Avaliacaotopico> avaliacaotopicoCollection;
+    @ManyToMany(mappedBy = "topicoCollection")
+    private Collection<Questao> questaoCollection;
 
     public Topico() {
     }
@@ -81,21 +74,12 @@ public class Topico implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Topicoquestao> getTopicoquestaoCollection() {
-        return topicoquestaoCollection;
+    public Collection<Questao> getQuestaoCollection() {
+        return questaoCollection;
     }
 
-    public void setTopicoquestaoCollection(Collection<Topicoquestao> topicoquestaoCollection) {
-        this.topicoquestaoCollection = topicoquestaoCollection;
-    }
-
-    @XmlTransient
-    public Collection<Avaliacaotopico> getAvaliacaotopicoCollection() {
-        return avaliacaotopicoCollection;
-    }
-
-    public void setAvaliacaotopicoCollection(Collection<Avaliacaotopico> avaliacaotopicoCollection) {
-        this.avaliacaotopicoCollection = avaliacaotopicoCollection;
+    public void setQuestaoCollection(Collection<Questao> questaoCollection) {
+        this.questaoCollection = questaoCollection;
     }
 
     @Override
@@ -120,7 +104,7 @@ public class Topico implements Serializable {
 
     @Override
     public String toString() {
-        return "infnet.tcc.Topico[ codigo=" + codigo + " ]";
+        return this.titulo;
     }
     
 }
