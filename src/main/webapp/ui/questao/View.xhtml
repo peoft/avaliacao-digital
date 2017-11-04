@@ -27,6 +27,8 @@
                     <h:outputText value="#{questaoController.selected.modificacao}" title="#{bundle.ViewQuestaoTitle_modificacao}">
                         <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
                     </h:outputText>
+                    <h:outputText value="#{bundle.ViewTopicoLabel_titulo}"/>
+                    <h:outputText value="#{questaoController.selected.topicoCollection[0]}" title="#{bundle.ViewQuestaoTitle_modificacao}"/>
                 </h:panelGrid>
                 <br />
                 <h:commandLink action="#{questaoController.destroyAndView}" value="#{bundle.ViewQuestaoDestroyLink}"/>

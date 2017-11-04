@@ -10,8 +10,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -61,7 +63,7 @@ public class Questao implements Serializable {
     @JoinTable(name = "topicoquestao", joinColumns = {
         @JoinColumn(name = "questaoCodigo", referencedColumnName = "codigo")}, inverseJoinColumns = {
         @JoinColumn(name = "topicoCodigo", referencedColumnName = "codigo")})
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Topico> topicoCollection = new ArrayList<Topico>();
 
     public Questao() {

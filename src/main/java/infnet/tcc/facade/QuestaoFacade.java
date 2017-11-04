@@ -24,6 +24,10 @@ public class QuestaoFacade extends AbstractFacade<Questao> {
     protected EntityManager getEntityManager() {
         return em;
     }
+    
+    public Questao findByTexto(String texto) {
+        return (Questao) em.createNamedQuery("Questao.findByTexto").setParameter("texto", texto).getSingleResult();
+    }    
 
     public QuestaoFacade() {
         super(Questao.class);

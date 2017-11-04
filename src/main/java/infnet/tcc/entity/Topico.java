@@ -10,6 +10,7 @@ import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -42,7 +43,7 @@ public class Topico implements Serializable {
     @Basic(optional = false)
     @Column(name = "titulo")
     private String titulo;
-    @ManyToMany(mappedBy = "topicoCollection")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "topicoCollection")
     private Collection<Questao> questaoCollection;
 
     public Topico() {

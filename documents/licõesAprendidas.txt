@@ -2,3 +2,8 @@
 	* copiei jboss-logging-3.3.0.Final.jar para o diretório do glassfish;
 	* retirei jboss-logging.jar do diretório do glassfish;
 
+2) Exception failed to lazily initialize a collection of role em, por exemplo topicoColletcion:
+	* inseri o seguinte na anotacao ManyToMany : fetch = FetchType.EAGER.
+
+
+

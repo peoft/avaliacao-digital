@@ -10,8 +10,10 @@ import infnet.tcc.facade.TopicoFacade;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
@@ -23,6 +25,7 @@ import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 
 @Named("questaoController")
@@ -50,7 +53,7 @@ public class QuestaoController implements Serializable {
         }
         return current;
     }
-    
+
     public Topico getSelectedTopico() {
         if (topico == null) {
             topico = new Topico();
@@ -97,38 +100,67 @@ public class QuestaoController implements Serializable {
         selectedItemIndex = -1;
         return "Create";
     }
-    
+
+    public String prepareEdit() {
+        current = (Questao) getItems().getRowData();
+        Iterator<Topico> iterator = current.getTopicoCollection().iterator();
+        if (iterator.hasNext()) {
+            topico = (Topico) current.getTopicoCollection().iterator().next();
+        }
+        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+        return "Edit";
+    }
+
+    private void setTopicoCodigoFromTitulo() {
+        TopicoController topicoController = new TopicoController();
+        topicoController.setFacade(topicoFacade);
+
+        Topico topicoTitulo = topicoController.getTopicoByTitulo(topico.getTitulo());
+        topico.setCodigo(topicoTitulo.getCodigo());
+    }
+
+    private boolean existsTextInDatabase() {
+        boolean exists = false;
+        try {
+            Questao questao = getFacade().findByTexto(current.getTexto().trim());
+            exists = true;
+        } catch (EJBException e) {
+            String message = e.getCause().getMessage();
+            if (message.contains("No entity found for query")) {
+                exists = false;
+            }
+        }
+        return exists;
+    }
+
     public String create() {
         try {
-            Date currentDate = Calendar.getInstance().getTime();
-            TopicoController topicoController = new TopicoController();
+            if (existsTextInDatabase() == false) {
+                Date currentDate = Calendar.getInstance().getTime();
 
-            current.setCriacao(currentDate);
-            current.setModificacao(currentDate);
-            
-            topicoController.setFacade(topicoFacade);
-            Topico topicoTitulo = topicoController.getTopicoByTitulo(topico.getTitulo());
-            topico.setCodigo(topicoTitulo.getCodigo());
-            current.getTopicoCollection().add(topico);
-            getFacade().create(current);
-            
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("QuestaoCreated"));
-            return prepareCreate();
+                current.setCriacao(currentDate);
+                current.setModificacao(currentDate);
+                setTopicoCodigoFromTitulo();
+                current.getTopicoCollection().add(topico);
+                getFacade().create(current);
+                JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("QuestaoCreated"));
+                return prepareCreate();
+            } else {
+                throw new Exception(ResourceBundle.getBundle("/Bundle").getString("ExistsTextoQuestao"));
+            }
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
         }
     }
 
-    public String prepareEdit() {
-        current = (Questao) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "Edit";
-    }
-
     public String update() {
         try {
+            setTopicoCodigoFromTitulo();
+            current.getTopicoCollection().clear();
+            current.getTopicoCollection().add(topico);
             getFacade().edit(current);
+
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("QuestaoUpdated"));
             return "View";
         } catch (Exception e) {

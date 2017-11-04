@@ -15,10 +15,12 @@
             </h:panelGroup>
             <h:form>
                 <h:panelGrid columns="2">
-                    <h:outputLabel value="#{bundle.EditQuestaoLabel_codigo}" for="codigo" />
-                    <h:inputText id="codigo" value="#{questaoController.selected.codigo}" title="#{bundle.EditQuestaoTitle_codigo}" disabled="true"/>
                     <h:outputLabel value="#{bundle.EditQuestaoLabel_texto}" for="texto" />
-                    <h:inputText id="texto" value="#{questaoController.selected.texto}" title="#{bundle.EditQuestaoTitle_texto}" required="true" requiredMessage="#{bundle.EditQuestaoRequiredMessage_texto}"/>
+                    <h:inputText id="texto" value="#{questaoController.selected.texto}" title="#{bundle.EditQuestaoTitle_texto}"  size="50" required="true" requiredMessage="#{bundle.EditQuestaoRequiredMessage_texto}"/>
+                    <h:outputLabel value="#{bundle.EditQuestaoTitle_topico}" for="titulos" />
+                    <h:selectOneMenu id="titulos" value="#{questaoController.selectedTopico.titulo}" title="#{bundle.EditTopicoLabel_titulo}" >
+                        <f:selectItems value="#{topicoController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
                 </h:panelGrid>
                 <h:commandLink action="#{questaoController.update}" value="#{bundle.EditQuestaoSaveLink}"/>
                 <br />
@@ -28,7 +30,6 @@
                 <h:commandLink action="#{questaoController.prepareList}" value="#{bundle.EditQuestaoShowAllLink}" immediate="true"/>
                 <br />
                 <br />
-                <a href="../topicoquestao/Create.xhtml"></a>
                 <h:link outcome="/index" value="#{bundle.EditQuestaoIndexLink}" />
             </h:form>
         </ui:define>
