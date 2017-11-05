@@ -43,7 +43,7 @@
                                 <h:outputText value="#{bundle.ListQuestaoTitle_criacao}"/>
                             </f:facet>
                             <h:outputText value="#{item.criacao}">
-                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                                <f:convertDateTime timeZone="#{initParam.timezone}" dateStyle="long"  pattern="dd/MM/yyyy HH:mm:ss"  />
                             </h:outputText>
                         </h:column>
                         <h:column>
@@ -51,7 +51,7 @@
                                 <h:outputText value="#{bundle.ListQuestaoTitle_modificacao}"/>
                             </f:facet>
                             <h:outputText value="#{item.modificacao}">
-                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                                <f:convertDateTime timeZone="#{initParam.timezone}" dateStyle="long"  pattern="dd/MM/yyyy HH:mm:ss"  />
                             </h:outputText>
                         </h:column>
                         <h:column>

@@ -8,10 +8,19 @@ import infnet.tcc.facade.QuestaoFacade;
 import infnet.tcc.facade.TopicoFacade;
 
 import java.io.Serializable;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.TimeZone;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.inject.Named;
@@ -120,23 +129,38 @@ public class QuestaoController implements Serializable {
     }
 
     private boolean existsTextInDatabase() {
-        boolean exists = false;
+        boolean exists = true;
         try {
-            Questao questao = getFacade().findByTexto(current.getTexto().trim());
-            exists = true;
+            Questao questao = getFacade().findByTexto(current.getTexto().trim().replaceAll("\\s+", " "));
         } catch (EJBException e) {
-            String message = e.getCause().getMessage();
-            if (message.contains("No entity found for query")) {
+            Exception cause = (Exception) e.getCause();
+            if (cause.getClass().getName().equals("javax.persistence.NoResultException")) {
                 exists = false;
             }
         }
         return exists;
     }
-
+    
+    private Date getCurrentDate() {
+        Instant instant = Instant.now();
+        Locale locale = new Locale("pt", "BR");
+        ZoneId zoneId = ZoneId.of( "America/Sao_Paulo" );
+        ZonedDateTime zonedDT = instant.atZone( zoneId );
+        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime( FormatStyle.SHORT )
+                                       .withLocale( locale );
+        
+        zonedDT.format(formatter);
+        
+        Calendar calendar ;
+        calendar = GregorianCalendar.from( zonedDT );
+        
+        return  calendar.getTime();
+    }
+    
     public String create() {
         try {
             if (existsTextInDatabase() == false) {
-                Date currentDate = Calendar.getInstance().getTime();
+                Date currentDate = getCurrentDate();
 
                 current.setCriacao(currentDate);
                 current.setModificacao(currentDate);
@@ -153,10 +177,12 @@ public class QuestaoController implements Serializable {
             return null;
         }
     }
-
+    
     public String update() {
         try {
+            Date currentDate = getCurrentDate();
             setTopicoCodigoFromTitulo();
+            current.setModificacao(currentDate);
             current.getTopicoCollection().clear();
             current.getTopicoCollection().add(topico);
             getFacade().edit(current);

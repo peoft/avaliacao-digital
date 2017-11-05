@@ -21,11 +21,11 @@
                     <h:outputText value="#{questaoController.selected.texto}" title="#{bundle.ViewQuestaoTitle_texto}"/>
                     <h:outputText value="#{bundle.ViewQuestaoLabel_criacao}"/>
                     <h:outputText value="#{questaoController.selected.criacao}" title="#{bundle.ViewQuestaoTitle_criacao}">
-                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        <f:convertDateTime timeZone="#{initParam.timezone}" dateStyle="long"  pattern="dd/MM/yyyy HH:mm:ss"  />
                     </h:outputText>
                     <h:outputText value="#{bundle.ViewQuestaoLabel_modificacao}"/>
                     <h:outputText value="#{questaoController.selected.modificacao}" title="#{bundle.ViewQuestaoTitle_modificacao}">
-                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        <f:convertDateTime timeZone="#{initParam.timezone}" dateStyle="long"  pattern="dd/MM/yyyy HH:mm:ss"  />
                     </h:outputText>
                     <h:outputText value="#{bundle.ViewTopicoLabel_titulo}"/>
                     <h:outputText value="#{questaoController.selected.topicoCollection[0]}" title="#{bundle.ViewQuestaoTitle_modificacao}"/>

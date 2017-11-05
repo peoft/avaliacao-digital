@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -38,7 +37,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Questao.findAll", query = "SELECT q FROM Questao q")
     , @NamedQuery(name = "Questao.findByCodigo", query = "SELECT q FROM Questao q WHERE q.codigo = :codigo")
-    , @NamedQuery(name = "Questao.findByTexto", query = "SELECT q FROM Questao q WHERE q.texto = :texto")
+    , @NamedQuery(name = "Questao.findByTexto", query = "SELECT q FROM Questao q WHERE UPPER(q.texto) = UPPER(:texto)")
     , @NamedQuery(name = "Questao.findByCriacao", query = "SELECT q FROM Questao q WHERE q.criacao = :criacao")
     , @NamedQuery(name = "Questao.findByModificacao", query = "SELECT q FROM Questao q WHERE q.modificacao = :modificacao")})
 public class Questao implements Serializable {
