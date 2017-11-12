@@ -6,9 +6,9 @@
 package infnet.tcc.entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -60,12 +60,13 @@ public class Questao implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date modificacao;
     @JoinTable(name = "topicoquestao", joinColumns = {
-        @JoinColumn(name = "questaoCodigo", referencedColumnName = "codigo")}, inverseJoinColumns = {
-        @JoinColumn(name = "topicoCodigo", referencedColumnName = "codigo")})
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Collection<Topico> topicoCollection = new ArrayList<Topico>();
+    @JoinColumn(name = "questaoCodigo", referencedColumnName = "codigo")}, inverseJoinColumns = {
+    @JoinColumn(name = "topicoCodigo", referencedColumnName = "codigo")})
+    @ManyToMany(fetch = FetchType.EAGER)    
+    private Collection<Topico> topicoCollection;
 
     public Questao() {
+        topicoCollection = new HashSet<Topico>();
     }
 
     public Questao(Integer codigo) {

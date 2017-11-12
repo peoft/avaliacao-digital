@@ -4,10 +4,13 @@ import infnet.tcc.entity.Topico;
 import infnet.tcc.presentation.util.JsfUtil;
 import infnet.tcc.presentation.util.PaginationHelper;
 import infnet.tcc.facade.TopicoFacade;
+import static infnet.tcc.presentation.UserOperations.Create;
+import static infnet.tcc.presentation.UserOperations.Update;
 
 import java.io.Serializable;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
@@ -43,7 +46,7 @@ public class TopicoController implements Serializable {
     private TopicoFacade getFacade() {
         return ejbFacade;
     }
-    
+
     public void setFacade(TopicoFacade topicoFacade) {
         ejbFacade = topicoFacade;
     }
@@ -83,11 +86,33 @@ public class TopicoController implements Serializable {
         return "Create";
     }
 
+    private boolean existsTituloInDatabase(UserOperations operation) {
+        boolean exists = true;
+        try {
+            Topico topico;
+            if (operation == Create) {
+                topico = getFacade().findByTitulo(current.getTitulo().trim().replaceAll("\\s+", " "));
+            } else if (operation == Update) {
+                topico = getFacade().findByTituloDifferentFromCurrent(current.getTitulo().trim().replaceAll("\\s+", " "), current.getCodigo());
+            }
+        } catch (EJBException e) {
+            Exception cause = (Exception) e.getCause();
+            if (cause.getClass().getName().equals("javax.persistence.NoResultException")) {
+                exists = false;
+            }
+        }
+        return exists;
+    }
+
     public String create() {
         try {
-            getFacade().create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TopicoCreated"));
-            return prepareCreate();
+            if (existsTituloInDatabase(Create) == false) {
+                getFacade().create(current);
+                JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TopicoCreated"));
+                return prepareCreate();
+            } else {
+                throw new Exception(ResourceBundle.getBundle("/Bundle").getString("ExistsTituloTopico"));
+            }
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
@@ -102,9 +127,14 @@ public class TopicoController implements Serializable {
 
     public String update() {
         try {
-            getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TopicoUpdated"));
-            return "View";
+            if (existsTituloInDatabase(Update) == false) {
+                getFacade().edit(current);                
+                JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("TopicoUpdated"));
+                return "View";
+            } else {
+                throw new Exception(ResourceBundle.getBundle("/Bundle").getString("ExistsTituloTopico"));
+            }
+
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
@@ -195,10 +225,10 @@ public class TopicoController implements Serializable {
     public Topico getTopicoByCodigo(java.lang.Integer id) {
         return ejbFacade.find(id);
     }
-    
+
     public Topico getTopicoByTitulo(String titulo) {
         return ejbFacade.findByTitulo(titulo);
-    }    
+    }
 
     @FacesConverter(forClass = Topico.class)
     public static class TopicoControllerConverter implements Converter {

@@ -46,6 +46,7 @@ infnet\tcc\presentation\AvaliacaotopicoController$1.class
 infnet\tcc\presentation\TurmaalunoController$1.class
 infnet\tcc\presentation\QuestaoController$1.class
 infnet\tcc\presentation\TurmaController$TurmaControllerConverter.class
+infnet\tcc\presentation\UserOperations.class
 infnet\tcc\service\AlunoFacadeREST.class
 infnet\tcc\facade\AvaliacaotopicoFacade.class
 infnet\tcc\service\TurmaalunoFacadeREST.class

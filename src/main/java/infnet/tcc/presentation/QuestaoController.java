@@ -9,7 +9,6 @@ import infnet.tcc.facade.TopicoFacade;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -19,12 +18,12 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.TimeZone;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.inject.Named;
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -32,18 +31,14 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.NoResultException;
-import javax.persistence.Persistence;
 
 @Named("questaoController")
-@SessionScoped
+@RequestScoped
 public class QuestaoController implements Serializable {
 
+    private Integer codigo;
     @EJB
     private TopicoFacade topicoFacade;
-
     private Questao current;
     private DataModel items = null;
     @EJB
@@ -60,6 +55,7 @@ public class QuestaoController implements Serializable {
             current = new Questao();
             selectedItemIndex = -1;
         }
+        codigo = current.getCodigo();
         return current;
     }
 
@@ -71,6 +67,14 @@ public class QuestaoController implements Serializable {
         return topico;
     }
 
+    public Integer getCodigo() {
+        return codigo;
+    }
+    
+    public void setCodigo(Integer codigo) {
+        this.codigo = codigo;        
+    }
+    
     private QuestaoFacade getFacade() {
         return ejbFacade;
     }
@@ -110,53 +114,32 @@ public class QuestaoController implements Serializable {
         return "Create";
     }
 
-    public String prepareEdit() {
-        current = (Questao) getItems().getRowData();
+    private Topico getTopicoFromCollection() {
+        Topico element = null;
         Iterator<Topico> iterator = current.getTopicoCollection().iterator();
         if (iterator.hasNext()) {
-            topico = (Topico) current.getTopicoCollection().iterator().next();
+            element = (Topico) current.getTopicoCollection().iterator().next();
         }
+        return element;
+    }
+
+    public String prepareEdit() {
+        current = (Questao) getItems().getRowData();
+        topico = getTopicoFromCollection();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "Edit";
     }
 
-    private void setTopicoCodigoFromTitulo() {
-        TopicoController topicoController = new TopicoController();
-        topicoController.setFacade(topicoFacade);
-
-        Topico topicoTitulo = topicoController.getTopicoByTitulo(topico.getTitulo());
-        topico.setCodigo(topicoTitulo.getCodigo());
+    public String prepareEditFromView() {
+        prepareRequestParameter("codigo");
+        return "Edit";
     }
 
-    private boolean existsTextInDatabase() {
-        boolean exists = true;
-        try {
-            Questao questao = getFacade().findByTexto(current.getTexto().trim().replaceAll("\\s+", " "));
-        } catch (EJBException e) {
-            Exception cause = (Exception) e.getCause();
-            if (cause.getClass().getName().equals("javax.persistence.NoResultException")) {
-                exists = false;
-            }
-        }
-        return exists;
+    public String prepareViewFromEdit() {
+        prepareRequestParameter("codigo");
+        return "View";
     }
-    
-    private Date getCurrentDate() {
-        Instant instant = Instant.now();
-        Locale locale = new Locale("pt", "BR");
-        ZoneId zoneId = ZoneId.of( "America/Sao_Paulo" );
-        ZonedDateTime zonedDT = instant.atZone( zoneId );
-        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime( FormatStyle.SHORT )
-                                       .withLocale( locale );
-        
-        zonedDT.format(formatter);
-        
-        Calendar calendar ;
-        calendar = GregorianCalendar.from( zonedDT );
-        
-        return  calendar.getTime();
-    }
-    
+
     public String create() {
         try {
             if (existsTextInDatabase() == false) {
@@ -177,11 +160,47 @@ public class QuestaoController implements Serializable {
             return null;
         }
     }
+
+    private boolean existsTextInDatabase() {
+        boolean exists = true;
+        try {
+            getFacade().findByTexto(current.getTexto().trim().replaceAll("\\s+", " "));
+        } catch (EJBException e) {
+            Exception cause = (Exception) e.getCause();
+            if (cause.getClass().getName().equals("javax.persistence.NoResultException")) {
+                exists = false;
+            }
+        }
+        return exists;
+    }
     
+    private Date getCurrentDate() {
+        Instant instant = Instant.now();
+        Locale locale = new Locale("pt", "BR");
+        ZoneId zoneId = ZoneId.of("America/Sao_Paulo");
+        ZonedDateTime zonedDT = instant.atZone(zoneId);
+        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
+                .withLocale(locale);
+
+        zonedDT.format(formatter);
+
+        Calendar calendar;
+        calendar = GregorianCalendar.from(zonedDT);
+
+        return calendar.getTime();
+    }
+    
+
     public String update() {
         try {
-            Date currentDate = getCurrentDate();
+            String texto = current.getTexto();
+            String titulo = topico.getTitulo();
+            prepareRequestParameter("codigo");
+            
+            topico.setTitulo(titulo);
             setTopicoCodigoFromTitulo();
+            Date currentDate = getCurrentDate();
+            current.setTexto(texto);
             current.setModificacao(currentDate);
             current.getTopicoCollection().clear();
             current.getTopicoCollection().add(topico);
@@ -193,6 +212,24 @@ public class QuestaoController implements Serializable {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
         }
+    }
+
+    private void prepareRequestParameter(String name) {
+        FacesContext fc = FacesContext.getCurrentInstance();
+        Map<String, String> params
+                = fc.getExternalContext().getRequestParameterMap();
+        codigo = new Integer(params.get(name));
+        current = getFacade().find(codigo);
+        topico = getTopicoFromCollection();
+        selectedItemIndex = -1;
+    }
+
+    private void setTopicoCodigoFromTitulo() {
+        TopicoController topicoController = new TopicoController();
+        topicoController.setFacade(topicoFacade);
+
+        Topico topicoTitulo = topicoController.getTopicoByTitulo(topico.getTitulo());
+        topico.setCodigo(topicoTitulo.getCodigo());
     }
 
     public String destroy() {
