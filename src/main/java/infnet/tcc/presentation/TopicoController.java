@@ -89,11 +89,11 @@ public class TopicoController implements Serializable {
     private boolean existsTituloInDatabase(UserOperations operation) {
         boolean exists = true;
         try {
-            Topico topico;
-            if (operation == Create) {
-                topico = getFacade().findByTitulo(current.getTitulo().trim().replaceAll("\\s+", " "));
+            current.setTitulo(JsfUtil.getStringWithoutExtraWhiteSpaces(current.getTitulo()));
+            if (operation == Create) {                 
+                getFacade().findByTitulo(current.getTitulo());
             } else if (operation == Update) {
-                topico = getFacade().findByTituloDifferentFromCurrent(current.getTitulo().trim().replaceAll("\\s+", " "), current.getCodigo());
+                getFacade().findByTituloDifferentFromCurrent(current.getTitulo(), current.getCodigo());
             }
         } catch (EJBException e) {
             Exception cause = (Exception) e.getCause();

@@ -6,6 +6,8 @@ import infnet.tcc.presentation.util.JsfUtil;
 import infnet.tcc.presentation.util.PaginationHelper;
 import infnet.tcc.facade.QuestaoFacade;
 import infnet.tcc.facade.TopicoFacade;
+import static infnet.tcc.presentation.UserOperations.Create;
+import static infnet.tcc.presentation.UserOperations.Update;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -18,7 +20,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.Locale;
-import java.util.Map;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
@@ -70,11 +71,11 @@ public class QuestaoController implements Serializable {
     public Integer getCodigo() {
         return codigo;
     }
-    
+
     public void setCodigo(Integer codigo) {
-        this.codigo = codigo;        
+        this.codigo = codigo;
     }
-    
+
     private QuestaoFacade getFacade() {
         return ejbFacade;
     }
@@ -142,7 +143,7 @@ public class QuestaoController implements Serializable {
 
     public String create() {
         try {
-            if (existsTextInDatabase() == false) {
+            if (existsTextInDatabase(Create) == false) {
                 Date currentDate = getCurrentDate();
 
                 current.setCriacao(currentDate);
@@ -161,10 +162,44 @@ public class QuestaoController implements Serializable {
         }
     }
 
-    private boolean existsTextInDatabase() {
+    public String update() {
+        try {
+            String texto = current.getTexto();
+            String titulo = topico.getTitulo();
+            prepareRequestParameter("codigo");
+            current.setTexto(texto);
+
+            if (existsTextInDatabase(Update) == false) {
+
+                topico.setTitulo(titulo);
+                setTopicoCodigoFromTitulo();
+                Date currentDate = getCurrentDate();
+                
+                current.setModificacao(currentDate);
+                current.getTopicoCollection().clear();
+                current.getTopicoCollection().add(topico);
+                getFacade().edit(current);
+
+                JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("QuestaoUpdated"));
+                return "View";
+            } else {
+                throw new Exception(ResourceBundle.getBundle("/Bundle").getString("ExistsTextoQuestao"));
+            }
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            return null;
+        }
+    }
+
+    private boolean existsTextInDatabase(UserOperations operation) {
         boolean exists = true;
         try {
-            getFacade().findByTexto(current.getTexto().trim().replaceAll("\\s+", " "));
+            current.setTexto(JsfUtil.getStringWithoutExtraWhiteSpaces(current.getTexto()));
+            if (operation == Create) {                
+                getFacade().findByTexto(current.getTexto());
+            } else if (operation == Update) {
+                getFacade().findByTextoDifferentFromCurrent(current.getTexto(), current.getCodigo());                
+            }
         } catch (EJBException e) {
             Exception cause = (Exception) e.getCause();
             if (cause.getClass().getName().equals("javax.persistence.NoResultException")) {
@@ -173,7 +208,7 @@ public class QuestaoController implements Serializable {
         }
         return exists;
     }
-    
+
     private Date getCurrentDate() {
         Instant instant = Instant.now();
         Locale locale = new Locale("pt", "BR");
@@ -189,36 +224,9 @@ public class QuestaoController implements Serializable {
 
         return calendar.getTime();
     }
-    
-
-    public String update() {
-        try {
-            String texto = current.getTexto();
-            String titulo = topico.getTitulo();
-            prepareRequestParameter("codigo");
-            
-            topico.setTitulo(titulo);
-            setTopicoCodigoFromTitulo();
-            Date currentDate = getCurrentDate();
-            current.setTexto(texto);
-            current.setModificacao(currentDate);
-            current.getTopicoCollection().clear();
-            current.getTopicoCollection().add(topico);
-            getFacade().edit(current);
-
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("QuestaoUpdated"));
-            return "View";
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            return null;
-        }
-    }
 
     private void prepareRequestParameter(String name) {
-        FacesContext fc = FacesContext.getCurrentInstance();
-        Map<String, String> params
-                = fc.getExternalContext().getRequestParameterMap();
-        codigo = new Integer(params.get(name));
+        codigo = new Integer(JsfUtil.getRequestParameter(name));
         current = getFacade().find(codigo);
         topico = getTopicoFromCollection();
         selectedItemIndex = -1;
