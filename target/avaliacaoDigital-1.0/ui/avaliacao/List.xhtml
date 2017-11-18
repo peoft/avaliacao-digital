@@ -37,7 +37,7 @@
                                 <h:outputText value="#{bundle.ListAvaliacaoTitle_inicio}"/>
                             </f:facet>
                             <h:outputText value="#{item.inicio}">
-                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                                <f:convertDateTime timeZone="#{initParam.timezone}" dateStyle="long"  pattern="dd/MM/yyyy HH:mm:ss"  />
                             </h:outputText>
                         </h:column>
                         <h:column>
@@ -45,7 +45,7 @@
                                 <h:outputText value="#{bundle.ListAvaliacaoTitle_termino}"/>
                             </f:facet>
                             <h:outputText value="#{item.termino}">
-                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                                <f:convertDateTime timeZone="#{initParam.timezone}" dateStyle="long"  pattern="dd/MM/yyyy HH:mm:ss"  />
                             </h:outputText>
                         </h:column>
                         <h:column>
@@ -53,7 +53,7 @@
                                 <h:outputText value="#{bundle.ListAvaliacaoTitle_criacao}"/>
                             </f:facet>
                             <h:outputText value="#{item.criacao}">
-                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                                <f:convertDateTime timeZone="#{initParam.timezone}" dateStyle="long"  pattern="dd/MM/yyyy HH:mm:ss"  />
                             </h:outputText>
                         </h:column>
                         <h:column>
@@ -61,7 +61,7 @@
                                 <h:outputText value="#{bundle.ListAvaliacaoTitle_modificacao}"/>
                             </f:facet>
                             <h:outputText value="#{item.modificacao}">
-                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                                <f:convertDateTime timeZone="#{initParam.timezone}" dateStyle="long"  pattern="dd/MM/yyyy HH:mm:ss"  />
                             </h:outputText>
                         </h:column>
                         <h:column>

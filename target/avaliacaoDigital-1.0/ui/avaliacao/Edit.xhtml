@@ -21,19 +21,11 @@
                     <h:inputText id="objetivo" value="#{avaliacaoController.selected.objetivo}" title="#{bundle.EditAvaliacaoTitle_objetivo}" required="true" requiredMessage="#{bundle.EditAvaliacaoRequiredMessage_objetivo}"/>
                     <h:outputLabel value="#{bundle.EditAvaliacaoLabel_inicio}" for="inicio" />
                     <h:inputText id="inicio" value="#{avaliacaoController.selected.inicio}" title="#{bundle.EditAvaliacaoTitle_inicio}" required="true" requiredMessage="#{bundle.EditAvaliacaoRequiredMessage_inicio}">
-                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        <f:convertDateTime timeZone="#{initParam.timezone}" dateStyle="long"  pattern="dd/MM/yyyy HH:mm:ss"  />
                     </h:inputText>
                     <h:outputLabel value="#{bundle.EditAvaliacaoLabel_termino}" for="termino" />
                     <h:inputText id="termino" value="#{avaliacaoController.selected.termino}" title="#{bundle.EditAvaliacaoTitle_termino}" required="true" requiredMessage="#{bundle.EditAvaliacaoRequiredMessage_termino}">
-                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
-                    </h:inputText>
-                    <h:outputLabel value="#{bundle.EditAvaliacaoLabel_criacao}" for="criacao" />
-                    <h:inputText id="criacao" value="#{avaliacaoController.selected.criacao}" title="#{bundle.EditAvaliacaoTitle_criacao}" required="true" requiredMessage="#{bundle.EditAvaliacaoRequiredMessage_criacao}">
-                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
-                    </h:inputText>
-                    <h:outputLabel value="#{bundle.EditAvaliacaoLabel_modificacao}" for="modificacao" />
-                    <h:inputText id="modificacao" value="#{avaliacaoController.selected.modificacao}" title="#{bundle.EditAvaliacaoTitle_modificacao}" required="true" requiredMessage="#{bundle.EditAvaliacaoRequiredMessage_modificacao}">
-                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        <f:convertDateTime timeZone="#{initParam.timezone}" dateStyle="long"  pattern="dd/MM/yyyy HH:mm:ss"  />
                     </h:inputText>
                     <h:outputLabel value="#{bundle.EditAvaliacaoLabel_textoConvidativo}" for="textoConvidativo" />
                     <h:inputText id="textoConvidativo" value="#{avaliacaoController.selected.textoConvidativo}" title="#{bundle.EditAvaliacaoTitle_textoConvidativo}" required="true" requiredMessage="#{bundle.EditAvaliacaoRequiredMessage_textoConvidativo}"/>

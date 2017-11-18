@@ -21,19 +21,11 @@
                     <h:outputText value="#{avaliacaoController.selected.objetivo}" title="#{bundle.ViewAvaliacaoTitle_objetivo}"/>
                     <h:outputText value="#{bundle.ViewAvaliacaoLabel_inicio}"/>
                     <h:outputText value="#{avaliacaoController.selected.inicio}" title="#{bundle.ViewAvaliacaoTitle_inicio}">
-                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        <f:convertDateTime timeZone="#{initParam.timezone}" dateStyle="long"  pattern="dd/MM/yyyy HH:mm:ss"  />
                     </h:outputText>
                     <h:outputText value="#{bundle.ViewAvaliacaoLabel_termino}"/>
                     <h:outputText value="#{avaliacaoController.selected.termino}" title="#{bundle.ViewAvaliacaoTitle_termino}">
-                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
-                    </h:outputText>
-                    <h:outputText value="#{bundle.ViewAvaliacaoLabel_criacao}"/>
-                    <h:outputText value="#{avaliacaoController.selected.criacao}" title="#{bundle.ViewAvaliacaoTitle_criacao}">
-                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
-                    </h:outputText>
-                    <h:outputText value="#{bundle.ViewAvaliacaoLabel_modificacao}"/>
-                    <h:outputText value="#{avaliacaoController.selected.modificacao}" title="#{bundle.ViewAvaliacaoTitle_modificacao}">
-                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        <f:convertDateTime timeZone="#{initParam.timezone}" dateStyle="long"  pattern="dd/MM/yyyy HH:mm:ss"  />
                     </h:outputText>
                     <h:outputText value="#{bundle.ViewAvaliacaoLabel_textoConvidativo}"/>
                     <h:outputText value="#{avaliacaoController.selected.textoConvidativo}" title="#{bundle.ViewAvaliacaoTitle_textoConvidativo}"/>

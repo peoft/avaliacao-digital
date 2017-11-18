@@ -4,10 +4,15 @@ import infnet.tcc.entity.Avaliacao;
 import infnet.tcc.presentation.util.JsfUtil;
 import infnet.tcc.presentation.util.PaginationHelper;
 import infnet.tcc.facade.AvaliacaoFacade;
+import static infnet.tcc.presentation.UserOperations.Create;
+import static infnet.tcc.presentation.UserOperations.Update;
+import infnet.tcc.presentation.util.DateTimeUtil;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
@@ -73,21 +78,49 @@ public class AvaliacaoController implements Serializable {
         return "View";
     }
 
+    public String create() {
+        try {
+            if (existsIdInDatabase(Create) == false) {
+                Date currentDate = DateTimeUtil.getCurrentDate();
+
+                current.setCriacao(currentDate);
+                current.setModificacao(currentDate);
+                //current.getTurmaCollection().add(e);
+                
+                getFacade().create(current);
+                JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("AvaliacaoCreated"));
+                return prepareCreate();
+            } else {
+                throw new Exception(ResourceBundle.getBundle("/Bundle").getString("ExistsIdAvaliacao"));
+            }
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            return null;
+        }
+    }
+
     public String prepareCreate() {
         current = new Avaliacao();
         selectedItemIndex = -1;
         return "Create";
     }
 
-    public String create() {
+    private boolean existsIdInDatabase(UserOperations operation) {
+        boolean exists = true;
         try {
-            getFacade().create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("AvaliacaoCreated"));
-            return prepareCreate();
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            return null;
+            current.setId(JsfUtil.getStringWithoutExtraWhiteSpaces(current.getId()));
+            if (operation == Create) {
+                getFacade().findById(current.getId());
+            } else if (operation == Update) {
+                getFacade().findByIdDifferentFromCurrent(current.getId(), current.getCodigo());
+            }
+        } catch (EJBException e) {
+            Exception cause = (Exception) e.getCause();
+            if (cause.getClass().getName().equals("javax.persistence.NoResultException")) {
+                exists = false;
+            }
         }
+        return exists;
     }
 
     public String prepareEdit() {
@@ -188,7 +221,7 @@ public class AvaliacaoController implements Serializable {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
 
-    public Avaliacao getAvaliacao(java.lang.String id) {
+    public Avaliacao getAvaliacao(java.lang.Integer id) {
         return ejbFacade.find(id);
     }
 
@@ -205,13 +238,13 @@ public class AvaliacaoController implements Serializable {
             return controller.getAvaliacao(getKey(value));
         }
 
-        java.lang.String getKey(String value) {
-            java.lang.String key;
-            key = value;
+        java.lang.Integer getKey(String value) {
+            java.lang.Integer key;
+            key = Integer.valueOf(value);
             return key;
         }
 
-        String getStringKey(java.lang.String value) {
+        String getStringKey(java.lang.Integer value) {
             StringBuilder sb = new StringBuilder();
             sb.append(value);
             return sb.toString();

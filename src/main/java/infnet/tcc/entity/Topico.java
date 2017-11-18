@@ -46,6 +46,8 @@ public class Topico implements Serializable {
     private String titulo;
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "topicoCollection")
     private Collection<Questao> questaoCollection;
+    @ManyToMany(mappedBy = "topicoCollection")
+    private Collection<Avaliacao> avaliacaoCollection;
 
     public Topico() {
     }
@@ -82,6 +84,15 @@ public class Topico implements Serializable {
 
     public void setQuestaoCollection(Collection<Questao> questaoCollection) {
         this.questaoCollection = questaoCollection;
+    }
+
+    @XmlTransient
+    public Collection<Avaliacao> getAvaliacaoCollection() {
+        return avaliacaoCollection;
+    }
+
+    public void setAvaliacaoCollection(Collection<Avaliacao> avaliacaoCollection) {
+        this.avaliacaoCollection = avaliacaoCollection;
     }
 
     @Override

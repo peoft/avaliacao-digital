@@ -8,12 +8,15 @@ package infnet.tcc.entity;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -47,8 +50,8 @@ public class Turma implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "descricao")
     private String descricao;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "turma")
-    private Collection<Turmaaluno> turmaalunoCollection;
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "turmaCollection")
+    private Collection<Aluno> alunoCollection;
     @JoinColumn(name = "moduloCodigo", referencedColumnName = "codigo")
     @ManyToOne(optional = false)
     private Modulo moduloCodigo;
@@ -57,6 +60,7 @@ public class Turma implements Serializable {
     private Professor professorCodigo;
 
     public Turma() {
+        alunoCollection = new HashSet<Aluno>();
     }
 
     public Turma(TurmaPK turmaPK) {
@@ -89,12 +93,12 @@ public class Turma implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Turmaaluno> getTurmaalunoCollection() {
-        return turmaalunoCollection;
+    public Collection<Aluno> getAlunoCollection() {
+        return alunoCollection;
     }
 
-    public void setTurmaalunoCollection(Collection<Turmaaluno> turmaalunoCollection) {
-        this.turmaalunoCollection = turmaalunoCollection;
+    public void setTurmaalunoCollection(Collection<Aluno> alunoCollection) {
+        this.alunoCollection = alunoCollection;
     }
 
     public Modulo getModuloCodigo() {

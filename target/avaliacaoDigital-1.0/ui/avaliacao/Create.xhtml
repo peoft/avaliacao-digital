@@ -15,25 +15,17 @@
             </h:panelGroup>
             <h:form>
                 <h:panelGrid columns="2">
-                    <h:outputLabel value="#{bundle.CreateAvaliacaoLabel_codigo}" for="codigo" />
-                    <h:inputText id="codigo" value="#{avaliacaoController.selected.codigo}" title="#{bundle.CreateAvaliacaoTitle_codigo}" required="true" requiredMessage="#{bundle.CreateAvaliacaoRequiredMessage_codigo}"/>
+                    <h:outputLabel value="#{bundle.CreateAvaliacaoLabel_identificador}" for="id" />
+                    <h:inputText id="codigo" value="#{avaliacaoController.selected.id}" title="#{bundle.CreateAvaliacaoTitle_identificador}" required="true" requiredMessage="#{bundle.CreateAvaliacaoRequiredMessage_identificador}"/>
                     <h:outputLabel value="#{bundle.CreateAvaliacaoLabel_objetivo}" for="objetivo" />
                     <h:inputText id="objetivo" value="#{avaliacaoController.selected.objetivo}" title="#{bundle.CreateAvaliacaoTitle_objetivo}" required="true" requiredMessage="#{bundle.CreateAvaliacaoRequiredMessage_objetivo}"/>
                     <h:outputLabel value="#{bundle.CreateAvaliacaoLabel_inicio}" for="inicio" />
                     <h:inputText id="inicio" value="#{avaliacaoController.selected.inicio}" title="#{bundle.CreateAvaliacaoTitle_inicio}" required="true" requiredMessage="#{bundle.CreateAvaliacaoRequiredMessage_inicio}">
-                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        <f:convertDateTime timeZone="#{initParam.timezone}" dateStyle="long"  pattern="dd/MM/yyyy HH:mm:ss"  />
                     </h:inputText>
                     <h:outputLabel value="#{bundle.CreateAvaliacaoLabel_termino}" for="termino" />
                     <h:inputText id="termino" value="#{avaliacaoController.selected.termino}" title="#{bundle.CreateAvaliacaoTitle_termino}" required="true" requiredMessage="#{bundle.CreateAvaliacaoRequiredMessage_termino}">
-                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
-                    </h:inputText>
-                    <h:outputLabel value="#{bundle.CreateAvaliacaoLabel_criacao}" for="criacao" />
-                    <h:inputText id="criacao" value="#{avaliacaoController.selected.criacao}" title="#{bundle.CreateAvaliacaoTitle_criacao}" required="true" requiredMessage="#{bundle.CreateAvaliacaoRequiredMessage_criacao}">
-                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
-                    </h:inputText>
-                    <h:outputLabel value="#{bundle.CreateAvaliacaoLabel_modificacao}" for="modificacao" />
-                    <h:inputText id="modificacao" value="#{avaliacaoController.selected.modificacao}" title="#{bundle.CreateAvaliacaoTitle_modificacao}" required="true" requiredMessage="#{bundle.CreateAvaliacaoRequiredMessage_modificacao}">
-                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        <f:convertDateTime timeZone="#{initParam.timezone}" dateStyle="long"  pattern="dd/MM/yyyy HH:mm:ss"  />
                     </h:inputText>
                     <h:outputLabel value="#{bundle.CreateAvaliacaoLabel_textoConvidativo}" for="textoConvidativo" />
                     <h:inputText id="textoConvidativo" value="#{avaliacaoController.selected.textoConvidativo}" title="#{bundle.CreateAvaliacaoTitle_textoConvidativo}" required="true" requiredMessage="#{bundle.CreateAvaliacaoRequiredMessage_textoConvidativo}"/>
