@@ -74,11 +74,7 @@ public class Usuario implements Serializable {
     @NotNull
     @Column(name = "administrador")
     private short administrador1;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "usuario")
-    private Administrador administrador;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioCodigo")
-    private Collection<Aluno> alunoCollection;
-
+    
     public Usuario() {
     }
 
@@ -143,22 +139,7 @@ public class Usuario implements Serializable {
         this.administrador1 = administrador1;
     }
 
-    public Administrador getAdministrador() {
-        return administrador;
-    }
-
-    public void setAdministrador(Administrador administrador) {
-        this.administrador = administrador;
-    }
-
-    @XmlTransient
-    public Collection<Aluno> getAlunoCollection() {
-        return alunoCollection;
-    }
-
-    public void setAlunoCollection(Collection<Aluno> alunoCollection) {
-        this.alunoCollection = alunoCollection;
-    }
+  
 
     @Override
     public int hashCode() {
