@@ -31,8 +31,8 @@
                     <h:inputText id="textoConvidativo" value="#{avaliacaoController.selected.textoConvidativo}" title="#{bundle.CreateAvaliacaoTitle_textoConvidativo}" required="true" requiredMessage="#{bundle.CreateAvaliacaoRequiredMessage_textoConvidativo}"/>
                     <h:outputLabel value="#{bundle.CreateAvaliacaoLabel_linkPagina}" for="linkPagina" />
                     <h:inputText id="linkPagina" value="#{avaliacaoController.selected.linkPagina}" title="#{bundle.CreateAvaliacaoTitle_linkPagina}" required="true" requiredMessage="#{bundle.CreateAvaliacaoRequiredMessage_linkPagina}"/>
-                    <h:outputLabel value="#{bundle.CreateAvaliacaoLabel_logo}" for="logo" />
-                    <h:inputTextarea rows="4" cols="30" id="logo" value="#{avaliacaoController.selected.logo}" title="#{bundle.CreateAvaliacaoTitle_logo}" required="true" requiredMessage="#{bundle.CreateAvaliacaoRequiredMessage_logo}"/>
+                    <h:outputLabel value="#{bundle.CreateAvaliacaoLabel_logo}" for="logoPath" />
+                    <h:inputTextarea rows="4" cols="30" id="logoPath" value="#{avaliacaoController.selected.logoPath}" title="#{bundle.CreateAvaliacaoTitle_logo}" required="true" requiredMessage="#{bundle.CreateAvaliacaoRequiredMessage_logo}"/>
                 </h:panelGrid>
                 <br />
                 <h:commandLink action="#{avaliacaoController.create}" value="#{bundle.CreateAvaliacaoSaveLink}" />

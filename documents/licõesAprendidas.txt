@@ -1,9 +1,9 @@
 1) Exception while preparing the app : org.jboss.logging.Logger.debugf(Ljava/lang/String;I)V:
-	* copiei jboss-logging-3.3.0.Final.jar para o diret�rio do glassfish;
-	* retirei jboss-logging.jar do diret�rio do glassfish;
+	* copiei jboss-logging-3.3.0.Final.jar para o diret�rio do glassfish;
+	* retirei jboss-logging.jar do diret�rio do glassfish;
 
 2) Exception failed to lazily initialize a collection of role em, por exemplo topicoColletcion:
-	* inseri o seguinte na anotacao ManyToMany : fetch = FetchType.EAGER.
+	* inseri a linha <property name=”hibernate.enable_lazy_load_no_trans” value=”true” /> em persistence.xml.
 
 
 

@@ -90,8 +90,8 @@ public class Avaliacao implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Lob
-    @Column(name = "logo")
-    private byte[] logo;
+    @Column(name = "logoPath")
+    private byte[] logoPath;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
@@ -126,7 +126,7 @@ public class Avaliacao implements Serializable {
         this.codigo = codigo;
     }
 
-    public Avaliacao(Integer codigo, String id, String objetivo, Date inicio, Date termino, Date criacao, Date modificacao, byte[] logo, String textoConvidativo, String linkPagina) {
+    public Avaliacao(Integer codigo, String id, String objetivo, Date inicio, Date termino, Date criacao, Date modificacao, byte[] logoPath, String textoConvidativo, String linkPagina) {
         this.codigo = codigo;
         this.id = id;
         this.objetivo = objetivo;
@@ -134,7 +134,7 @@ public class Avaliacao implements Serializable {
         this.termino = termino;
         this.criacao = criacao;
         this.modificacao = modificacao;
-        this.logo = logo;
+        this.logoPath = logoPath;
         this.textoConvidativo = textoConvidativo;
         this.linkPagina = linkPagina;
     }
@@ -195,12 +195,12 @@ public class Avaliacao implements Serializable {
         this.modificacao = modificacao;
     }
 
-    public byte[] getLogo() {
-        return logo;
+    public byte[] getLogoPath() {
+        return logoPath;
     }
 
-    public void setLogo(byte[] logo) {
-        this.logo = logo;
+    public void setLogoPath(byte[] logoPath) {
+        this.logoPath = logoPath;
     }
 
     public String getTextoConvidativo() {

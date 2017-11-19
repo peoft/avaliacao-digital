@@ -98,7 +98,7 @@ public class Aluno implements Serializable {
         @JoinColumn(name = "turmaInicio", referencedColumnName = "inicio"),
         @JoinColumn(name = "turmaFim", referencedColumnName = "fim")
     })
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     private Collection<Turma> turmaCollection;
 
     public Aluno() {

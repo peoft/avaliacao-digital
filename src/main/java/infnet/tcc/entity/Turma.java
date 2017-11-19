@@ -50,7 +50,7 @@ public class Turma implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "descricao")
     private String descricao;
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "turmaCollection")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "turmaCollection")
     private Collection<Aluno> alunoCollection;
     @JoinColumn(name = "moduloCodigo", referencedColumnName = "codigo")
     @ManyToOne(optional = false)

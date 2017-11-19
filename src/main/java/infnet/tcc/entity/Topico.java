@@ -44,7 +44,7 @@ public class Topico implements Serializable {
     @Basic(optional = false)
     @Column(name = "titulo")
     private String titulo;
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "topicoCollection")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "topicoCollection")
     private Collection<Questao> questaoCollection;
     @ManyToMany(mappedBy = "topicoCollection")
     private Collection<Avaliacao> avaliacaoCollection;
