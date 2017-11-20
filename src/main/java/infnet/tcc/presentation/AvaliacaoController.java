@@ -1,6 +1,7 @@
 package infnet.tcc.presentation;
 
 import infnet.tcc.entity.Avaliacao;
+import infnet.tcc.entity.Topico;
 import infnet.tcc.presentation.util.JsfUtil;
 import infnet.tcc.presentation.util.PaginationHelper;
 import infnet.tcc.facade.AvaliacaoFacade;
@@ -9,12 +10,14 @@ import static infnet.tcc.presentation.UserOperations.Update;
 import infnet.tcc.presentation.util.DateTimeUtil;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -24,17 +27,31 @@ import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 
 @Named("avaliacaoController")
-@SessionScoped
+@RequestScoped
 public class AvaliacaoController implements Serializable {
 
     private Avaliacao current;
+    private String fileData;
+    private final String serverLogoPath = "www/avaliacaoDigital/images/";
     private DataModel items = null;
     @EJB
     private infnet.tcc.facade.AvaliacaoFacade ejbFacade;
+    @EJB
+    private infnet.tcc.facade.TopicoFacade ejbTopicoFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
+    private Collection<String> titulos;
+
+    public Collection<String> getTitulos() {
+        return titulos;
+    }
+
+    public void setTitulos(Collection<String> titulos) {
+        this.titulos = titulos;
+    }
 
     public AvaliacaoController() {
+        titulos = new HashSet<String>();
     }
 
     public Avaliacao getSelected() {
@@ -67,6 +84,14 @@ public class AvaliacaoController implements Serializable {
         return pagination;
     }
 
+    public String getFileData() {
+        return fileData;
+    }
+
+    public void setFileData(String fileData) {
+        this.fileData = fileData;
+    }
+
     public String prepareList() {
         recreateModel();
         return "List";
@@ -81,12 +106,15 @@ public class AvaliacaoController implements Serializable {
     public String create() {
         try {
             if (existsIdInDatabase(Create) == false) {
-                Date currentDate = DateTimeUtil.getCurrentDate();
-
+                String logoPath;                
+                Date currentDate;
+                
+                currentDate = DateTimeUtil.getCurrentDate();                
+                logoPath = getLogoPath();
+                current.setLogoPath(logoPath);
                 current.setCriacao(currentDate);
                 current.setModificacao(currentDate);
-                //current.getTurmaCollection().add(e);
-                
+                addTopicoToCollection();
                 getFacade().create(current);
                 JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("AvaliacaoCreated"));
                 return prepareCreate();
@@ -97,6 +125,20 @@ public class AvaliacaoController implements Serializable {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
         }
+    }
+
+    private void addTopicoToCollection() {
+        for (String titulo : titulos) {
+            Topico topico = ejbTopicoFacade.findByTitulo(titulo);
+            current.getTopicoCollection().add(topico);
+        }
+    }
+
+    private String getLogoPath() {
+        String[] data = fileData.split(",");
+
+        data = data[0].split("=");
+        return serverLogoPath + data[1];
     }
 
     public String prepareCreate() {
@@ -221,8 +263,12 @@ public class AvaliacaoController implements Serializable {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
 
-    public Avaliacao getAvaliacao(java.lang.Integer id) {
-        return ejbFacade.find(id);
+    public SelectItem[] getItemsAvailableSelectManyFromTopico() {
+        return JsfUtil.getSelectItems(ejbTopicoFacade.findAll(), false);
+    }
+
+    public Avaliacao getAvaliacao(java.lang.Integer codigo) {
+        return ejbFacade.find(codigo);
     }
 
     @FacesConverter(forClass = Avaliacao.class)

@@ -8,6 +8,7 @@ package infnet.tcc.entity;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -91,7 +92,7 @@ public class Avaliacao implements Serializable {
     @NotNull
     @Lob
     @Column(name = "logoPath")
-    private byte[] logoPath;
+    private String logoPath;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
@@ -120,13 +121,16 @@ public class Avaliacao implements Serializable {
     private Collection<Formulario> formularioCollection;
 
     public Avaliacao() {
+        topicoCollection = new HashSet<Topico>();
+        formularioCollection = new HashSet<Formulario>();
+        turmaCollection = new HashSet<Turma>();
     }
 
     public Avaliacao(Integer codigo) {
         this.codigo = codigo;
     }
 
-    public Avaliacao(Integer codigo, String id, String objetivo, Date inicio, Date termino, Date criacao, Date modificacao, byte[] logoPath, String textoConvidativo, String linkPagina) {
+    public Avaliacao(Integer codigo, String id, String objetivo, Date inicio, Date termino, Date criacao, Date modificacao, String logoPath, String textoConvidativo, String linkPagina) {
         this.codigo = codigo;
         this.id = id;
         this.objetivo = objetivo;
@@ -195,11 +199,11 @@ public class Avaliacao implements Serializable {
         this.modificacao = modificacao;
     }
 
-    public byte[] getLogoPath() {
+    public String getLogoPath() {
         return logoPath;
     }
 
-    public void setLogoPath(byte[] logoPath) {
+    public void setLogoPath(String logoPath) {
         this.logoPath = logoPath;
     }
 

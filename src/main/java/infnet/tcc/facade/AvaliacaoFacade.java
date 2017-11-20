@@ -6,7 +6,6 @@
 package infnet.tcc.facade;
 
 import infnet.tcc.entity.Avaliacao;
-import infnet.tcc.entity.Questao;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -32,7 +31,6 @@ public class AvaliacaoFacade extends AbstractFacade<Avaliacao> {
     public Avaliacao findByIdDifferentFromCurrent(String id, Integer codigo) {
         return (Avaliacao) em.createNamedQuery("Avaliacao.findByTextoDifferentFromCurrent").setParameter("id", id).setParameter("codigo", codigo).getSingleResult();
     }    
-    
 
     public AvaliacaoFacade() {
         super(Avaliacao.class);
