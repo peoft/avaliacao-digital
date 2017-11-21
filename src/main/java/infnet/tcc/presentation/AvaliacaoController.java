@@ -2,6 +2,7 @@ package infnet.tcc.presentation;
 
 import infnet.tcc.entity.Avaliacao;
 import infnet.tcc.entity.Topico;
+import infnet.tcc.entity.Turma;
 import infnet.tcc.presentation.util.JsfUtil;
 import infnet.tcc.presentation.util.PaginationHelper;
 import infnet.tcc.facade.AvaliacaoFacade;
@@ -38,20 +39,16 @@ public class AvaliacaoController implements Serializable {
     private infnet.tcc.facade.AvaliacaoFacade ejbFacade;
     @EJB
     private infnet.tcc.facade.TopicoFacade ejbTopicoFacade;
+    @EJB
+    private infnet.tcc.facade.TurmaFacade ejbTurmaFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
     private Collection<String> titulos;
-
-    public Collection<String> getTitulos() {
-        return titulos;
-    }
-
-    public void setTitulos(Collection<String> titulos) {
-        this.titulos = titulos;
-    }
-
+    private Collection<String> descricoes;
+    
     public AvaliacaoController() {
         titulos = new HashSet<String>();
+        descricoes = new HashSet<String>();
     }
 
     public Avaliacao getSelected() {
@@ -91,6 +88,22 @@ public class AvaliacaoController implements Serializable {
     public void setFileData(String fileData) {
         this.fileData = fileData;
     }
+    
+    public Collection<String> getTitulos() {
+        return titulos;
+    }
+
+    public void setTitulos(Collection<String> titulos) {
+        this.titulos = titulos;
+    }
+
+    public Collection<String> getDescricoes() {
+        return descricoes;
+    }
+
+    public void setDescricoes(Collection<String> descricoes) {
+        this.descricoes = descricoes;
+    }
 
     public String prepareList() {
         recreateModel();
@@ -115,6 +128,7 @@ public class AvaliacaoController implements Serializable {
                 current.setCriacao(currentDate);
                 current.setModificacao(currentDate);
                 addTopicoToCollection();
+                addTurmaToCollection();
                 getFacade().create(current);
                 JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("AvaliacaoCreated"));
                 return prepareCreate();
@@ -132,6 +146,13 @@ public class AvaliacaoController implements Serializable {
             Topico topico = ejbTopicoFacade.findByTitulo(titulo);
             current.getTopicoCollection().add(topico);
         }
+    }
+    
+    private void addTurmaToCollection() {
+        for (String descricao : descricoes) {
+            Turma turma = ejbTurmaFacade.findByDescricao(descricao);
+            current.getAvalicaoTurmaCollection().add(turma);
+        }        
     }
 
     private String getLogoPath() {
@@ -265,6 +286,10 @@ public class AvaliacaoController implements Serializable {
 
     public SelectItem[] getItemsAvailableSelectManyFromTopico() {
         return JsfUtil.getSelectItems(ejbTopicoFacade.findAll(), false);
+    }
+    
+    public SelectItem[] getItemsAvailableSelectManyFromTurma() {
+        return JsfUtil.getSelectItems(ejbTurmaFacade.findAllByPeriod(DateTimeUtil.getCurrentDate()), false);
     }
 
     public Avaliacao getAvaliacao(java.lang.Integer codigo) {

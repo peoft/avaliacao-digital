@@ -94,9 +94,7 @@ public class Aluno implements Serializable {
     private Usuario usuarioCodigo;
     @JoinTable(name = "turmaAluno", joinColumns = {
         @JoinColumn(name = "alunoCPF", referencedColumnName = "cpf")}, inverseJoinColumns = {
-        @JoinColumn(name = "turmaCodigo", referencedColumnName = "codigo"),
-        @JoinColumn(name = "turmaInicio", referencedColumnName = "inicio"),
-        @JoinColumn(name = "turmaFim", referencedColumnName = "fim")
+        @JoinColumn(name = "turmaCodigo", referencedColumnName = "codigo")
     })
     @ManyToMany(fetch = FetchType.LAZY)
     private Collection<Turma> turmaCollection;

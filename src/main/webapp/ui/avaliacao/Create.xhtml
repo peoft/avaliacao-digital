@@ -34,9 +34,13 @@
                     <h:outputLabel value="#{bundle.CreateAvaliacaoLabel_logo}" for="file-id" />
                     <h:inputFile  id="file-id"  value="#{avaliacaoController.fileData}" required="true" requiredMessage="#{bundle.CreateAvaliacaoRequiredMessage_filename}" alt="upload file"/>  
                     <h:outputLabel value="#{bundle.CreateAvaliacaoLabel_topicos}" for="topicos" />
-                    <h:selectManyCheckbox id="topicos" value="#{avaliacaoController.titulos}" layout="pageDirection"> 
+                    <h:selectManyCheckbox id="topicos" value="#{avaliacaoController.titulos}" layout="lineDirection" > 
                         <f:selectItems value="#{avaliacaoController.itemsAvailableSelectManyFromTopico}"/>
                     </h:selectManyCheckbox>
+                    <h:outputLabel value="#{bundle.CreateAvaliacaoLabel_turmas}" for="turmas" />
+                    <h:selectManyCheckbox id="turmas" value="#{avaliacaoController.descricoes}" layout="lineDirection" > 
+                        <f:selectItems value="#{avaliacaoController.itemsAvailableSelectManyFromTurma}"/>
+                    </h:selectManyCheckbox>                    
                 </h:panelGrid>
                 <br />
                 <h:commandLink action="#{avaliacaoController.create}" value="#{bundle.CreateAvaliacaoSaveLink}" />

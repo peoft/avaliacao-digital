@@ -35,7 +35,6 @@ public class TurmaController implements Serializable {
     public Turma getSelected() {
         if (current == null) {
             current = new Turma();
-            current.setTurmaPK(new infnet.tcc.entity.TurmaPK());
             selectedItemIndex = -1;
         }
         return current;
@@ -76,7 +75,6 @@ public class TurmaController implements Serializable {
 
     public String prepareCreate() {
         current = new Turma();
-        current.setTurmaPK(new infnet.tcc.entity.TurmaPK());
         selectedItemIndex = -1;
         return "Create";
     }
@@ -190,15 +188,12 @@ public class TurmaController implements Serializable {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
 
-    public Turma getTurma(infnet.tcc.entity.TurmaPK id) {
+    public Turma getTurma(Integer id) {
         return ejbFacade.find(id);
     }
 
     @FacesConverter(forClass = Turma.class)
     public static class TurmaControllerConverter implements Converter {
-
-        private static final String SEPARATOR = "#";
-        private static final String SEPARATOR_ESCAPED = "\\#";
 
         @Override
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
@@ -210,23 +205,15 @@ public class TurmaController implements Serializable {
             return controller.getTurma(getKey(value));
         }
 
-        infnet.tcc.entity.TurmaPK getKey(String value) {
-            infnet.tcc.entity.TurmaPK key;
-            String values[] = value.split(SEPARATOR_ESCAPED);
-            key = new infnet.tcc.entity.TurmaPK();
-            key.setCodigo(Integer.parseInt(values[0]));
-            key.setInicio(java.sql.Date.valueOf(values[1]));
-            key.setFim(java.sql.Date.valueOf(values[2]));
+        java.lang.Integer getKey(String value) {
+            java.lang.Integer key;
+            key = Integer.valueOf(value);
             return key;
         }
 
-        String getStringKey(infnet.tcc.entity.TurmaPK value) {
+        String getStringKey(java.lang.Integer value) {
             StringBuilder sb = new StringBuilder();
-            sb.append(value.getCodigo());
-            sb.append(SEPARATOR);
-            sb.append(value.getInicio());
-            sb.append(SEPARATOR);
-            sb.append(value.getFim());
+            sb.append(value);
             return sb.toString();
         }
 
@@ -237,7 +224,8 @@ public class TurmaController implements Serializable {
             }
             if (object instanceof Turma) {
                 Turma o = (Turma) object;
-                return getStringKey(o.getTurmaPK());
+                //return getStringKey(o.getTurmaPK());
+                return o.getDescricao();
             } else {
                 throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Turma.class.getName());
             }

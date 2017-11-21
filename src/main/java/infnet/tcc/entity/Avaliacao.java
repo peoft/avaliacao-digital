@@ -111,19 +111,17 @@ public class Avaliacao implements Serializable {
     @JoinTable(name = "avaliacaoturmaaluno", joinColumns = {
         @JoinColumn(name = "avaliacaoCodigo", referencedColumnName = "codigo")}, 
         inverseJoinColumns = {
-            @JoinColumn(name = "turmaCodigo", referencedColumnName = "codigo"),
-            @JoinColumn(name = "turmaInicio", referencedColumnName = "inicio"),
-            @JoinColumn(name = "turmaFim", referencedColumnName = "fim")
+            @JoinColumn(name = "turmaCodigo", referencedColumnName = "codigo")
         })
     @ManyToMany
-    private Collection<Turma> turmaCollection;
+    private Collection<Turma> avalicaoTurmaCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "avaliacaoCodigo")
     private Collection<Formulario> formularioCollection;
 
     public Avaliacao() {
         topicoCollection = new HashSet<Topico>();
         formularioCollection = new HashSet<Formulario>();
-        turmaCollection = new HashSet<Turma>();
+        avalicaoTurmaCollection = new HashSet<Turma>();
     }
 
     public Avaliacao(Integer codigo) {
@@ -233,12 +231,12 @@ public class Avaliacao implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Turma> getTurmaCollection() {
-        return turmaCollection;
+    public Collection<Turma> getAvalicaoTurmaCollection() {
+        return avalicaoTurmaCollection;
     }
 
     public void setTurmaalunoCollection(Collection<Turma> turmaCollection) {
-        this.turmaCollection = turmaCollection;
+        this.avalicaoTurmaCollection = turmaCollection;
     }
 
     @XmlTransient
