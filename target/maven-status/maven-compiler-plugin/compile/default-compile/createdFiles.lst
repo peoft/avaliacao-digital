@@ -68,6 +68,7 @@ infnet\tcc\entity\Turma.class
 infnet\tcc\service\AvaliacaoFacadeREST.class
 infnet\tcc\presentation\RespostaController$1.class
 infnet\tcc\facade\FormularioFacade.class
+infnet\tcc\presentation\util\FileValidator.class
 infnet\tcc\presentation\util\PaginationHelper.class
 infnet\tcc\presentation\AlunoController$1.class
 infnet\tcc\presentation\FormularioController.class

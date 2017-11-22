@@ -13,7 +13,7 @@
             <h:panelGroup id="messagePanel" layout="block">
                 <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
             </h:panelGroup>
-            <h:form enctype="multipart/form-data">
+            <h:form  enctype="multipart/form-data">
                 <h:panelGrid columns="2">
                     <h:outputLabel value="#{bundle.CreateAvaliacaoLabel_identificador}" for="identificador" />
                     <h:inputText id="identificador" value="#{avaliacaoController.selected.id}" title="#{bundle.CreateAvaliacaoTitle_identificador}" required="true" requiredMessage="#{bundle.CreateAvaliacaoRequiredMessage_identificador}"/>
@@ -32,7 +32,9 @@
                     <h:outputLabel value="#{bundle.CreateAvaliacaoLabel_linkPagina}" for="linkPagina" />
                     <h:inputText id="linkPagina" value="#{avaliacaoController.selected.linkPagina}" title="#{bundle.CreateAvaliacaoTitle_linkPagina}" required="true" requiredMessage="#{bundle.CreateAvaliacaoRequiredMessage_linkPagina}"/>
                     <h:outputLabel value="#{bundle.CreateAvaliacaoLabel_logo}" for="file-id" />
-                    <h:inputFile  id="file-id"  value="#{avaliacaoController.fileData}" required="true" requiredMessage="#{bundle.CreateAvaliacaoRequiredMessage_filename}" alt="upload file"/>  
+                    <h:inputFile  id="file-id"  value="#{avaliacaoController.fileData}" required="true" requiredMessage="#{bundle.CreateAvaliacaoRequiredMessage_filename}">
+                        <f:validator validatorId="FileValidator"/>
+                    </h:inputFile>
                     <h:outputLabel value="#{bundle.CreateAvaliacaoLabel_topicos}" for="topicos" />
                     <h:selectManyCheckbox id="topicos" value="#{avaliacaoController.titulos}" layout="lineDirection" > 
                         <f:selectItems value="#{avaliacaoController.itemsAvailableSelectManyFromTopico}"/>
