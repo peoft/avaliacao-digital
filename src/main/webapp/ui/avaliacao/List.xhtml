@@ -22,9 +22,9 @@
                     <h:dataTable value="#{avaliacaoController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListAvaliacaoTitle_codigo}"/>
+                                <h:outputText value="#{bundle.ListAvaliacaoTitle_identificador}"/>
                             </f:facet>
-                            <h:outputText value="#{item.codigo}"/>
+                            <h:outputText value="#{item.id}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
@@ -50,6 +50,24 @@
                         </h:column>
                         <h:column>
                             <f:facet name="header">
+                                <h:outputText value="#{bundle.ListAvaliacaoTitle_linkPagina}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.linkPagina}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListAvaliacaoTitle_logo}"/>
+                            </f:facet>
+                            <h:graphicImage value="/upload/images/?file=#{item.logoPath}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListAvaliacaoTitle_textoConvidativo}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.textoConvidativo}"/>
+                        </h:column>                        
+                        <h:column>
+                            <f:facet name="header">
                                 <h:outputText value="#{bundle.ListAvaliacaoTitle_criacao}"/>
                             </f:facet>
                             <h:outputText value="#{item.criacao}">
@@ -66,21 +84,23 @@
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListAvaliacaoTitle_textoConvidativo}"/>
+                                <h:outputText value="#{bundle.ListAvaliacaoTitle_topicos}"/>
                             </f:facet>
-                            <h:outputText value="#{item.textoConvidativo}"/>
+                            <ui:repeat value="#{item.topicoCollection}" var="topico">
+                                <h:outputText value="#{topico.titulo}"/>
+                                <br />
+                                <br />
+                            </ui:repeat>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListAvaliacaoTitle_linkPagina}"/>
+                                <h:outputText value="#{bundle.ListAvaliacaoTitle_turmas}"/>
                             </f:facet>
-                            <h:outputText value="#{item.linkPagina}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListAvaliacaoTitle_logo}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.logoPath}"/>
+                            <ui:repeat value="#{item.avalicaoTurmaCollection}" var="turma">
+                                <h:outputText value="#{turma.descricao}"/>
+                                <br />
+                                <br />
+                            </ui:repeat>                            
                         </h:column>
                         <h:column>
                             <f:facet name="header">
@@ -102,5 +122,4 @@
             </h:form>
         </ui:define>
     </ui:composition>
-
 </html>

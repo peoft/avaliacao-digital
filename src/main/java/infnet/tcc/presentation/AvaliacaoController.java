@@ -20,7 +20,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.ResourceBundle;
-import javax.annotation.ManagedBean;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.enterprise.context.RequestScoped;
@@ -36,7 +35,6 @@ import javax.servlet.http.Part;
 
 @Named("avaliacaoController")
 @RequestScoped
-@ManagedBean
 public class AvaliacaoController implements Serializable {
 
     private Avaliacao current;

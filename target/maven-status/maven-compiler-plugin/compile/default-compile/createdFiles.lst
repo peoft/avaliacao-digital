@@ -17,6 +17,7 @@ infnet\tcc\entity\Resposta.class
 infnet\tcc\facade\UsuarioFacade.class
 infnet\tcc\presentation\ModuloController$ModuloControllerConverter.class
 infnet\tcc\service\RespostaFacadeREST.class
+infnet\tcc\servlet\DynamicImageServlet.class
 infnet\tcc\presentation\UsuarioController.class
 infnet\tcc\entity\Usuario.class
 infnet\tcc\facade\RespostaFacade.class

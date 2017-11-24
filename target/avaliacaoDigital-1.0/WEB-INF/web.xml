@@ -17,6 +17,15 @@
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>/faces/*</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>DynamicImageServlet</servlet-name>
+        <servlet-class>infnet.tcc.servlet.DynamicImageServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>    
+    <servlet-mapping>
+        <servlet-name>DynamicImageServlet</servlet-name>        
+        <url-pattern>/upload/images/*</url-pattern>
+    </servlet-mapping>     
     <session-config>
         <session-timeout>
             30
