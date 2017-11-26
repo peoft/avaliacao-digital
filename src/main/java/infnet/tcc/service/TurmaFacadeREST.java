@@ -6,7 +6,6 @@
 package infnet.tcc.service;
 
 import infnet.tcc.entity.Turma;
-import infnet.tcc.entity.TurmaPK;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -33,31 +32,6 @@ public class TurmaFacadeREST extends AbstractFacade<Turma> {
     @PersistenceContext(unitName = "avaliacaoDigitalPU")
     private EntityManager em;
 
-    private TurmaPK getPrimaryKey(PathSegment pathSegment) {
-        /*
-         * pathSemgent represents a URI path segment and any associated matrix parameters.
-         * URI path part is supposed to be in form of 'somePath;codigo=codigoValue;inicio=inicioValue;fim=fimValue'.
-         * Here 'somePath' is a result of getPath() method invocation and
-         * it is ignored in the following code.
-         * Matrix parameters are used as field names to build a primary key instance.
-         */
-        infnet.tcc.entity.TurmaPK key = new infnet.tcc.entity.TurmaPK();
-        javax.ws.rs.core.MultivaluedMap<String, String> map = pathSegment.getMatrixParameters();
-        java.util.List<String> codigo = map.get("codigo");
-        if (codigo != null && !codigo.isEmpty()) {
-            key.setCodigo(new java.lang.Integer(codigo.get(0)));
-        }
-        java.util.List<String> inicio = map.get("inicio");
-        if (inicio != null && !inicio.isEmpty()) {
-            key.setInicio(new java.util.Date(inicio.get(0)));
-        }
-        java.util.List<String> fim = map.get("fim");
-        if (fim != null && !fim.isEmpty()) {
-            key.setFim(new java.util.Date(fim.get(0)));
-        }
-        return key;
-    }
-
     public TurmaFacadeREST() {
         super(Turma.class);
     }
@@ -78,17 +52,15 @@ public class TurmaFacadeREST extends AbstractFacade<Turma> {
 
     @DELETE
     @Path("{id}")
-    public void remove(@PathParam("id") PathSegment id) {
-        infnet.tcc.entity.TurmaPK key = getPrimaryKey(id);
-        super.remove(super.find(key));
+    public void remove(@PathParam("id") Integer id) {
+        super.remove(super.find(id));
     }
 
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Turma find(@PathParam("id") PathSegment id) {
-        infnet.tcc.entity.TurmaPK key = getPrimaryKey(id);
-        return super.find(key);
+    public Turma find(@PathParam("id") Integer id) {
+        return super.find(id);
     }
 
     @GET

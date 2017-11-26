@@ -24,6 +24,13 @@ public class AvaliacaoFacade extends AbstractFacade<Avaliacao> {
     protected EntityManager getEntityManager() {
         return em;
     }
+    public Avaliacao findById(String id) {
+        return (Avaliacao) em.createNamedQuery("Avaliacao.findById").setParameter("id", id).getSingleResult();
+    }    
+
+    public Avaliacao findByIdDifferentFromCurrent(String id, Integer codigo) {
+        return (Avaliacao) em.createNamedQuery("Avaliacao.findByTextoDifferentFromCurrent").setParameter("id", id).setParameter("codigo", codigo).getSingleResult();
+    }    
 
     public AvaliacaoFacade() {
         super(Avaliacao.class);

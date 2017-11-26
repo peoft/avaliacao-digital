@@ -22,9 +22,9 @@
                     <h:dataTable value="#{avaliacaoController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListAvaliacaoTitle_codigo}"/>
+                                <h:outputText value="#{bundle.ListAvaliacaoTitle_identificador}"/>
                             </f:facet>
-                            <h:outputText value="#{item.codigo}"/>
+                            <h:outputText value="#{item.id}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
@@ -37,7 +37,7 @@
                                 <h:outputText value="#{bundle.ListAvaliacaoTitle_inicio}"/>
                             </f:facet>
                             <h:outputText value="#{item.inicio}">
-                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                                <f:convertDateTime timeZone="#{initParam.timezone}" dateStyle="long"  pattern="dd/MM/yyyy HH:mm:ss"  />
                             </h:outputText>
                         </h:column>
                         <h:column>
@@ -45,30 +45,8 @@
                                 <h:outputText value="#{bundle.ListAvaliacaoTitle_termino}"/>
                             </f:facet>
                             <h:outputText value="#{item.termino}">
-                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                                <f:convertDateTime timeZone="#{initParam.timezone}" dateStyle="long"  pattern="dd/MM/yyyy HH:mm:ss"  />
                             </h:outputText>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListAvaliacaoTitle_criacao}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.criacao}">
-                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
-                            </h:outputText>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListAvaliacaoTitle_modificacao}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.modificacao}">
-                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
-                            </h:outputText>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListAvaliacaoTitle_textoConvidativo}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.textoConvidativo}"/>
                         </h:column>
                         <h:column>
                             <f:facet name="header">
@@ -80,7 +58,49 @@
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListAvaliacaoTitle_logo}"/>
                             </f:facet>
-                            <h:outputText value="#{item.logo}"/>
+                            <h:graphicImage value="/upload/images/?file=#{item.logoPath}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListAvaliacaoTitle_textoConvidativo}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.textoConvidativo}"/>
+                        </h:column>                        
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListAvaliacaoTitle_criacao}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.criacao}">
+                                <f:convertDateTime timeZone="#{initParam.timezone}" dateStyle="long"  pattern="dd/MM/yyyy HH:mm:ss"  />
+                            </h:outputText>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListAvaliacaoTitle_modificacao}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.modificacao}">
+                                <f:convertDateTime timeZone="#{initParam.timezone}" dateStyle="long"  pattern="dd/MM/yyyy HH:mm:ss"  />
+                            </h:outputText>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListAvaliacaoTitle_topicos}"/>
+                            </f:facet>
+                            <ui:repeat value="#{item.topicoCollection}" var="topico">
+                                <h:outputText value="#{topico.titulo}"/>
+                                <br />
+                                <br />
+                            </ui:repeat>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListAvaliacaoTitle_turmas}"/>
+                            </f:facet>
+                            <ui:repeat value="#{item.avalicaoTurmaCollection}" var="turma">
+                                <h:outputText value="#{turma.descricao}"/>
+                                <br />
+                                <br />
+                            </ui:repeat>                            
                         </h:column>
                         <h:column>
                             <f:facet name="header">
@@ -102,5 +122,4 @@
             </h:form>
         </ui:define>
     </ui:composition>
-
 </html>

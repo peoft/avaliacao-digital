@@ -5,8 +5,10 @@
     <jta-data-source>java:app/avaliacao_d</jta-data-source>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
-      <property name="hibernate.show_sql" value="true"/>
-      <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"/>
+        <property name="hibernate.show_sql" value="true" />
+        <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform" />
+        <!--- Try to resolve LazyInitializationException. Source : http://www.wagnereliakim.eti.br/hibernate/lazyinitializationexception-a-solucao-definitiva/ -->
+        <property name="hibernate.enable_lazy_load_no_trans" value="true" />
     </properties>
   </persistence-unit>
 </persistence>

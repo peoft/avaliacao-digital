@@ -8,16 +8,18 @@ package infnet.tcc.entity;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -39,28 +41,28 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Avaliacao.findAll", query = "SELECT a FROM Avaliacao a")
     , @NamedQuery(name = "Avaliacao.findByCodigo", query = "SELECT a FROM Avaliacao a WHERE a.codigo = :codigo")
+    , @NamedQuery(name = "Avaliacao.findById", query = "SELECT a FROM Avaliacao a WHERE UPPER(a.id) = UPPER(:id)")
     , @NamedQuery(name = "Avaliacao.findByObjetivo", query = "SELECT a FROM Avaliacao a WHERE a.objetivo = :objetivo")
     , @NamedQuery(name = "Avaliacao.findByInicio", query = "SELECT a FROM Avaliacao a WHERE a.inicio = :inicio")
     , @NamedQuery(name = "Avaliacao.findByTermino", query = "SELECT a FROM Avaliacao a WHERE a.termino = :termino")
     , @NamedQuery(name = "Avaliacao.findByCriacao", query = "SELECT a FROM Avaliacao a WHERE a.criacao = :criacao")
     , @NamedQuery(name = "Avaliacao.findByModificacao", query = "SELECT a FROM Avaliacao a WHERE a.modificacao = :modificacao")
     , @NamedQuery(name = "Avaliacao.findByTextoConvidativo", query = "SELECT a FROM Avaliacao a WHERE a.textoConvidativo = :textoConvidativo")
-    , @NamedQuery(name = "Avaliacao.findByLinkPagina", query = "SELECT a FROM Avaliacao a WHERE a.linkPagina = :linkPagina")})
+    , @NamedQuery(name = "Avaliacao.findByLinkPagina", query = "SELECT a FROM Avaliacao a WHERE a.linkPagina = :linkPagina")
+    , @NamedQuery(name = "Avaliacao.findByTextoDifferentFromCurrent", query = "SELECT t FROM Avaliacao t WHERE UPPER(t.id) = UPPER(:id) and t.codigo != :codigo")})        
 public class Avaliacao implements Serializable {
-
-    @Basic(optional = false)
-    @NotNull
-    @Lob
-    @Column(name = "logo")
-    private byte[] logo;
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "codigo")
+    private Integer codigo;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
-    @Column(name = "codigo")
-    private String codigo;
+    @Column(name = "id")
+    private String id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
@@ -88,6 +90,11 @@ public class Avaliacao implements Serializable {
     private Date modificacao;
     @Basic(optional = false)
     @NotNull
+    @Lob
+    @Column(name = "logoPath")
+    private String logoPath;
+    @Basic(optional = false)
+    @NotNull
     @Size(min = 1, max = 255)
     @Column(name = "textoConvidativo")
     private String textoConvidativo;
@@ -96,44 +103,58 @@ public class Avaliacao implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "linkPagina")
     private String linkPagina;
+    @JoinTable(name = "avaliacaotopico", joinColumns = {
+        @JoinColumn(name = "avaliacaoCodigo", referencedColumnName = "codigo")}, inverseJoinColumns = {
+        @JoinColumn(name = "topicoCodigo", referencedColumnName = "codigo")})
+    @ManyToMany
+    private Collection<Topico> topicoCollection;
     @JoinTable(name = "avaliacaoturmaaluno", joinColumns = {
         @JoinColumn(name = "avaliacaoCodigo", referencedColumnName = "codigo")}, 
         inverseJoinColumns = {
-            @JoinColumn(name = "turmaAlunoPKCodigo", referencedColumnName = "turmaCodigo"),
-            @JoinColumn(name = "turmaAlunoPKAlunoCPF", referencedColumnName = "alunoCPF")
+            @JoinColumn(name = "turmaCodigo", referencedColumnName = "codigo")
         })
     @ManyToMany
-    private Collection<Turmaaluno> turmaalunoCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "avaliacao")
-    private Collection<Avaliacaotopico> avaliacaotopicoCollection;
+    private Collection<Turma> avalicaoTurmaCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "avaliacaoCodigo")
     private Collection<Formulario> formularioCollection;
 
     public Avaliacao() {
+        topicoCollection = new HashSet<Topico>();
+        formularioCollection = new HashSet<Formulario>();
+        avalicaoTurmaCollection = new HashSet<Turma>();
     }
 
-    public Avaliacao(String codigo) {
+    public Avaliacao(Integer codigo) {
         this.codigo = codigo;
     }
 
-    public Avaliacao(String codigo, String objetivo, Date inicio, Date termino, Date criacao, Date modificacao, byte[] logo, String textoConvidativo, String linkPagina) {
+    public Avaliacao(Integer codigo, String id, String objetivo, Date inicio, Date termino, Date criacao, Date modificacao, String logoPath, String textoConvidativo, String linkPagina) {
         this.codigo = codigo;
+        this.id = id;
         this.objetivo = objetivo;
         this.inicio = inicio;
         this.termino = termino;
         this.criacao = criacao;
         this.modificacao = modificacao;
-        this.logo = logo;
+        this.logoPath = logoPath;
         this.textoConvidativo = textoConvidativo;
         this.linkPagina = linkPagina;
     }
 
-    public String getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(String codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getObjetivo() {
@@ -176,6 +197,13 @@ public class Avaliacao implements Serializable {
         this.modificacao = modificacao;
     }
 
+    public String getLogoPath() {
+        return logoPath;
+    }
+
+    public void setLogoPath(String logoPath) {
+        this.logoPath = logoPath;
+    }
 
     public String getTextoConvidativo() {
         return textoConvidativo;
@@ -194,21 +222,21 @@ public class Avaliacao implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Turmaaluno> getTurmaalunoCollection() {
-        return turmaalunoCollection;
+    public Collection<Topico> getTopicoCollection() {
+        return topicoCollection;
     }
 
-    public void setTurmaalunoCollection(Collection<Turmaaluno> turmaalunoCollection) {
-        this.turmaalunoCollection = turmaalunoCollection;
+    public void setTopicoCollection(Collection<Topico> topicoCollection) {
+        this.topicoCollection = topicoCollection;
     }
 
     @XmlTransient
-    public Collection<Avaliacaotopico> getAvaliacaotopicoCollection() {
-        return avaliacaotopicoCollection;
+    public Collection<Turma> getAvalicaoTurmaCollection() {
+        return avalicaoTurmaCollection;
     }
 
-    public void setAvaliacaotopicoCollection(Collection<Avaliacaotopico> avaliacaotopicoCollection) {
-        this.avaliacaotopicoCollection = avaliacaotopicoCollection;
+    public void setTurmaalunoCollection(Collection<Turma> turmaCollection) {
+        this.avalicaoTurmaCollection = turmaCollection;
     }
 
     @XmlTransient
@@ -242,15 +270,7 @@ public class Avaliacao implements Serializable {
 
     @Override
     public String toString() {
-        return "infnet.tcc.Avaliacao[ codigo=" + codigo + " ]";
-    }
-
-    public byte[] getLogo() {
-        return logo;
-    }
-
-    public void setLogo(byte[] logo) {
-        this.logo = logo;
+        return "infnet.tcc.entity.Avaliacao[ codigo=" + codigo + " ]";
     }
     
 }

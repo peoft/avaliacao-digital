@@ -32,7 +32,6 @@ public class ApplicationConfig extends Application {
         resources.add(infnet.tcc.service.AdministradorFacadeREST.class);
         resources.add(infnet.tcc.service.AlunoFacadeREST.class);
         resources.add(infnet.tcc.service.AvaliacaoFacadeREST.class);
-        resources.add(infnet.tcc.service.AvaliacaotopicoFacadeREST.class);
         resources.add(infnet.tcc.service.FormularioFacadeREST.class);
         resources.add(infnet.tcc.service.ModuloFacadeREST.class);
         resources.add(infnet.tcc.service.ProfessorFacadeREST.class);
@@ -40,7 +39,6 @@ public class ApplicationConfig extends Application {
         resources.add(infnet.tcc.service.RespostaFacadeREST.class);
         resources.add(infnet.tcc.service.TopicoFacadeREST.class);
         resources.add(infnet.tcc.service.TurmaFacadeREST.class);
-        resources.add(infnet.tcc.service.TurmaalunoFacadeREST.class);
         resources.add(infnet.tcc.service.UsuarioFacadeREST.class);
     }
     

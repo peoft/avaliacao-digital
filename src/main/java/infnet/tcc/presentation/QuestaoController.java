@@ -6,20 +6,13 @@ import infnet.tcc.presentation.util.JsfUtil;
 import infnet.tcc.presentation.util.PaginationHelper;
 import infnet.tcc.facade.QuestaoFacade;
 import infnet.tcc.facade.TopicoFacade;
+import infnet.tcc.presentation.util.DateTimeUtil;
 import static infnet.tcc.presentation.UserOperations.Create;
 import static infnet.tcc.presentation.UserOperations.Update;
 
 import java.io.Serializable;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Iterator;
-import java.util.Locale;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
@@ -144,7 +137,7 @@ public class QuestaoController implements Serializable {
     public String create() {
         try {
             if (existsTextInDatabase(Create) == false) {
-                Date currentDate = getCurrentDate();
+                Date currentDate = DateTimeUtil.getCurrentDate();
 
                 current.setCriacao(currentDate);
                 current.setModificacao(currentDate);
@@ -173,7 +166,7 @@ public class QuestaoController implements Serializable {
 
                 topico.setTitulo(titulo);
                 setTopicoCodigoFromTitulo();
-                Date currentDate = getCurrentDate();
+                Date currentDate = DateTimeUtil.getCurrentDate();
                 
                 current.setModificacao(currentDate);
                 current.getTopicoCollection().clear();
@@ -209,21 +202,6 @@ public class QuestaoController implements Serializable {
         return exists;
     }
 
-    private Date getCurrentDate() {
-        Instant instant = Instant.now();
-        Locale locale = new Locale("pt", "BR");
-        ZoneId zoneId = ZoneId.of("America/Sao_Paulo");
-        ZonedDateTime zonedDT = instant.atZone(zoneId);
-        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
-                .withLocale(locale);
-
-        zonedDT.format(formatter);
-
-        Calendar calendar;
-        calendar = GregorianCalendar.from(zonedDT);
-
-        return calendar.getTime();
-    }
 
     private void prepareRequestParameter(String name) {
         codigo = new Integer(JsfUtil.getRequestParameter(name));

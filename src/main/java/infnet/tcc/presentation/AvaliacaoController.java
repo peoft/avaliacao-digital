@@ -1,15 +1,29 @@
 package infnet.tcc.presentation;
 
 import infnet.tcc.entity.Avaliacao;
+import infnet.tcc.entity.Topico;
+import infnet.tcc.entity.Turma;
 import infnet.tcc.presentation.util.JsfUtil;
 import infnet.tcc.presentation.util.PaginationHelper;
 import infnet.tcc.facade.AvaliacaoFacade;
+import static infnet.tcc.presentation.UserOperations.Create;
+import static infnet.tcc.presentation.UserOperations.Update;
+import infnet.tcc.presentation.util.DateTimeUtil;
+import java.io.IOException;
+import java.io.InputStream;
 
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -17,19 +31,32 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import javax.servlet.http.Part;
 
 @Named("avaliacaoController")
-@SessionScoped
+@RequestScoped
 public class AvaliacaoController implements Serializable {
 
     private Avaliacao current;
+    private Part fileData;
+    private String text;
+    private String serverLogoPath;
     private DataModel items = null;
     @EJB
     private infnet.tcc.facade.AvaliacaoFacade ejbFacade;
+    @EJB
+    private infnet.tcc.facade.TopicoFacade ejbTopicoFacade;
+    @EJB
+    private infnet.tcc.facade.TurmaFacade ejbTurmaFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
+    private Collection<String> titulos;
+    private Collection<String> descricoes;   
 
     public AvaliacaoController() {
+        titulos = new HashSet<>();
+        descricoes = new HashSet<>();
+        serverLogoPath = ResourceBundle.getBundle("/avaliacaoDigital").getString("upolad-images-path");
     }
 
     public Avaliacao getSelected() {
@@ -62,6 +89,46 @@ public class AvaliacaoController implements Serializable {
         return pagination;
     }
 
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public String getServerLogoPath() {
+        return serverLogoPath;
+    }
+
+    public void setServerLogoPath(String serverLogoPath) {
+        this.serverLogoPath = serverLogoPath;
+    }
+
+    public Part getFileData() {
+        return fileData;
+    }
+
+    public void setFileData(Part fileData) {
+        this.fileData = fileData;
+    }
+
+    public Collection<String> getTitulos() {
+        return titulos;
+    }
+
+    public void setTitulos(Collection<String> titulos) {
+        this.titulos = titulos;
+    }
+
+    public Collection<String> getDescricoes() {
+        return descricoes;
+    }
+
+    public void setDescricoes(Collection<String> descricoes) {
+        this.descricoes = descricoes;
+    }
+
     public String prepareList() {
         recreateModel();
         return "List";
@@ -73,21 +140,85 @@ public class AvaliacaoController implements Serializable {
         return "View";
     }
 
+    public String create() {
+        try {
+            if (existsIdInDatabase(Create) == false) {
+                String logoPath;
+                Date currentDate;
+
+                currentDate = DateTimeUtil.getCurrentDate();
+
+                setServerLogoPath(getServerLogoPath() + current.getId() + "/");
+                logoPath = getLogoPath();
+                current.setLogoPath(logoPath);
+                processFileUpload();
+                current.setCriacao(currentDate);
+                current.setModificacao(currentDate);
+
+                addTopicoToCollection();
+                addTurmaToCollection();
+                getFacade().create(current);
+                JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("AvaliacaoCreated"));
+                return prepareCreate();
+            } else {
+                throw new Exception(ResourceBundle.getBundle("/Bundle").getString("ExistsIdAvaliacao"));
+            }
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            return null;
+        }
+    }
+
+    public void processFileUpload() throws IOException {
+        InputStream bytes;
+        bytes = fileData.getInputStream();
+        Files.createDirectories(Paths.get(getServerLogoPath()));
+        Files.copy(bytes, Paths.get(getLogoPath()), StandardCopyOption.REPLACE_EXISTING);
+    }
+
+    private void addTopicoToCollection() {
+        for (String titulo : titulos) {
+            Topico topico = ejbTopicoFacade.findByTitulo(titulo);
+            current.getTopicoCollection().add(topico);
+        }
+    }
+
+    private void addTurmaToCollection() {
+        for (String descricao : descricoes) {
+            Turma turma = ejbTurmaFacade.findByDescricao(descricao);
+            current.getAvalicaoTurmaCollection().add(turma);
+        }
+    }
+
+    private String getLogoPath() {
+        String[] data = fileData.toString().split(",");
+
+        data = data[0].split("=");
+        return serverLogoPath + data[1];
+    }
+
     public String prepareCreate() {
         current = new Avaliacao();
         selectedItemIndex = -1;
         return "Create";
     }
 
-    public String create() {
+    private boolean existsIdInDatabase(UserOperations operation) {
+        boolean exists = true;
         try {
-            getFacade().create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("AvaliacaoCreated"));
-            return prepareCreate();
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            return null;
+            current.setId(JsfUtil.getStringWithoutExtraWhiteSpaces(current.getId()));
+            if (operation == Create) {
+                getFacade().findById(current.getId());
+            } else if (operation == Update) {
+                getFacade().findByIdDifferentFromCurrent(current.getId(), current.getCodigo());
+            }
+        } catch (EJBException e) {
+            Exception cause = (Exception) e.getCause();
+            if (cause.getClass().getName().equals("javax.persistence.NoResultException")) {
+                exists = false;
+            }
         }
+        return exists;
     }
 
     public String prepareEdit() {
@@ -188,8 +319,17 @@ public class AvaliacaoController implements Serializable {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
 
-    public Avaliacao getAvaliacao(java.lang.String id) {
-        return ejbFacade.find(id);
+    public SelectItem[] getItemsAvailableSelectManyFromTopico() {
+        return JsfUtil.getSelectItems(ejbTopicoFacade.findAll(), false);
+    }
+
+    public SelectItem[] getItemsAvailableSelectManyFromTurma() {
+        return JsfUtil.getSelectItems(ejbTurmaFacade.findAllByPeriod(DateTimeUtil.getCurrentDate()), false);
+    }
+
+    public Avaliacao getAvaliacao(java.lang.Integer codigo) {
+        return ejbFacade.find(codigo);
+
     }
 
     @FacesConverter(forClass = Avaliacao.class)
@@ -205,13 +345,13 @@ public class AvaliacaoController implements Serializable {
             return controller.getAvaliacao(getKey(value));
         }
 
-        java.lang.String getKey(String value) {
-            java.lang.String key;
-            key = value;
+        java.lang.Integer getKey(String value) {
+            java.lang.Integer key;
+            key = Integer.valueOf(value);
             return key;
         }
 
-        String getStringKey(java.lang.String value) {
+        String getStringKey(java.lang.Integer value) {
             StringBuilder sb = new StringBuilder();
             sb.append(value);
             return sb.toString();

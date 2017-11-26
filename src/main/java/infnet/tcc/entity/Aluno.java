@@ -8,12 +8,16 @@ package infnet.tcc.entity;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -88,10 +92,15 @@ public class Aluno implements Serializable {
     @JoinColumn(name = "usuarioCodigo", referencedColumnName = "codigo")
     @ManyToOne(optional = false)
     private Usuario usuarioCodigo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "aluno")
-    private Collection<Turmaaluno> turmaalunoCollection;
+    @JoinTable(name = "turmaAluno", joinColumns = {
+        @JoinColumn(name = "alunoCPF", referencedColumnName = "cpf")}, inverseJoinColumns = {
+        @JoinColumn(name = "turmaCodigo", referencedColumnName = "codigo")
+    })
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Collection<Turma> turmaCollection;
 
     public Aluno() {
+        turmaCollection = new HashSet<Turma>();
     }
 
     public Aluno(Long cpf) {
@@ -182,12 +191,12 @@ public class Aluno implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Turmaaluno> getTurmaalunoCollection() {
-        return turmaalunoCollection;
+    public Collection<Turma> getTurmaalunoCollection() {
+        return turmaCollection;
     }
 
-    public void setTurmaalunoCollection(Collection<Turmaaluno> turmaalunoCollection) {
-        this.turmaalunoCollection = turmaalunoCollection;
+    public void setTurmaalunoCollection(Collection<Turma> turmaCollection) {
+        this.turmaCollection = turmaCollection;
     }
 
     @Override

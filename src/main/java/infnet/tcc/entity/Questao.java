@@ -63,7 +63,7 @@ public class Questao implements Serializable {
     @JoinTable(name = "topicoquestao", joinColumns = {
     @JoinColumn(name = "questaoCodigo", referencedColumnName = "codigo")}, inverseJoinColumns = {
     @JoinColumn(name = "topicoCodigo", referencedColumnName = "codigo")})
-    @ManyToMany(fetch = FetchType.EAGER)    
+    @ManyToMany(fetch = FetchType.LAZY)    
     private Collection<Topico> topicoCollection;
 
     public Questao() {
