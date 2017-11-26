@@ -31,7 +31,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Topico.findAll", query = "SELECT t FROM Topico t")
     , @NamedQuery(name = "Topico.findByCodigo", query = "SELECT t FROM Topico t WHERE t.codigo = :codigo")
-    , @NamedQuery(name = "Topico.findByTitulo", query = "SELECT t FROM Topico t WHERE t.titulo = :titulo")})
+    , @NamedQuery(name = "Topico.findByTitulo", query = "SELECT t FROM Topico t WHERE UPPER(t.titulo) = UPPER(:titulo)")
+    , @NamedQuery(name = "Topico.findByTituloDifferentFromCurrent", query = "SELECT t FROM Topico t WHERE UPPER(t.titulo) = UPPER(:titulo) and t.codigo != :codigo")})
 public class Topico implements Serializable {
 
     private static final long serialVersionUID = 1L;

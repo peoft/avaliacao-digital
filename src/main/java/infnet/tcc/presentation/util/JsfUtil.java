@@ -56,5 +56,7 @@ public class JsfUtil {
         String theId = JsfUtil.getRequestParameter(requestParameterName);
         return converter.getAsObject(FacesContext.getCurrentInstance(), component, theId);
     }
-
+    public static String getStringWithoutExtraWhiteSpaces(String param) {
+        return param.trim().replaceAll("\\s+", " ");
+    }
 }

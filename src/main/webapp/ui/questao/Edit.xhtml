@@ -22,10 +22,14 @@
                         <f:selectItems value="#{topicoController.itemsAvailableSelectOne}"/>
                     </h:selectOneMenu>
                 </h:panelGrid>
-                <h:commandLink action="#{questaoController.update}" value="#{bundle.EditQuestaoSaveLink}"/>
+                <h:commandLink action="#{questaoController.update}" value="#{bundle.EditQuestaoSaveLink}">
+                <f:param name="codigo" value="#{questaoController.codigo}" />
+                </h:commandLink>
                 <br />
                 <br />
-                <h:link outcome="View" value="#{bundle.EditQuestaoViewLink}"/>
+                <h:commandLink action="#{questaoController.prepareViewFromEdit}" value="#{bundle.EditQuestaoViewLink}" >
+                <f:param name="codigo" value="#{questaoController.codigo}" />
+                </h:commandLink>
                 <br />
                 <h:commandLink action="#{questaoController.prepareList}" value="#{bundle.EditQuestaoShowAllLink}" immediate="true"/>
                 <br />

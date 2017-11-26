@@ -34,7 +34,9 @@
                 <h:commandLink action="#{questaoController.destroyAndView}" value="#{bundle.ViewQuestaoDestroyLink}"/>
                 <br />
                 <br />
-                <h:link outcome="Edit" value="#{bundle.ViewQuestaoEditLink}"/>
+                <h:commandLink action="#{questaoController.prepareEditFromView}" value="#{bundle.ViewQuestaoEditLink}" >
+                <f:param name="codigo" value="#{questaoController.codigo}" />                
+                </h:commandLink>
                 <br />
                 <h:commandLink action="#{questaoController.prepareCreate}" value="#{bundle.ViewQuestaoCreateLink}" />
                 <br />

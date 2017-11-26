@@ -29,6 +29,10 @@ public class QuestaoFacade extends AbstractFacade<Questao> {
         return (Questao) em.createNamedQuery("Questao.findByTexto").setParameter("texto", texto).getSingleResult();
     }    
 
+    public Questao findByTextoDifferentFromCurrent(String texto, Integer codigo) {
+        return (Questao) em.createNamedQuery("Questao.findByTextoDifferentFromCurrent").setParameter("texto", texto).setParameter("codigo", codigo).getSingleResult();
+    }    
+    
     public QuestaoFacade() {
         super(Questao.class);
     }

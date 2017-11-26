@@ -6,10 +6,11 @@ import infnet.tcc.presentation.util.JsfUtil;
 import infnet.tcc.presentation.util.PaginationHelper;
 import infnet.tcc.facade.QuestaoFacade;
 import infnet.tcc.facade.TopicoFacade;
+import static infnet.tcc.presentation.UserOperations.Create;
+import static infnet.tcc.presentation.UserOperations.Update;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -20,11 +21,10 @@ import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import java.util.TimeZone;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.inject.Named;
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -32,18 +32,14 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.NoResultException;
-import javax.persistence.Persistence;
 
 @Named("questaoController")
-@SessionScoped
+@RequestScoped
 public class QuestaoController implements Serializable {
 
+    private Integer codigo;
     @EJB
     private TopicoFacade topicoFacade;
-
     private Questao current;
     private DataModel items = null;
     @EJB
@@ -60,6 +56,7 @@ public class QuestaoController implements Serializable {
             current = new Questao();
             selectedItemIndex = -1;
         }
+        codigo = current.getCodigo();
         return current;
     }
 
@@ -69,6 +66,14 @@ public class QuestaoController implements Serializable {
             selectedItemIndex = -1;
         }
         return topico;
+    }
+
+    public Integer getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(Integer codigo) {
+        this.codigo = codigo;
     }
 
     private QuestaoFacade getFacade() {
@@ -110,56 +115,35 @@ public class QuestaoController implements Serializable {
         return "Create";
     }
 
-    public String prepareEdit() {
-        current = (Questao) getItems().getRowData();
+    private Topico getTopicoFromCollection() {
+        Topico element = null;
         Iterator<Topico> iterator = current.getTopicoCollection().iterator();
         if (iterator.hasNext()) {
-            topico = (Topico) current.getTopicoCollection().iterator().next();
+            element = (Topico) current.getTopicoCollection().iterator().next();
         }
+        return element;
+    }
+
+    public String prepareEdit() {
+        current = (Questao) getItems().getRowData();
+        topico = getTopicoFromCollection();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "Edit";
     }
 
-    private void setTopicoCodigoFromTitulo() {
-        TopicoController topicoController = new TopicoController();
-        topicoController.setFacade(topicoFacade);
-
-        Topico topicoTitulo = topicoController.getTopicoByTitulo(topico.getTitulo());
-        topico.setCodigo(topicoTitulo.getCodigo());
+    public String prepareEditFromView() {
+        prepareRequestParameter("codigo");
+        return "Edit";
     }
 
-    private boolean existsTextInDatabase() {
-        boolean exists = true;
-        try {
-            Questao questao = getFacade().findByTexto(current.getTexto().trim().replaceAll("\\s+", " "));
-        } catch (EJBException e) {
-            Exception cause = (Exception) e.getCause();
-            if (cause.getClass().getName().equals("javax.persistence.NoResultException")) {
-                exists = false;
-            }
-        }
-        return exists;
+    public String prepareViewFromEdit() {
+        prepareRequestParameter("codigo");
+        return "View";
     }
-    
-    private Date getCurrentDate() {
-        Instant instant = Instant.now();
-        Locale locale = new Locale("pt", "BR");
-        ZoneId zoneId = ZoneId.of( "America/Sao_Paulo" );
-        ZonedDateTime zonedDT = instant.atZone( zoneId );
-        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime( FormatStyle.SHORT )
-                                       .withLocale( locale );
-        
-        zonedDT.format(formatter);
-        
-        Calendar calendar ;
-        calendar = GregorianCalendar.from( zonedDT );
-        
-        return  calendar.getTime();
-    }
-    
+
     public String create() {
         try {
-            if (existsTextInDatabase() == false) {
+            if (existsTextInDatabase(Create) == false) {
                 Date currentDate = getCurrentDate();
 
                 current.setCriacao(currentDate);
@@ -177,22 +161,83 @@ public class QuestaoController implements Serializable {
             return null;
         }
     }
-    
+
     public String update() {
         try {
-            Date currentDate = getCurrentDate();
-            setTopicoCodigoFromTitulo();
-            current.setModificacao(currentDate);
-            current.getTopicoCollection().clear();
-            current.getTopicoCollection().add(topico);
-            getFacade().edit(current);
+            String texto = current.getTexto();
+            String titulo = topico.getTitulo();
+            prepareRequestParameter("codigo");
+            current.setTexto(texto);
 
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("QuestaoUpdated"));
-            return "View";
+            if (existsTextInDatabase(Update) == false) {
+
+                topico.setTitulo(titulo);
+                setTopicoCodigoFromTitulo();
+                Date currentDate = getCurrentDate();
+                
+                current.setModificacao(currentDate);
+                current.getTopicoCollection().clear();
+                current.getTopicoCollection().add(topico);
+                getFacade().edit(current);
+
+                JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("QuestaoUpdated"));
+                return "View";
+            } else {
+                throw new Exception(ResourceBundle.getBundle("/Bundle").getString("ExistsTextoQuestao"));
+            }
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
             return null;
         }
+    }
+
+    private boolean existsTextInDatabase(UserOperations operation) {
+        boolean exists = true;
+        try {
+            current.setTexto(JsfUtil.getStringWithoutExtraWhiteSpaces(current.getTexto()));
+            if (operation == Create) {                
+                getFacade().findByTexto(current.getTexto());
+            } else if (operation == Update) {
+                getFacade().findByTextoDifferentFromCurrent(current.getTexto(), current.getCodigo());                
+            }
+        } catch (EJBException e) {
+            Exception cause = (Exception) e.getCause();
+            if (cause.getClass().getName().equals("javax.persistence.NoResultException")) {
+                exists = false;
+            }
+        }
+        return exists;
+    }
+
+    private Date getCurrentDate() {
+        Instant instant = Instant.now();
+        Locale locale = new Locale("pt", "BR");
+        ZoneId zoneId = ZoneId.of("America/Sao_Paulo");
+        ZonedDateTime zonedDT = instant.atZone(zoneId);
+        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
+                .withLocale(locale);
+
+        zonedDT.format(formatter);
+
+        Calendar calendar;
+        calendar = GregorianCalendar.from(zonedDT);
+
+        return calendar.getTime();
+    }
+
+    private void prepareRequestParameter(String name) {
+        codigo = new Integer(JsfUtil.getRequestParameter(name));
+        current = getFacade().find(codigo);
+        topico = getTopicoFromCollection();
+        selectedItemIndex = -1;
+    }
+
+    private void setTopicoCodigoFromTitulo() {
+        TopicoController topicoController = new TopicoController();
+        topicoController.setFacade(topicoFacade);
+
+        Topico topicoTitulo = topicoController.getTopicoByTitulo(topico.getTitulo());
+        topico.setCodigo(topicoTitulo.getCodigo());
     }
 
     public String destroy() {

@@ -29,6 +29,10 @@ public class TopicoFacade extends AbstractFacade<Topico> {
         return (Topico) em.createNamedQuery("Topico.findByTitulo").setParameter("titulo", titulo).getSingleResult();
     }
     
+    public Topico findByTituloDifferentFromCurrent(String titulo, Integer codigo) {
+        return (Topico) em.createNamedQuery("Topico.findByTituloDifferentFromCurrent").setParameter("titulo", titulo).setParameter("codigo", codigo).getSingleResult();
+    }
+    
     public TopicoFacade() {
         super(Topico.class);
     }
