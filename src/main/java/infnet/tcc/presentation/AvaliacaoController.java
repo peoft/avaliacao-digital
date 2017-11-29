@@ -1,6 +1,7 @@
 package infnet.tcc.presentation;
 
 import infnet.tcc.entity.Avaliacao;
+import infnet.tcc.entity.Questao;
 import infnet.tcc.entity.Topico;
 import infnet.tcc.entity.Turma;
 import infnet.tcc.presentation.util.JsfUtil;
@@ -19,6 +20,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
@@ -48,10 +50,12 @@ public class AvaliacaoController implements Serializable {
     private infnet.tcc.facade.TopicoFacade ejbTopicoFacade;
     @EJB
     private infnet.tcc.facade.TurmaFacade ejbTurmaFacade;
+    @EJB
+    private infnet.tcc.facade.QuestaoFacade ejbQuestaoFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
     private Collection<String> titulos;
-    private Collection<String> descricoes;   
+    private Collection<String> descricoes;
 
     public AvaliacaoController() {
         titulos = new HashSet<>();
@@ -329,7 +333,15 @@ public class AvaliacaoController implements Serializable {
 
     public Avaliacao getAvaliacao(java.lang.Integer codigo) {
         return ejbFacade.find(codigo);
-
+    }
+    
+    public Collection<Questao> getQuestoesByTopicoCodigo(Integer codigo) {
+        List<Integer> codigos;        
+        codigos = ejbTopicoFacade.findQuestaoByTopico(codigo);
+        if (codigos.size() > 0) {
+            return ejbQuestaoFacade.findFromList(codigos);
+        }
+        return null;
     }
 
     @FacesConverter(forClass = Avaliacao.class)

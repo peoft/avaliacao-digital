@@ -6,6 +6,7 @@
 package infnet.tcc.facade;
 
 import infnet.tcc.entity.Topico;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -32,6 +33,11 @@ public class TopicoFacade extends AbstractFacade<Topico> {
     public Topico findByTituloDifferentFromCurrent(String titulo, Integer codigo) {
         return (Topico) em.createNamedQuery("Topico.findByTituloDifferentFromCurrent").setParameter("titulo", titulo).setParameter("codigo", codigo).getSingleResult();
     }
+    
+    public List<Integer> findQuestaoByTopico(Integer codigo) {
+        return (List<Integer>) em.createNamedQuery("Topico.findQuestaoByTopico").setParameter("codigo", codigo).getResultList();
+    }
+    
     
     public TopicoFacade() {
         super(Topico.class);
