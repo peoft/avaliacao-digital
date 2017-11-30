@@ -13,31 +13,45 @@
             <h:panelGroup id="messagePanel" layout="block">
                 <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
             </h:panelGroup>
-            <h:form>
+            <h:form enctype="multipart/form-data">
                 <h:panelGrid columns="2">
-                    <h:outputLabel value="#{bundle.EditAvaliacaoLabel_codigo}" for="codigo" />
-                    <h:inputText id="codigo" value="#{avaliacaoController.selected.codigo}" title="#{bundle.EditAvaliacaoTitle_codigo}" required="true" requiredMessage="#{bundle.EditAvaliacaoRequiredMessage_codigo}"/>
+                    <h:outputLabel value="#{bundle.EditAvaliacaoLabel_identificador}" for="identificador" />
+                    <h:inputText id="identificador" maxlength="50" size="30" value="#{avaliacaoController.selected.id}" title="#{bundle.EditAvaliacaoLabel_identificador}" required="true" requiredMessage="#{bundle.EditAvaliacaoRequiredMessage_identificador}"/>
                     <h:outputLabel value="#{bundle.EditAvaliacaoLabel_objetivo}" for="objetivo" />
-                    <h:inputText id="objetivo" value="#{avaliacaoController.selected.objetivo}" title="#{bundle.EditAvaliacaoTitle_objetivo}" required="true" requiredMessage="#{bundle.EditAvaliacaoRequiredMessage_objetivo}"/>
+                    <h:inputText id="objetivo" maxlength="50" size="30" value="#{avaliacaoController.selected.objetivo}" title="#{bundle.EditAvaliacaoTitle_objetivo}" required="true" requiredMessage="#{bundle.EditAvaliacaoRequiredMessage_objetivo}"/>
                     <h:outputLabel value="#{bundle.EditAvaliacaoLabel_inicio}" for="inicio" />
-                    <h:inputText id="inicio" value="#{avaliacaoController.selected.inicio}" title="#{bundle.EditAvaliacaoTitle_inicio}" required="true" requiredMessage="#{bundle.EditAvaliacaoRequiredMessage_inicio}">
+                    <h:inputText id="inicio" size="30" value="#{avaliacaoController.selected.inicio}" title="#{bundle.EditAvaliacaoTitle_inicio}" required="true" requiredMessage="#{bundle.EditAvaliacaoRequiredMessage_inicio}">
                         <f:convertDateTime timeZone="#{initParam.timezone}" dateStyle="long"  pattern="dd/MM/yyyy HH:mm:ss"  />
                     </h:inputText>
                     <h:outputLabel value="#{bundle.EditAvaliacaoLabel_termino}" for="termino" />
-                    <h:inputText id="termino" value="#{avaliacaoController.selected.termino}" title="#{bundle.EditAvaliacaoTitle_termino}" required="true" requiredMessage="#{bundle.EditAvaliacaoRequiredMessage_termino}">
+                    <h:inputText id="termino" size="30" value="#{avaliacaoController.selected.termino}" title="#{bundle.EditAvaliacaoTitle_termino}" required="true" requiredMessage="#{bundle.EditAvaliacaoRequiredMessage_termino}">
                         <f:convertDateTime timeZone="#{initParam.timezone}" dateStyle="long"  pattern="dd/MM/yyyy HH:mm:ss"  />
                     </h:inputText>
-                    <h:outputLabel value="#{bundle.EditAvaliacaoLabel_textoConvidativo}" for="textoConvidativo" />
-                    <h:inputText id="textoConvidativo" value="#{avaliacaoController.selected.textoConvidativo}" title="#{bundle.EditAvaliacaoTitle_textoConvidativo}" required="true" requiredMessage="#{bundle.EditAvaliacaoRequiredMessage_textoConvidativo}"/>
                     <h:outputLabel value="#{bundle.EditAvaliacaoLabel_linkPagina}" for="linkPagina" />
-                    <h:inputText id="linkPagina" value="#{avaliacaoController.selected.linkPagina}" title="#{bundle.EditAvaliacaoTitle_linkPagina}" required="true" requiredMessage="#{bundle.EditAvaliacaoRequiredMessage_linkPagina}"/>
-                    <h:outputLabel value="#{bundle.EditAvaliacaoLabel_logo}" for="logoPath" />
-                    <h:inputTextarea rows="4" cols="30" id="logoPath" value="#{avaliacaoController.selected.logoPath}" title="#{bundle.EditAvaliacaoTitle_logo}" required="true" requiredMessage="#{bundle.EditAvaliacaoRequiredMessage_logo}"/>
+                    <h:inputText id="linkPagina" maxlength="255" size="30" value="#{avaliacaoController.selected.linkPagina}" title="#{bundle.EditAvaliacaoTitle_linkPagina}" required="true" requiredMessage="#{bundle.EditAvaliacaoRequiredMessage_linkPagina}" validatorMessage="#{bundle.AvaliacaoLinkPaginaValidatationErrorMessage}">
+                        <f:validateRegex pattern="^((http[s]?):\/)?\/?([^\/\s]+)((\/\w+)*\/)([\w\-\.]+[^#?\s]+)$" for="identificador" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.EditAvaliacaoLabel_logo}" for="file-id" />
+                    <h:inputFile  id="file-id" size="30" value="#{avaliacaoController.fileData}" required="true" requiredMessage="#{bundle.EditAvaliacaoRequiredMessage_logo}">
+                        <f:validator validatorId="FileValidator"/>
+                    </h:inputFile>                    
+                    <h:outputLabel value="#{bundle.EditAvaliacaoLabel_textoConvidativo}" for="textoConvidativo" />
+                    <h:inputTextarea id="textoConvidativo" cols="50" rows="5" value="#{avaliacaoController.selected.textoConvidativo}" title="#{bundle.EditAvaliacaoTitle_textoConvidativo}" required="true" requiredMessage="#{bundle.EditAvaliacaoRequiredMessage_textoConvidativo}" validatorMessage="#{bundle.AvaliacaoTextoConvidativoValidatationErrorMessage}"/>
+                    <h:outputLabel value="#{bundle.CreateAvaliacaoLabel_topicos}" for="topicos" />
+                    <h:selectManyCheckbox id="topicos" value="#{avaliacaoController.titulos}" layout="lineDirection" > 
+                        <f:selectItems value="#{avaliacaoController.itemsAvailableSelectManyFromTopico}"/>
+                    </h:selectManyCheckbox>
+                    <h:outputLabel value="#{bundle.CreateAvaliacaoLabel_turmas}" for="turmas" />
+                    <h:selectManyCheckbox id="turmas" value="#{avaliacaoController.descricoes}" layout="lineDirection" > 
+                        <f:selectItems value="#{avaliacaoController.itemsAvailableSelectManyFromTurma}" var="turmas"/>
+                    </h:selectManyCheckbox>
                 </h:panelGrid>
                 <h:commandLink action="#{avaliacaoController.update}" value="#{bundle.EditAvaliacaoSaveLink}"/>
                 <br />
                 <br />
-                <h:link outcome="View" value="#{bundle.EditAvaliacaoViewLink}"/>
+                <h:commandLink action="#{avaliacaoController.prepareViewFromEdit}" value="#{bundle.EditAvaliacaoViewLink}" >
+                <f:param name="codigo" value="#{avaliacaoController.selected.codigo}" />
+                </h:commandLink>
                 <br />
                 <h:commandLink action="#{avaliacaoController.prepareList}" value="#{bundle.EditAvaliacaoShowAllLink}" immediate="true"/>
                 <br />

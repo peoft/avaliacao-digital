@@ -46,7 +46,7 @@
                     <h:outputLabel value="#{bundle.CreateAvaliacaoLabel_turmas}" for="turmas" />
                     <h:selectManyCheckbox id="turmas" value="#{avaliacaoController.descricoes}" layout="lineDirection" > 
                         <f:selectItems value="#{avaliacaoController.itemsAvailableSelectManyFromTurma}"/>
-                    </h:selectManyCheckbox>                    
+                    </h:selectManyCheckbox>
                 </h:panelGrid>
                 <br />
                 <h:commandLink action="#{avaliacaoController.create}" value="#{bundle.CreateAvaliacaoSaveLink}" />

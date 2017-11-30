@@ -15,8 +15,8 @@
             </h:panelGroup>
             <h:form>
                 <h:panelGrid columns="2">
-                    <h:outputText value="#{bundle.ViewAvaliacaoLabel_codigo}"/>
-                    <h:outputText value="#{avaliacaoController.selected.codigo}" title="#{bundle.ViewAvaliacaoTitle_codigo}"/>
+                    <h:outputText value="#{bundle.ViewAvaliacaoLabel_identificador}"/>
+                    <h:outputText value="#{avaliacaoController.selected.id}" title="#{bundle.ViewAvaliacaoTitle_identificador}"/>                    
                     <h:outputText value="#{bundle.ViewAvaliacaoLabel_objetivo}"/>
                     <h:outputText value="#{avaliacaoController.selected.objetivo}" title="#{bundle.ViewAvaliacaoTitle_objetivo}"/>
                     <h:outputText value="#{bundle.ViewAvaliacaoLabel_inicio}"/>
@@ -27,18 +27,34 @@
                     <h:outputText value="#{avaliacaoController.selected.termino}" title="#{bundle.ViewAvaliacaoTitle_termino}">
                         <f:convertDateTime timeZone="#{initParam.timezone}" dateStyle="long"  pattern="dd/MM/yyyy HH:mm:ss"  />
                     </h:outputText>
-                    <h:outputText value="#{bundle.ViewAvaliacaoLabel_textoConvidativo}"/>
-                    <h:outputText value="#{avaliacaoController.selected.textoConvidativo}" title="#{bundle.ViewAvaliacaoTitle_textoConvidativo}"/>
                     <h:outputText value="#{bundle.ViewAvaliacaoLabel_linkPagina}"/>
                     <h:outputText value="#{avaliacaoController.selected.linkPagina}" title="#{bundle.ViewAvaliacaoTitle_linkPagina}"/>
                     <h:outputText value="#{bundle.ViewAvaliacaoLabel_logo}"/>
-                    <h:outputText value="#{avaliacaoController.selected.logoPath}" title="#{bundle.ViewAvaliacaoTitle_logo}"/>
+                    <h:graphicImage value="/upload/images/?file=#{avaliacaoController.selected.logoPath}"/>
+                    <h:outputText value="#{bundle.ViewAvaliacaoLabel_textoConvidativo}"/>
+                    <h:outputText value="#{avaliacaoController.selected.textoConvidativo}" title="#{bundle.ViewAvaliacaoTitle_textoConvidativo}"/>
+                    <h:outputText value="#{bundle.ViewAvaliacaoLabel_topicos}"/>
+                    <ui:repeat value="#{avaliacaoController.selected.topicoCollection}" var="topico">
+                        <h:outputText value="#{topico.titulo}" style="font-weight:bold"/>
+                        <br />
+                        <br />
+                    </ui:repeat>
+                    <h:outputText value="#{bundle.ViewAvaliacaoLabel_turmas}"/>
+                    <ui:repeat value="#{avaliacaoController.selected.avaliacaoTurmaCollection}" var="turma">
+                        <h:outputText value="#{turma.descricao}" style="font-weight:bold"/>
+                        <br />
+                        <br />
+                    </ui:repeat>
                 </h:panelGrid>
                 <br />
-                <h:commandLink action="#{avaliacaoController.destroyAndView}" value="#{bundle.ViewAvaliacaoDestroyLink}"/>
+                <h:commandLink action="#{avaliacaoController.destroyAndView}" value="#{bundle.ViewAvaliacaoDestroyLink}">
+                    <f:param name="codigo" value="#{avaliacaoController.selected.codigo}" />
+                </h:commandLink>                
                 <br />
                 <br />
-                <h:link outcome="Edit" value="#{bundle.ViewAvaliacaoEditLink}"/>
+                <h:commandLink action="#{avaliacaoController.prepareEditFromView}" value="#{bundle.ViewAvaliacaoEditLink}" >
+                    <f:param name="codigo" value="#{avaliacaoController.selected.codigo}" />
+                </h:commandLink>                
                 <br />
                 <h:commandLink action="#{avaliacaoController.prepareCreate}" value="#{bundle.ViewAvaliacaoCreateLink}" />
                 <br />
