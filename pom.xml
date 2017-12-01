@@ -4,7 +4,7 @@
 
     <groupId>tcc</groupId>
     <artifactId>avaliacaoDigital</artifactId>
-    <version>1.0</version>
+    <version>4.0</version>
     <packaging>war</packaging>
 
     <name>avaliacaoDigital</name>
@@ -35,7 +35,7 @@
             <artifactId>hibernate-commons-annotations</artifactId>
             <version>5.0.1.Final</version>
         </dependency>
-       <dependency>
+        <dependency>
             <groupId>org.jboss.logging</groupId>
             <artifactId>jboss-logging</artifactId>
             <version>3.3.0.Final</version>
@@ -102,5 +102,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
