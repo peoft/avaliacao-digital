@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <body>
+        <ui:composition>
+            <b:column col-sm="3" col-md="2" styleClass="sidebar">
+                <b:listLinks>
+                    <b:navLink header="Listboard" />
+                    <b:navLink href="/ui/administrador/List" value="Administrador" active="true"/>
+                    <b:navLink href="/ui/aluno/List" value="Aluno" />
+                </b:listLinks>
+                <b:listLinks>
+                    <b:navLink href="/ui/avaliacao/List" value="Avaliação" />
+                    <b:navLink href="/ui/avaliacaotopico/List" value="Tópicos" />
+                </b:listLinks>
+                <b:listLinks>
+                    <b:navLink href="/ui/formulario/List" value="Formulários" />
+                    <b:navLink href="/ui/modulo/List" value="Módulos" />
+                    <b:navLink href="/ui/professor/List" value="Professores" />
+                    <b:navLink href="/ui/questao/List" value="Questões" />
+                    <b:navLink href="/ui/resposta/List" value="Respostas" />
+                    <b:navLink href="/ui/topico/List" value="Tópicos" />
+                    <b:navLink href="/ui/turma/List" value="Turmas" />
+                    <b:navLink href="/ui/turmaaluno/List" value="Turma Alunos" />
+                </b:listLinks>
+                <b:listLinks>
+                    <b:navLink href="/ui/usuario/List" value="Usuários" />
+                </b:listLinks>
+            </b:column>
+        </ui:composition>
+    </body>
+</html>
