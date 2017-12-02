@@ -6,6 +6,7 @@
 package infnet.tcc.facade;
 
 import infnet.tcc.entity.Questao;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -32,6 +33,10 @@ public class QuestaoFacade extends AbstractFacade<Questao> {
     public Questao findByTextoDifferentFromCurrent(String texto, Integer codigo) {
         return (Questao) em.createNamedQuery("Questao.findByTextoDifferentFromCurrent").setParameter("texto", texto).setParameter("codigo", codigo).getSingleResult();
     }    
+    
+    public List<Questao> findFromList(List<Integer> codigos) {
+        return (List<Questao>) em.createNamedQuery("Questao.findFromList").setParameter("codigos", codigos).getResultList();
+    }
     
     public QuestaoFacade() {
         super(Questao.class);

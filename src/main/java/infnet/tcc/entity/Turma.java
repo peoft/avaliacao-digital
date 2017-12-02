@@ -69,7 +69,7 @@ public class Turma implements Serializable {
     private String descricao;
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "turmaCollection")
     private Collection<Aluno> alunoCollection;
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "avalicaoTurmaCollection")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "avaliacaoTurmaCollection")
     private Collection<Avaliacao> avaliacaoCollection;
     @JoinColumn(name = "moduloCodigo", referencedColumnName = "codigo")
     @ManyToOne(optional = false)
@@ -151,14 +151,12 @@ public class Turma implements Serializable {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 13 * hash + this.codigo;
-        hash = 13 * hash + Objects.hashCode(this.inicio);
-        hash = 13 * hash + Objects.hashCode(this.fim);
-        hash = 13 * hash + Objects.hashCode(this.descricao);
-        hash = 13 * hash + Objects.hashCode(this.alunoCollection);
-        hash = 13 * hash + Objects.hashCode(this.avaliacaoCollection);
-        hash = 13 * hash + Objects.hashCode(this.moduloCodigo);
-        hash = 13 * hash + Objects.hashCode(this.professorCodigo);
+        hash = 73 * hash + this.codigo;
+        hash = 73 * hash + Objects.hashCode(this.inicio);
+        hash = 73 * hash + Objects.hashCode(this.fim);
+        hash = 73 * hash + Objects.hashCode(this.descricao);
+        hash = 73 * hash + Objects.hashCode(this.moduloCodigo);
+        hash = 73 * hash + Objects.hashCode(this.professorCodigo);
         return hash;
     }
 
@@ -186,12 +184,6 @@ public class Turma implements Serializable {
         if (!Objects.equals(this.fim, other.fim)) {
             return false;
         }
-        if (!Objects.equals(this.alunoCollection, other.alunoCollection)) {
-            return false;
-        }
-        if (!Objects.equals(this.avaliacaoCollection, other.avaliacaoCollection)) {
-            return false;
-        }
         if (!Objects.equals(this.moduloCodigo, other.moduloCodigo)) {
             return false;
         }
@@ -199,8 +191,7 @@ public class Turma implements Serializable {
             return false;
         }
         return true;
-    }
-    
+    }   
 
     @Override
     public String toString() {

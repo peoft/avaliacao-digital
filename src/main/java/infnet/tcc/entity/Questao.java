@@ -40,7 +40,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Questao.findByTexto", query = "SELECT q FROM Questao q WHERE UPPER(q.texto) = UPPER(:texto)")
     , @NamedQuery(name = "Questao.findByCriacao", query = "SELECT q FROM Questao q WHERE q.criacao = :criacao")
     , @NamedQuery(name = "Questao.findByModificacao", query = "SELECT q FROM Questao q WHERE q.modificacao = :modificacao")
-    , @NamedQuery(name = "Questao.findByTextoDifferentFromCurrent", query = "SELECT t FROM Questao t WHERE UPPER(t.texto) = UPPER(:texto) and t.codigo != :codigo")})
+    , @NamedQuery(name = "Questao.findByTextoDifferentFromCurrent", query = "SELECT t FROM Questao t WHERE UPPER(t.texto) = UPPER(:texto) and t.codigo != :codigo")
+    , @NamedQuery(name = "Questao.findFromList", query = "SELECT t FROM Questao t WHERE t.codigo IN :codigos")})
 public class Questao implements Serializable {
 
     private static final long serialVersionUID = 1L;

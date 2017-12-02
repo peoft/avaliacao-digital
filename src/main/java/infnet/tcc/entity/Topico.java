@@ -32,7 +32,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Topico.findAll", query = "SELECT t FROM Topico t")
     , @NamedQuery(name = "Topico.findByCodigo", query = "SELECT t FROM Topico t WHERE t.codigo = :codigo")
     , @NamedQuery(name = "Topico.findByTitulo", query = "SELECT t FROM Topico t WHERE UPPER(t.titulo) = UPPER(:titulo)")
-    , @NamedQuery(name = "Topico.findByTituloDifferentFromCurrent", query = "SELECT t FROM Topico t WHERE UPPER(t.titulo) = UPPER(:titulo) and t.codigo != :codigo")})
+    , @NamedQuery(name = "Topico.findByTituloDifferentFromCurrent", query = "SELECT t FROM Topico t WHERE UPPER(t.titulo) = UPPER(:titulo) and t.codigo != :codigo")
+    , @NamedQuery(name = "Topico.findQuestaoByTopico", query = "SELECT q.codigo FROM Questao q INNER JOIN q.topicoCollection Topico WHERE Topico.codigo = :codigo")})
+
+
 public class Topico implements Serializable {
 
     private static final long serialVersionUID = 1L;
