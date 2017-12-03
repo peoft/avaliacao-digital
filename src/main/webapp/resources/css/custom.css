@@ -68,3 +68,12 @@
 #javax_faces_developmentstage_messages{
     text-align: center;
 }
+
+#container-login{
+    border: 2px solid #567EAB;
+    border-radius: 10px;
+    padding: 1%;
+    width: 350px;
+    margin: 15% auto;
+    padding: 1%
+}

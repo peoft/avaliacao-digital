@@ -9,8 +9,8 @@
             <var>bundle</var>
         </resource-bundle>
         <resource-bundle>
-            <base-name>/avaliacaoDitigal</base-name>
-            <var>avaliacaoDitigal</var>
+            <base-name>/avaliacaoDigital</base-name>
+            <var>avaliacaoDigital</var>
         </resource-bundle>
     </application>
 </faces-config>

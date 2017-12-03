@@ -1,6 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scene Scope="Project" version="2">
     <Scope Scope="Faces Configuration Only"/>
-    <Scope Scope="Project"/>
+    <Scope Scope="Project">
+        <Node id="ui/topico/Edit.xhtml" x="1150" y="300" zoom="true"/>
+        <Node id="ui/questao/Create.xhtml" x="1150" y="750" zoom="true"/>
+        <Node id="administrador.xhtml" x="400" y="450" zoom="true"/>
+        <Node id="ui/resposta/List.xhtml" x="1650" y="150" zoom="true"/>
+        <Node id="ui/usuario/Create.xhtml" x="150" y="300" zoom="true"/>
+        <Node id="template/aside.xhtml" x="150" y="600" zoom="true"/>
+        <Node id="ui/resposta/Edit.xhtml" x="900" y="1050" zoom="true"/>
+        <Node id="ui/resposta/View.xhtml" x="400" y="1050" zoom="true"/>
+        <Node id="ui/administrador/Create.xhtml" x="1400" y="450" zoom="true"/>
+        <Node id="index.xhtml" x="1900" y="450" zoom="true"/>
+        <Node id="ui/avaliacao/View.xhtml" x="150" y="150" zoom="true"/>
+        <Node id="ui/topico/List.xhtml" x="2150" y="300" zoom="true"/>
+        <Node id="ui/avaliacao/List.xhtml" x="150" y="450" zoom="true"/>
+        <Node id="ui/topico/View.xhtml" x="1650" y="300" zoom="true"/>
+        <Node id="ui/professor/List.xhtml" x="650" y="750" zoom="true"/>
+        <Node id="ui/questao/List.xhtml" x="1400" y="150" zoom="true"/>
+        <Node id="login.xhtml" x="400" y="300" zoom="true"/>
+        <Node id="ui/aluno/View.xhtml" x="1400" y="750" zoom="true"/>
+        <Node id="ui/questao/View.xhtml" x="150" y="1350" zoom="true"/>
+        <Node id="ui/professor/View.xhtml" x="150" y="900" zoom="true"/>
+        <Node id="ui/aluno/List.xhtml" x="400" y="150" zoom="true"/>
+        <Node id="ui/turma/List.xhtml" x="650" y="1050" zoom="true"/>
+        <Node id="ui/turma/Create.xhtml" x="900" y="150" zoom="true"/>
+        <Node id="ui/turma/View.xhtml" x="650" y="150" zoom="true"/>
+        <Node id="ui/administrador/View.xhtml" x="400" y="1200" zoom="true"/>
+        <Node id="ui/topico/Create.xhtml" x="1150" y="900" zoom="true"/>
+        <Node id="ui/aluno/Create.xhtml" x="1650" y="600" zoom="true"/>
+        <Node id="ui/resposta/Create.xhtml" x="1400" y="600" zoom="true"/>
+        <Node id="ui/modulo/List.xhtml" x="900" y="300" zoom="true"/>
+        <Node id="ui/administrador/List.xhtml" x="150" y="1200" zoom="true"/>
+        <Node id="ui/questao/Edit.xhtml" x="900" y="600" zoom="true"/>
+        <Node id="ui/professor/Edit.xhtml" x="1400" y="300" zoom="true"/>
+        <Node id="ui/modulo/Edit.xhtml" x="1150" y="450" zoom="true"/>
+        <Node id="ui/modulo/View.xhtml" x="150" y="750" zoom="true"/>
+        <Node id="ui/usuario/List.xhtml" x="900" y="750" zoom="true"/>
+        <Node id="ui/administrador/Edit.xhtml" x="400" y="600" zoom="true"/>
+        <Node id="template/content.xhtml" x="900" y="900" zoom="true"/>
+        <Node id="ui/formulario/View.xhtml" x="650" y="450" zoom="true"/>
+        <Node id="ui/usuario/View.xhtml" x="1900" y="300" zoom="true"/>
+        <Node id="ui/formulario/Create.xhtml" x="150" y="1050" zoom="true"/>
+        <Node id="ui/formulario/List.xhtml" x="650" y="900" zoom="true"/>
+        <Node id="ui/modulo/Create.xhtml" x="650" y="300" zoom="true"/>
+        <Node id="template/footer.xhtml" x="650" y="600" zoom="true"/>
+        <Node id="ui/usuario/Edit.xhtml" x="900" y="450" zoom="true"/>
+        <Node id="ui/formulario/Edit.xhtml" x="1150" y="150" zoom="true"/>
+        <Node id="template/template.xhtml" x="2400" y="150" zoom="true"/>
+        <Node id="ui/professor/Create.xhtml" x="1150" y="600" zoom="true"/>
+        <Node id="ui/avaliacao/Create.xhtml" x="1900" y="150" zoom="true"/>
+        <Node id="ui/aluno/Edit.xhtml" x="2150" y="150" zoom="true"/>
+        <Node id="template/header.xhtml" x="400" y="750" zoom="true"/>
+        <Node id="ui/turma/Edit.xhtml" x="1650" y="450" zoom="true"/>
+        <Node id="ui/avaliacao/Edit.xhtml" x="400" y="900" zoom="true"/>
+    </Scope>
     <Scope Scope="All Faces Configurations"/>
 </Scene>
