@@ -28,7 +28,9 @@ public class UsuarioController implements Serializable {
     private infnet.tcc.facade.UsuarioFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
-
+    private String usr;
+    private String pass;
+    
     public UsuarioController() {
     }
 
@@ -61,6 +63,24 @@ public class UsuarioController implements Serializable {
         }
         return pagination;
     }
+
+    public String getUsr() {
+        return usr;
+    }
+
+    public void setUsr(String usr) {
+        this.usr = usr;
+    }
+
+    public String getPass() {
+        return pass;
+    }
+
+    public void setPass(String pass) {
+        this.pass = pass;
+    }
+    
+    
 
     public String prepareList() {
         recreateModel();
@@ -103,7 +123,7 @@ public class UsuarioController implements Serializable {
             return "View";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            return null;
+            return "/ui/administrador/index.xhtml";
         }
     }
 

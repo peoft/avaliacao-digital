@@ -14,9 +14,9 @@
                 <h:form>
                     <h:panelGrid>
                         <h:outputLabel value="login" for="Login" />
-                        <h:inputText id="login" value="" required="true" />
+                        <h:inputText id="login" value="#{usuarioController.usr}" required="true" />
                         <h:outputLabel value="Senha" for="senha" />
-                        <h:inputText id="senha" value="" title="" required="true" requiredMessage="Digite sua senha."/>                  
+                        <h:inputText id="senha" value="#{usuarioController.pass}" title="" required="true" requiredMessage="Digite sua senha."/>                  
                     </h:panelGrid>
                     <h:commandButton action="#{usuarioController.update}" value="Entrar"/>
                 </h:form>
