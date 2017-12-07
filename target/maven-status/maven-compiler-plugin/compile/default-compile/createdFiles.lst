@@ -1,6 +1,5 @@
 infnet\tcc\service\TurmaFacadeREST.class
 infnet\tcc\presentation\AlunoController.class
-infnet\tcc\presentation\AvaliacaoController$1.class
 infnet\tcc\presentation\TopicoController.class
 infnet\tcc\service\UsuarioFacadeREST.class
 infnet\tcc\facade\AbstractFacade.class
@@ -10,8 +9,6 @@ infnet\tcc\facade\AlunoFacade.class
 infnet\tcc\presentation\ProfessorController$ProfessorControllerConverter.class
 infnet\tcc\service\QuestaoFacadeREST.class
 infnet\tcc\entity\Formulario.class
-infnet\tcc\facade\QuestaoFacade.class
-infnet\tcc\entity\Avaliacao.class
 infnet\tcc\presentation\FormularioController$FormularioControllerConverter.class
 infnet\tcc\entity\Resposta.class
 infnet\tcc\facade\UsuarioFacade.class
@@ -44,7 +41,6 @@ infnet\tcc\presentation\TurmaController$TurmaControllerConverter.class
 infnet\tcc\presentation\UserOperations.class
 infnet\tcc\service\AlunoFacadeREST.class
 infnet\tcc\service\ModuloFacadeREST.class
-infnet\tcc\presentation\AvaliacaoController.class
 infnet\tcc\presentation\TurmaController.class
 infnet\tcc\service\AdministradorFacadeREST.class
 infnet\tcc\presentation\FormularioController$1.class
@@ -52,11 +48,9 @@ infnet\tcc\facade\ProfessorFacade.class
 infnet\tcc\service\AbstractFacade.class
 infnet\tcc\presentation\AdministradorController$1.class
 infnet\tcc\service\ApplicationConfig.class
-infnet\tcc\facade\TopicoFacade.class
 infnet\tcc\presentation\RespostaController.class
 infnet\tcc\presentation\TurmaController$1.class
 infnet\tcc\presentation\RespostaController$RespostaControllerConverter.class
-infnet\tcc\presentation\AvaliacaoController$AvaliacaoControllerConverter.class
 infnet\tcc\presentation\QuestaoController.class
 infnet\tcc\entity\Topico.class
 infnet\tcc\service\TopicoFacadeREST.class
@@ -65,7 +59,6 @@ infnet\tcc\presentation\UsuarioController$UsuarioControllerConverter.class
 infnet\tcc\presentation\AdministradorController$AdministradorControllerConverter.class
 infnet\tcc\service\FormularioFacadeREST.class
 infnet\tcc\presentation\QuestaoController$QuestaoControllerConverter.class
-infnet\tcc\entity\Turma.class
 infnet\tcc\service\AvaliacaoFacadeREST.class
 infnet\tcc\presentation\RespostaController$1.class
 infnet\tcc\facade\FormularioFacade.class
