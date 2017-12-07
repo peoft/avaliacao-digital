@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package infnet.tcc.facade;
-
 import infnet.tcc.entity.Usuario;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -19,6 +18,7 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
 
     @PersistenceContext(unitName = "avaliacaoDigitalPU")
     private EntityManager em;
+   
 
     @Override
     protected EntityManager getEntityManager() {
@@ -27,6 +27,13 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
 
     public UsuarioFacade() {
         super(Usuario.class);
+    }    
+    
+     public Usuario findByLoginUsuario(String login, String senha) {
+         Usuario usuario;
+         usuario = (Usuario) em.createNamedQuery("Usuario.findByLoginUsuario").setParameter("login", login).setParameter("senha", senha).getSingleResult();
+        
+         return usuario;
     }
     
 }
