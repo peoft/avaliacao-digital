@@ -1,63 +1,74 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-    <ui:composition template="/template.xhtml">
+    <ui:composition template="../../template/template.xhtml">
         <ui:define name="title">
             <h:outputText value="#{bundle.CreateAvaliacaoTitle}"></h:outputText>
         </ui:define>
-        <ui:define name="body">
+        <ui:define name="content">
             <h:panelGroup id="messagePanel" layout="block">
                 <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
             </h:panelGroup>
-            <h:form  enctype="multipart/form-data">
-                <h:panelGrid columns="2">
-                    <h:outputLabel value="#{bundle.CreateAvaliacaoLabel_identificador}" for="identificador" />
-                    <h:inputText id="identificador" maxlength="50" size="30" value="#{avaliacaoController.selected.id}" title="#{bundle.CreateAvaliacaoTitle_identificador}" required="true" requiredMessage="#{bundle.CreateAvaliacaoRequiredMessage_identificador}" validatorMessage="#{bundle.AvaliacaoIdentificadorValidatationErrorMessage}">
-                        <f:validateRegex pattern="[a-zA-Z0-9]+" for="identificador" />
-                    </h:inputText>
-                    <h:outputLabel value="#{bundle.CreateAvaliacaoLabel_objetivo}" for="objetivo" />
-                    <h:inputText id="objetivo" maxlength="50" size="30" value="#{avaliacaoController.selected.objetivo}" title="#{bundle.CreateAvaliacaoTitle_objetivo}" required="true" requiredMessage="#{bundle.CreateAvaliacaoRequiredMessage_objetivo}"/>
-                    <h:outputLabel value="#{bundle.CreateAvaliacaoLabel_inicio}" for="inicio" />
-                    <h:inputText id="inicio" size="30" value="#{avaliacaoController.selected.inicio}" title="#{bundle.CreateAvaliacaoTitle_inicio}" required="true" requiredMessage="#{bundle.CreateAvaliacaoRequiredMessage_inicio}">
-                        <f:convertDateTime timeZone="#{initParam.timezone}" dateStyle="long"  pattern="dd/MM/yyyy HH:mm:ss"  />
-                    </h:inputText>
-                    <h:outputLabel value="#{bundle.CreateAvaliacaoLabel_termino}" for="termino" />
-                    <h:inputText id="termino" size="30" value="#{avaliacaoController.selected.termino}" title="#{bundle.CreateAvaliacaoTitle_termino}" required="true" requiredMessage="#{bundle.CreateAvaliacaoRequiredMessage_termino}">
-                        <f:convertDateTime timeZone="#{initParam.timezone}" dateStyle="long"  pattern="dd/MM/yyyy HH:mm:ss"  />
-                    </h:inputText>
-                    <h:outputLabel value="#{bundle.CreateAvaliacaoLabel_linkPagina}" for="linkPagina"  />
-                    <h:inputText id="linkPagina" maxlength="255" size="30" value="#{avaliacaoController.selected.linkPagina}" title="#{bundle.CreateAvaliacaoTitle_linkPagina}" required="true" requiredMessage="#{bundle.CreateAvaliacaoRequiredMessage_linkPagina}" validatorMessage="#{bundle.AvaliacaoLinkPaginaValidatationErrorMessage}">
-                        <f:validateRegex pattern="^((http[s]?):\/)?\/?([^\/\s]+)((\/\w+)*\/)([\w\-\.]+[^#?\s]+)$" for="identificador" />
-                    </h:inputText>
-                    <h:outputLabel value="#{bundle.CreateAvaliacaoLabel_logo}" for="file-id" />
-                    <h:inputFile  id="file-id" size="30" value="#{avaliacaoController.fileData}" required="true" requiredMessage="#{bundle.CreateAvaliacaoRequiredMessage_filename}">
-                        <f:validator validatorId="FileValidator"/>
-                    </h:inputFile>
-                    <h:outputLabel value="#{bundle.CreateAvaliacaoLabel_textoConvidativo}" for="textoConvidativo" />
-                    <h:inputTextarea id="textoConvidativo" cols="50" rows="5" value="#{avaliacaoController.selected.textoConvidativo}" title="#{bundle.CreateAvaliacaoTitle_textoConvidativo}" required="true" requiredMessage="#{bundle.CreateAvaliacaoRequiredMessage_textoConvidativo}" validatorMessage="#{bundle.AvaliacaoTextoConvidativoValidatationErrorMessage}"/>
-                    <h:outputLabel value="#{bundle.CreateAvaliacaoLabel_topicos}" for="topicos" />
-                    <h:selectManyCheckbox id="topicos" value="#{avaliacaoController.titulos}" layout="lineDirection" > 
-                        <f:selectItems value="#{avaliacaoController.itemsAvailableSelectManyFromTopico}"/>
-                    </h:selectManyCheckbox>
-                    <h:outputLabel value="#{bundle.CreateAvaliacaoLabel_turmas}" for="turmas" />
-                    <h:selectManyCheckbox id="turmas" value="#{avaliacaoController.descricoes}" layout="lineDirection" > 
-                        <f:selectItems value="#{avaliacaoController.itemsAvailableSelectManyFromTurma}"/>
-                    </h:selectManyCheckbox>
-                </h:panelGrid>
-                <br />
-                <h:commandLink action="#{avaliacaoController.create}" value="#{bundle.CreateAvaliacaoSaveLink}" />
-                <br />
-                <br />
-                <h:commandLink action="#{avaliacaoController.prepareList}" value="#{bundle.CreateAvaliacaoShowAllLink}" immediate="true"/>
-                <br />
-                <br />
-                <h:link outcome="/index" value="#{bundle.CreateAvaliacaoIndexLink}"/>
-            </h:form>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                     <h:link outcome="/index" value="#{bundle.CreateAvaliacaoIndexLink}"/>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <h:form  enctype="multipart/form-data">
+                                <h:panelGrid columns="2">
+                                    <h:outputLabel value="#{bundle.CreateAvaliacaoLabel_identificador}" for="identificador" />
+                                    <h:inputText id="identificador" maxlength="50" size="30" value="#{avaliacaoController.selected.id}" title="#{bundle.CreateAvaliacaoTitle_identificador}" required="true" requiredMessage="#{bundle.CreateAvaliacaoRequiredMessage_identificador}" validatorMessage="#{bundle.AvaliacaoIdentificadorValidatationErrorMessage}">
+                                        <f:validateRegex pattern="[a-zA-Z0-9]+" for="identificador" />
+                                    </h:inputText>
+                                    <h:outputLabel value="#{bundle.CreateAvaliacaoLabel_objetivo}" for="objetivo" />
+                                    <h:inputText id="objetivo" maxlength="50" size="30" value="#{avaliacaoController.selected.objetivo}" title="#{bundle.CreateAvaliacaoTitle_objetivo}" required="true" requiredMessage="#{bundle.CreateAvaliacaoRequiredMessage_objetivo}"/>
+                                    <h:outputLabel value="#{bundle.CreateAvaliacaoLabel_inicio}" for="inicio" />
+                                    <h:inputText id="inicio" size="30" value="#{avaliacaoController.selected.inicio}" title="#{bundle.CreateAvaliacaoTitle_inicio}" required="true" requiredMessage="#{bundle.CreateAvaliacaoRequiredMessage_inicio}">
+                                        <f:convertDateTime timeZone="#{initParam.timezone}" dateStyle="long"  pattern="dd/MM/yyyy HH:mm:ss"  />
+                                    </h:inputText>
+                                    <h:outputLabel value="#{bundle.CreateAvaliacaoLabel_termino}" for="termino" />
+                                    <h:inputText id="termino" size="30" value="#{avaliacaoController.selected.termino}" title="#{bundle.CreateAvaliacaoTitle_termino}" required="true" requiredMessage="#{bundle.CreateAvaliacaoRequiredMessage_termino}">
+                                        <f:convertDateTime timeZone="#{initParam.timezone}" dateStyle="long"  pattern="dd/MM/yyyy HH:mm:ss"  />
+                                    </h:inputText>
+                                    <h:outputLabel value="#{bundle.CreateAvaliacaoLabel_linkPagina}" for="linkPagina"  />
+                                    <h:inputText id="linkPagina" maxlength="255" size="30" value="#{avaliacaoController.selected.linkPagina}" title="#{bundle.CreateAvaliacaoTitle_linkPagina}" required="true" requiredMessage="#{bundle.CreateAvaliacaoRequiredMessage_linkPagina}" validatorMessage="#{bundle.AvaliacaoLinkPaginaValidatationErrorMessage}">
+                                        <f:validateRegex pattern="^((http[s]?):\/)?\/?([^\/\s]+)((\/\w+)*\/)([\w\-\.]+[^#?\s]+)$" for="identificador" />
+                                    </h:inputText>
+                                    <h:outputLabel value="#{bundle.CreateAvaliacaoLabel_logo}" for="file-id" />
+                                    <h:inputFile  id="file-id" size="30" value="#{avaliacaoController.fileData}" required="true" requiredMessage="#{bundle.CreateAvaliacaoRequiredMessage_filename}">
+                                        <f:validator validatorId="FileValidator"/>
+                                    </h:inputFile>
+                                    <h:outputLabel value="#{bundle.CreateAvaliacaoLabel_textoConvidativo}" for="textoConvidativo" />
+                                    <h:inputTextarea id="textoConvidativo" cols="50" rows="5" value="#{avaliacaoController.selected.textoConvidativo}" title="#{bundle.CreateAvaliacaoTitle_textoConvidativo}" required="true" requiredMessage="#{bundle.CreateAvaliacaoRequiredMessage_textoConvidativo}" validatorMessage="#{bundle.AvaliacaoTextoConvidativoValidatationErrorMessage}"/>
+                                    <h:outputLabel value="#{bundle.CreateAvaliacaoLabel_topicos}" for="topicos" />
+                                    <h:selectManyCheckbox id="topicos" value="#{avaliacaoController.titulos}" layout="lineDirection" > 
+                                        <f:selectItems value="#{avaliacaoController.itemsAvailableSelectManyFromTopico}"/>
+                                    </h:selectManyCheckbox>
+                                    <h:outputLabel value="#{bundle.CreateAvaliacaoLabel_turmas}" for="turmas" />
+                                    <h:selectManyCheckbox id="turmas" value="#{avaliacaoController.descricoes}" layout="lineDirection" > 
+                                        <f:selectItems value="#{avaliacaoController.itemsAvailableSelectManyFromTurma}"/>
+                                    </h:selectManyCheckbox>
+                                </h:panelGrid>
+                                <br />
+                                <h:commandLink action="#{avaliacaoController.create}" value="#{bundle.CreateAvaliacaoSaveLink}" />
+                                <br />
+                                <br />
+                                <h:commandLink action="#{avaliacaoController.prepareList}" value="#{bundle.CreateAvaliacaoShowAllLink}" immediate="true"/>
+                                <br />
+                                <br />
+                               
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </ui:define>
     </ui:composition>
-
 </html>
