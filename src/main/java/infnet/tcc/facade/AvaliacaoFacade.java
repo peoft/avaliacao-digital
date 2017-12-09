@@ -30,8 +30,13 @@ public class AvaliacaoFacade extends AbstractFacade<Avaliacao> {
 
     public Avaliacao findByIdDifferentFromCurrent(String id, Integer codigo) {
         return (Avaliacao) em.createNamedQuery("Avaliacao.findByTextoDifferentFromCurrent").setParameter("id", id).setParameter("codigo", codigo).getSingleResult();
-    }    
+    }
 
+    public Avaliacao findByCodigo(Integer codigo) {
+        return (Avaliacao) em.createNamedQuery("Avaliacao.findByCodigo").setParameter("codigo", codigo).getSingleResult();
+    }    
+    
+    
     public AvaliacaoFacade() {
         super(Avaliacao.class);
     }

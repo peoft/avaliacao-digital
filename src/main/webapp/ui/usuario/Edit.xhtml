@@ -29,10 +29,6 @@
                     <h:inputText id="login" value="#{usuarioController.selected.login}" title="#{bundle.EditUsuarioTitle_login}" required="true" requiredMessage="#{bundle.EditUsuarioRequiredMessage_login}"/>
                     <h:outputLabel value="#{bundle.EditUsuarioLabel_administrador1}" for="administrador1" />
                     <h:inputText id="administrador1" value="#{usuarioController.selected.administrador1}" title="#{bundle.EditUsuarioTitle_administrador1}" required="true" requiredMessage="#{bundle.EditUsuarioRequiredMessage_administrador1}"/>
-                    <h:outputLabel value="#{bundle.EditUsuarioLabel_administrador}" for="administrador" />
-                    <h:selectOneMenu id="administrador" value="#{usuarioController.selected.administrador}" title="#{bundle.EditUsuarioTitle_administrador}" >
-                        <f:selectItems value="#{administradorController.itemsAvailableSelectOne}"/>
-                    </h:selectOneMenu>
                 </h:panelGrid>
                 <h:commandLink action="#{usuarioController.update}" value="#{bundle.EditUsuarioSaveLink}"/>
                 <br />
