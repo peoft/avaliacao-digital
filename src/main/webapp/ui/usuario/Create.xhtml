@@ -27,8 +27,6 @@
                     <h:outputLabel value="#{bundle.CreateUsuarioLabel_login}" for="login" />
                     <h:inputText id="login" value="#{usuarioController.selected.login}" title="#{bundle.CreateUsuarioTitle_login}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_login}"/>
                     <h:outputLabel value="#{bundle.CreateUsuarioLabel_administrador1}" for="administrador1" />
-                   
-                 
                     <h:selectOneRadio id="administrador1" value="#{usuarioController.selected.administrador1}" title="#{bundle.CreateUsuarioTitle_administrador1}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_administrador1}">
                         <f:selectItem itemValue="1" itemLabel="Administrador" />
                         <f:selectItem itemValue="2" itemLabel="Aluno" />

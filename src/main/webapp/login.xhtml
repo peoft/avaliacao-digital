@@ -11,6 +11,7 @@
         <ui:define name="content_login">
 
             <h:form>
+<<<<<<< HEAD
                 <fieldset>
                     <div class="form-group">
                         <h:inputText  class="form-control" id="login" value="" required="true" />
@@ -20,6 +21,18 @@
                     </div>
                     <h:commandButton  class="btn btn-lg btn-success btn-block" action="#{usuarioController.update}" value="Entrar"/>
                 </fieldset>
+=======
+                <h:panelGrid>
+                    <h:outputLabel value="login" for="login" />
+                    <h:inputText id="login" value="#{loginController.login}"  />
+               
+                    <h:outputLabel value="senha" for="senha" />
+                    <h:inputText id="senha" value="#{loginController.senha}"  />                  
+                  
+                </h:panelGrid>
+                <h:commandButton action="#{loginController.Login}" value="Entrar"/>
+                
+>>>>>>> first-version
             </h:form>
         </ui:define>
     </ui:composition>
