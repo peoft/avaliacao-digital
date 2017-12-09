@@ -25,6 +25,7 @@ infnet\tcc\presentation\TopicoController$TopicoControllerConverter.class
 infnet\tcc\service\ProfessorFacadeREST.class
 infnet\tcc\presentation\ModuloController$1.class
 infnet\tcc\facade\TurmaFacade.class
+infnet\tcc\presentation\LoginController.class
 infnet\tcc\presentation\util\JsfUtil.class
 infnet\tcc\presentation\TopicoController$1.class
 infnet\tcc\entity\Questao.class

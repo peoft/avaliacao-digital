@@ -13,14 +13,14 @@
            
             <h:form>
                 <h:panelGrid>
-                    <h:outputLabel value="login" for="Login" />
-                    <h:inputText id="login" value="" required="true" />
+                    <h:outputLabel value="login" for="login" />
+                    <h:inputText id="login" value="#{loginController.login}"  />
                
-                    <h:outputLabel value="Senha" for="senha" />
-                    <h:inputText id="senha" value="" title="" required="true" requiredMessage=""/>                  
+                    <h:outputLabel value="senha" for="senha" />
+                    <h:inputText id="senha" value="#{loginController.senha}"  />                  
                   
                 </h:panelGrid>
-                <h:commandButton action="#{usuarioController.update}" value="Entrar"/>
+                <h:commandButton action="#{loginController.Login}" value="Entrar"/>
                 
             </h:form>
         </ui:define>

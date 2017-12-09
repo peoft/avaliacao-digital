@@ -1,5 +1,6 @@
 package infnet.tcc.presentation;
 
+import infnet.tcc.entity.Avaliacao;
 import infnet.tcc.entity.Formulario;
 import infnet.tcc.presentation.util.JsfUtil;
 import infnet.tcc.presentation.util.PaginationHelper;
@@ -7,7 +8,9 @@ import infnet.tcc.facade.FormularioFacade;
 
 import java.io.Serializable;
 import java.util.ResourceBundle;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
@@ -18,8 +21,9 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 
+
 @Named("formularioController")
-@SessionScoped
+@RequestScoped
 public class FormularioController implements Serializable {
 
     private Formulario current;
@@ -28,6 +32,9 @@ public class FormularioController implements Serializable {
     private infnet.tcc.facade.FormularioFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
+    @EJB
+    private infnet.tcc.facade.AvaliacaoFacade ejbAvaliacaoFacade;
+
 
     public FormularioController() {
     }
@@ -39,6 +46,20 @@ public class FormularioController implements Serializable {
         }
         return current;
     }
+
+    @PostConstruct
+    public void findAvaliacao() {
+        String requestParameter = JsfUtil.getRequestParameter("codigo");
+        Integer codigo = null;
+        if (requestParameter != null && !requestParameter.isEmpty()) {
+            codigo = new Integer(requestParameter);
+        }
+        if (codigo != null) {
+            Avaliacao avaliacao = ejbAvaliacaoFacade.find(codigo);
+            getSelected();
+            current.setAvaliacao(avaliacao);
+        }
+    }    
 
     private FormularioFacade getFacade() {
         return ejbFacade;
@@ -94,64 +115,7 @@ public class FormularioController implements Serializable {
         current = (Formulario) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "Edit";
-    }
-
-    public String update() {
-        try {
-            getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("FormularioUpdated"));
-            return "View";
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-            return null;
-        }
-    }
-
-    public String destroy() {
-        current = (Formulario) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        performDestroy();
-        recreatePagination();
-        recreateModel();
-        return "List";
-    }
-
-    public String destroyAndView() {
-        performDestroy();
-        recreateModel();
-        updateCurrentItem();
-        if (selectedItemIndex >= 0) {
-            return "View";
-        } else {
-            // all items were removed - go back to list
-            recreateModel();
-            return "List";
-        }
-    }
-
-    private void performDestroy() {
-        try {
-            getFacade().remove(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("FormularioDeleted"));
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
-        }
-    }
-
-    private void updateCurrentItem() {
-        int count = getFacade().count();
-        if (selectedItemIndex >= count) {
-            // selected index cannot be bigger than number of items:
-            selectedItemIndex = count - 1;
-            // go to previous page if last page disappeared:
-            if (pagination.getPageFirstItem() >= count) {
-                pagination.previousPage();
-            }
-        }
-        if (selectedItemIndex >= 0) {
-            current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
-        }
-    }
+    }    
 
     public DataModel getItems() {
         if (items == null) {
@@ -162,10 +126,6 @@ public class FormularioController implements Serializable {
 
     private void recreateModel() {
         items = null;
-    }
-
-    private void recreatePagination() {
-        pagination = null;
     }
 
     public String next() {
