@@ -25,37 +25,27 @@
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                         <span class="sr-only">Avaliação Digital</span>
                     </button>
-                    <a class="navbar-brand" href="index.html">Avaliação Digital</a>
+                    <div class="col-lg-2">
+                        <h:graphicImage library="images" name="logoInfnet.png" style="height: 50px" />
+                    </div>
+                    <div class="col-lg-10">
+                        <a class="navbar-brand" href="index.html">Avaliação Digital</a>
+                    </div>
                 </div>
-   
                 <ui:insert name="sidebar" >
                     <ui:include src="/template/aside.xhtml" />
                 </ui:insert>
-                <!-- /.navbar-static-side -->
             </nav>
-
             <div id="page-wrapper">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <h1 class="page-header">Dashboard</h1>
-                    </div>
-                    <!-- /.col-lg-12 -->
-                </div>
                 <div class="row">
                     <div class="col-lg-12">
                         <ui:insert name="content" >
                             <ui:include src="/template/content.xhtml" />
                         </ui:insert>
                     </div>
-
-                    <!-- /.col-lg-4 -->
                 </div>
-                <!-- /.row -->
             </div>
-            <!-- /#page-wrapper -->
-
         </div>
-        <!-- /#wrapper -->
         <ui:insert name="footer" >
             <ui:include src="/template/footer.xhtml" />
         </ui:insert>

@@ -13,7 +13,21 @@
             <h:panelGroup id="messagePanel" layout="block">
                 <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
             </h:panelGroup>
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Nova Questão</h1>
+                </div>
+            </div>
             <h:form>
+                <div class="row">
+                    <div class="col-lg-10">
+                       <h:commandLink action="#{questaoController.prepareList}" value="#{bundle.CreateQuestaoShowAllLink}" immediate="true"/>
+                    </div>
+                    <div class="col-lg-2">
+                        <h:commandLink action="#{questaoController.prepareCreate}" value="#{bundle.ListQuestaoCreateLink}" class="btn btn-primary"/>
+                    </div>
+                </div>
+                <div class="row">
                 <h:panelGrid columns="2">
                     <h:outputLabel value="#{bundle.CreateQuestaoLabel_texto}" for="texto" />
                     <h:inputText id="texto" value="#{questaoController.selected.texto}" title="#{bundle.CreateQuestaoTitle_texto}" size="50" required="true" requiredMessage="#{bundle.CreateQuestaoRequiredMessage_texto}"/>
@@ -22,14 +36,9 @@
                         <f:selectItems value="#{topicoController.itemsAvailableSelectOne}"/>
                     </h:selectOneMenu>
                 </h:panelGrid>
+                </div>
                 <br />
-                <h:commandLink action="#{questaoController.create}" value="#{bundle.CreateQuestaoSaveLink}" />
-                <br />
-                <br />
-                <h:commandLink action="#{questaoController.prepareList}" value="#{bundle.CreateQuestaoShowAllLink}" immediate="true"/>
-                <br />
-                <br />
-                <h:link outcome="/index" value="#{bundle.CreateQuestaoIndexLink}"/>
+                <h:commandLink action="#{questaoController.create}" value="#{bundle.CreateQuestaoSaveLink}"  class="btn btn-primary"/>
             </h:form>
         </ui:define>
     </ui:composition>

@@ -14,6 +14,19 @@
                 <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
             </h:panelGroup>
             <h:form>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">#{usuarioController.selected.nome}</h1>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-10">
+                        <h:commandLink action="#{usuarioController.prepareList}" value="#{bundle.ViewUsuarioShowAllLink}"/>
+                    </div>
+                    <div class="col-lg-2">
+                        <h:commandLink action="#{usuarioController.prepareCreate}" value="#{bundle.ListUsuarioCreateLink}" class="btn btn-primary"/>
+                    </div>
+                </div>
                 <h:panelGrid columns="2">
                     <h:outputText value="#{bundle.ViewUsuarioLabel_codigo}"/>
                     <h:outputText value="#{usuarioController.selected.codigo}" title="#{bundle.ViewUsuarioTitle_codigo}"/>
@@ -29,21 +42,16 @@
                     <h:outputText value="#{usuarioController.selected.login}" title="#{bundle.ViewUsuarioTitle_login}"/>
                     <h:outputText value="#{bundle.ViewUsuarioLabel_administrador1}"/>
                     <h:outputText value="#{usuarioController.selected.administrador1}" title="#{bundle.ViewUsuarioTitle_administrador1}"/>
-                    
-                </h:panelGrid>
-                <br />
-                <h:commandLink action="#{usuarioController.destroyAndView}" value="#{bundle.ViewUsuarioDestroyLink}"/>
-                <br />
-                <br />
-                <h:link outcome="Edit" value="#{bundle.ViewUsuarioEditLink}"/>
-                <br />
-                <h:commandLink action="#{usuarioController.prepareCreate}" value="#{bundle.ViewUsuarioCreateLink}" />
-                <br />
-                <h:commandLink action="#{usuarioController.prepareList}" value="#{bundle.ViewUsuarioShowAllLink}"/>
-                <br />
-                <br />
-                <h:link outcome="/index" value="#{bundle.ViewUsuarioIndexLink}"/>
 
+                </h:panelGrid>
+                <div class="row">
+                    <div class="col-lg-2">
+                        <h:commandLink  class="btn btn-outline btn-danger" action="#{usuarioController.destroyAndView}" value="#{bundle.ViewUsuarioDestroyLink}"/>
+                    </div>
+                    <div class="col-lg-10">
+                        <h:link  class="btn btn-primary" outcome="Edit" value="#{bundle.ViewUsuarioEditLink}"/>
+                    </div>
+                </div>
             </h:form>
         </ui:define>
     </ui:composition>

@@ -13,37 +13,55 @@
             <h:panelGroup id="messagePanel" layout="block">
                 <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
             </h:panelGroup>
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Novo Usuário</h1>
+                </div>
+            </div>
             <h:form>
-                <h:panelGrid columns="2">
-                    
-                    <h:outputLabel value="#{bundle.CreateUsuarioLabel_nome}" for="nome" />
-                    <h:inputText id="nome" value="#{usuarioController.selected.nome}" title="#{bundle.CreateUsuarioTitle_nome}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_nome}"/>
-                    <h:outputLabel value="#{bundle.CreateUsuarioLabel_senha}" for="senha" />
-                    <h:inputText id="senha" value="#{usuarioController.selected.senha}" title="#{bundle.CreateUsuarioTitle_senha}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_senha}"/>
-                    <h:outputLabel value="#{bundle.CreateUsuarioLabel_acesso}" for="acesso" />
-                    <h:inputText id="acesso" value="#{usuarioController.selected.acesso}" title="#{bundle.CreateUsuarioTitle_acesso}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_acesso}">
-                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
-                    </h:inputText>
-                    <h:outputLabel value="#{bundle.CreateUsuarioLabel_login}" for="login" />
-                    <h:inputText id="login" value="#{usuarioController.selected.login}" title="#{bundle.CreateUsuarioTitle_login}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_login}"/>
-                    <h:outputLabel value="#{bundle.CreateUsuarioLabel_administrador1}" for="administrador1" />
-                    <h:selectOneRadio id="administrador1" value="#{usuarioController.selected.administrador1}" title="#{bundle.CreateUsuarioTitle_administrador1}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_administrador1}">
-                        <f:selectItem itemValue="1" itemLabel="Administrador" />
-                        <f:selectItem itemValue="2" itemLabel="Aluno" />
-                       
-                </h:selectOneRadio>
-                   
-                </h:panelGrid>
-                <br />
-                <h:commandLink action="#{usuarioController.create}" value="#{bundle.CreateUsuarioSaveLink}" />
-                <br />
-                <br />
-                <h:commandLink action="#{usuarioController.prepareList}" value="#{bundle.CreateUsuarioShowAllLink}" immediate="true"/>
-                <br />
-                <br />
-                <h:link outcome="/index" value="#{bundle.CreateUsuarioIndexLink}"/>
+                <div class="row">
+                    <div class="col-lg-10">
+                        <h:commandLink action="#{usuarioController.prepareList}" value="#{bundle.CreateUsuarioShowAllLink}" immediate="true"/>
+                    </div>
+                    <div class="col-lg-2">
+                        <h:commandLink action="#{usuarioController.prepareCreate}" value="#{bundle.ListUsuarioCreateLink}" class="btn btn-primary"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <h:panelGrid>
+                        <div class="form-group">
+                            <h:outputLabel value="#{bundle.CreateUsuarioLabel_nome}" for="nome" />
+                            <h:inputText  class="form-control" id="nome" value="#{usuarioController.selected.nome}" title="#{bundle.CreateUsuarioTitle_nome}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_nome}"/>
+                        </div>
+                        <div class="form-group">
+                            <h:outputLabel value="#{bundle.CreateUsuarioLabel_senha}" for="senha" />
+                            <h:inputText  class="form-control" id="senha" value="#{usuarioController.selected.senha}" title="#{bundle.CreateUsuarioTitle_senha}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_senha}"/>
+                        </div>
+                        <div class="form-group">
+                            <h:outputLabel value="#{bundle.CreateUsuarioLabel_acesso}" for="acesso" />
+                            <h:inputText  class="form-control" id="acesso" value="#{usuarioController.selected.acesso}" title="#{bundle.CreateUsuarioTitle_acesso}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_acesso}">
+                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+                            </h:inputText>
+                        </div>
+                        <div class="form-group">
+                            <h:outputLabel value="#{bundle.CreateUsuarioLabel_login}" for="login" />
+                            <h:inputText  class="form-control" id="login" value="#{usuarioController.selected.login}" title="#{bundle.CreateUsuarioTitle_login}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_login}"/>
+                        </div>
+                        <div class="form-group">
+                            <h:outputLabel value="#{bundle.CreateUsuarioLabel_administrador1}" for="administrador1" />
+                            <h:selectOneRadio id="administrador1" value="#{usuarioController.selected.administrador1}" title="#{bundle.CreateUsuarioTitle_administrador1}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_administrador1}">
+                                <div class="checkbox">
+                                    <f:selectItem itemValue="1" itemLabel="Administrador" />
+                                </div>
+                                <div class="checkbox">
+                                    <f:selectItem itemValue="2" itemLabel="Aluno" />
+                                </div>
+                            </h:selectOneRadio>
+                        </div>
+                    </h:panelGrid>
+                </div>
+                <h:commandLink action="#{usuarioController.create}" value="#{bundle.CreateUsuarioSaveLink}" class="btn btn-primary" />
             </h:form>
         </ui:define>
     </ui:composition>
-
 </html>
