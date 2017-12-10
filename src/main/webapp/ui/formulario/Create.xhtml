@@ -23,21 +23,70 @@
             <br/><br/>
             <h:outputLabel value="#{bundle.CreateFormularioLabel_nomeModulo}" for="nomeModulo" style="text-align: left;color: black"/>
             <h:inputText id="nomeModulo" size="137" maxlength="50" value="#{formularioController.selected.nomeModulo}" title="#{bundle.CreateFormularioTitle_nomeModulo}" required="true" requiredMessage="#{bundle.CreateFormularioRequiredMessage_nomeModulo}"/>
+            <br/>
+            <br/>            
+            <h:outputText style="text-align: left;color: black" value="Por favor, preencha essa avaliação com toda atenção. Ela é muito importante para a melhoria contínua de seu curso. É através das avaliações
+que poderemos construir um curso cada vez melhor, o que é importante para você agora e para o valor de seu diploma no futuro."/>                
         </ui:define>
 
         <ui:define name="content">
-            <h:panelGroup id="messagePanel" layout="block">
-                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-            </h:panelGroup>
             <h:form>
-                <h:panelGrid columns="2">
-                    <h:outputLabel value="#{bundle.CreateFormularioLabel_codigo}" for="codigo" />
-                    <h:inputText id="codigo" value="#{formularioController.selected.codigo}" title="#{bundle.CreateFormularioTitle_codigo}" required="true" requiredMessage="#{bundle.CreateFormularioRequiredMessage_codigo}"/>
+                <h:dataTable value="#{formularioController.selected.avaliacao.topicoCollection}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border-bottom: transparent;border-top: transparent">
+                    <h:column class="topicoTitulo">
+                        <h:dataTable value="#{avaliacaoController.getQuestoesByTopicoCodigo(item.codigo)}" var="questao" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border: transparent;text-align: left" >
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="#{item.titulo}" style="font-weight:bold;font-size: 1.5em"/>
+                                </f:facet>
+                                <h:outputText value="" style="font-weight:bold"/>
+                                <h:outputText value="#{questao.texto}"/>
+                            </h:column>
+                        </h:dataTable>                                
+                            <br />
+                            <br />
+                    </h:column>                    
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Concordo Totalmente"/>
+                        </f:facet>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Concordo"/>
+                        </f:facet>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Não concordo nem discordo"/>
+                        </f:facet>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Discordo"/>
+                        </f:facet>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Discordo Totalmente"/>
+                        </f:facet>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Nao sei avaliar"/>
+                        </f:facet>
+                    </h:column>                        
+                </h:dataTable>
+                <h:panelGrid columns="1">
                     <h:outputLabel value="#{bundle.CreateFormularioLabel_comentariosSugestoes}" for="comentariosSugestoes" />
-                    <h:inputText id="comentariosSugestoes" value="#{formularioController.selected.comentariosSugestoes}" title="#{bundle.CreateFormularioTitle_comentariosSugestoes}" />
+                    <h:inputText id="comentariosSugestoes1" size="172" maxlength="166" value="#{formularioController.comentariosSugestoes[0]}" title="#{bundle.CreateFormularioTitle_comentariosSugestoes}"/>
+                    <h:inputText id="comentariosSugestoes2" size="172" maxlength="166" value="#{formularioController.comentariosSugestoes[1]}" title="#{bundle.CreateFormularioTitle_comentariosSugestoes}"/>
+                    <h:inputText id="comentariosSugestoes3" size="172" maxlength="166" value="#{formularioController.comentariosSugestoes[2]}" title="#{bundle.CreateFormularioTitle_comentariosSugestoes}"/>
                 </h:panelGrid>
                 <br />
             </h:form>
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>            
         </ui:define>
 
         <ui:define name="bottom">
