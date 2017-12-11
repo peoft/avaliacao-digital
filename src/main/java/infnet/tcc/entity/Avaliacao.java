@@ -49,7 +49,10 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Avaliacao.findByModificacao", query = "SELECT a FROM Avaliacao a WHERE a.modificacao = :modificacao")
     , @NamedQuery(name = "Avaliacao.findByTextoConvidativo", query = "SELECT a FROM Avaliacao a WHERE a.textoConvidativo = :textoConvidativo")
     , @NamedQuery(name = "Avaliacao.findByLinkPagina", query = "SELECT a FROM Avaliacao a WHERE a.linkPagina = :linkPagina")
-    , @NamedQuery(name = "Avaliacao.findByTextoDifferentFromCurrent", query = "SELECT t FROM Avaliacao t WHERE UPPER(t.id) = UPPER(:id) and t.codigo != :codigo")})
+    , @NamedQuery(name = "Avaliacao.findByTextoDifferentFromCurrent", query = "SELECT t FROM Avaliacao t WHERE UPPER(t.id) = UPPER(:id) and t.codigo != :codigo")
+    , @NamedQuery(name = "Avaliacao.getReposts", query = "SELECT a FROM Avaliacao a")
+})
+   
 public class Avaliacao implements Serializable {
 
     private static final long serialVersionUID = 1L;

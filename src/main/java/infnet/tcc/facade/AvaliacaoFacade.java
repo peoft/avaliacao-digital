@@ -6,6 +6,8 @@
 package infnet.tcc.facade;
 
 import infnet.tcc.entity.Avaliacao;
+import java.util.Collection;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -24,9 +26,10 @@ public class AvaliacaoFacade extends AbstractFacade<Avaliacao> {
     protected EntityManager getEntityManager() {
         return em;
     }
+
     public Avaliacao findById(String id) {
         return (Avaliacao) em.createNamedQuery("Avaliacao.findById").setParameter("id", id).getSingleResult();
-    }    
+    }
 
     public Avaliacao findByIdDifferentFromCurrent(String id, Integer codigo) {
         return (Avaliacao) em.createNamedQuery("Avaliacao.findByTextoDifferentFromCurrent").setParameter("id", id).setParameter("codigo", codigo).getSingleResult();
@@ -34,11 +37,22 @@ public class AvaliacaoFacade extends AbstractFacade<Avaliacao> {
 
     public Avaliacao findByCodigo(Integer codigo) {
         return (Avaliacao) em.createNamedQuery("Avaliacao.findByCodigo").setParameter("codigo", codigo).getSingleResult();
-    }    
-    
-    
+    }
+
     public AvaliacaoFacade() {
         super(Avaliacao.class);
     }
-    
+
+    public List<String> getReports() {
+        List<String> avaliacao = null;
+
+        try {
+            avaliacao = em.createNamedQuery("Avaliacao.getReposts").getResultList();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return avaliacao;
+    }
+
 }

@@ -35,6 +35,8 @@ import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.Part;
 
+import infnet.tcc.presentation.util.Excell;
+
 @Named("avaliacaoController")
 @RequestScoped
 public class AvaliacaoController implements Serializable {
@@ -59,6 +61,7 @@ public class AvaliacaoController implements Serializable {
     private Collection<String> titulos;
     private Collection<String> descricoes;
     private Integer codigo;
+    private List<String> reports;
 
     public AvaliacaoController() {
         titulos = new HashSet<>();
@@ -89,7 +92,7 @@ public class AvaliacaoController implements Serializable {
         }
         return current;
     }
-    
+
     private void setTitulosFromCollection() {
         for (Topico topico : current.getTopicoCollection()) {
             getTitulos().add(topico.getTitulo());
@@ -100,7 +103,7 @@ public class AvaliacaoController implements Serializable {
         for (Turma turma : current.getAvaliacaoTurmaCollection()) {
             getDescricoes().add(turma.getDescricao());
         }
-    }    
+    }
 
     public Collection<String> getTitulos() {
         return titulos;
@@ -148,7 +151,7 @@ public class AvaliacaoController implements Serializable {
         prepareRequestParameter("codigo");
         chosen = null;
         chosen = new Avaliacao();
-        chosen = current;        
+        chosen = current;
         return "Edit";
     }
 
@@ -168,7 +171,7 @@ public class AvaliacaoController implements Serializable {
         current = getFacade().find(codigo);
         selectedItemIndex = -1;
     }
-    
+
     public Integer getCodigo() {
         return codigo;
     }
@@ -229,7 +232,7 @@ public class AvaliacaoController implements Serializable {
 
     public void setFileData(Part fileData) {
         this.fileData = fileData;
-    }    
+    }
 
     public String create() {
         try {
@@ -297,7 +300,7 @@ public class AvaliacaoController implements Serializable {
             return null;
         }
     }
-    
+
     private boolean existsIdInDatabase(UserOperations operation) {
         boolean exists = true;
         try {
@@ -315,7 +318,7 @@ public class AvaliacaoController implements Serializable {
         }
         return exists;
     }
-    
+
     public void processFileUpload() throws IOException {
         InputStream bytes;
         bytes = fileData.getInputStream();
@@ -343,7 +346,7 @@ public class AvaliacaoController implements Serializable {
         data = data[0].split("=");
         return getAvaliacaoPath() + data[1];
     }
-    
+
     public String destroy() {
         current = (Avaliacao) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
@@ -353,8 +356,8 @@ public class AvaliacaoController implements Serializable {
             performRemoveAvaliacaoPath(getAvaliacaoPath());
             performDestroy();
         } catch (IOException e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("RemoveErrorOccurred"));            
-        }        
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("RemoveErrorOccurred"));
+        }
         recreatePagination();
         recreateModel();
         return "List";
@@ -368,8 +371,8 @@ public class AvaliacaoController implements Serializable {
             performRemoveAvaliacaoPath(getAvaliacaoPath());
             performDestroy();
         } catch (IOException e) {
-            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("RemoveErrorOccurred"));            
-        }        
+            JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("RemoveErrorOccurred"));
+        }
         recreateModel();
         updateCurrentItem();
         if (selectedItemIndex >= 0) {
@@ -509,4 +512,14 @@ public class AvaliacaoController implements Serializable {
 
     }
 
+    public void getReports() {
+
+        try {
+            Excell excel = new Excell();
+            excel.getReport(ejbFacade.getReports(), "Avaliações");
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }

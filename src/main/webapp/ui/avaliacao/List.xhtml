@@ -17,10 +17,11 @@
             </div>
             <h:form>
                 <div class="row">
-                    <div class="col-lg-10">
-                         <h:link outcome="/index" value="#{bundle.ListAvaliacaoIndexLink}"/>
+                    <div class="col-lg-8">
+                        <h:link outcome="/index" value="#{bundle.ListAvaliacaoIndexLink}"/>
                     </div>
-                    <div class="col-lg-2">
+                    <div class="col-lg-4">
+                        <h:commandLink action="#{avaliacaoController.getReports}" value="#{bundle.ListAvaliacaoTitle_importarXLS}" class="btn btn-warning"/>
                         <h:commandLink action="#{avaliacaoController.prepareCreate}" value="#{bundle.ListAvaliacaoCreateLink}" class="btn btn-primary"/>
                     </div>
                 </div>
