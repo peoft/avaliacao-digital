@@ -21,7 +21,7 @@
         <servlet-name>DynamicImageServlet</servlet-name>
         <servlet-class>infnet.tcc.servlet.DynamicImageServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
-    </servlet>    
+    </servlet>
     <servlet-mapping>
         <servlet-name>DynamicImageServlet</servlet-name>        
         <url-pattern>/upload/images/*</url-pattern>

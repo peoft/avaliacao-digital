@@ -35,10 +35,11 @@ public class FormularioController implements Serializable {
     @EJB
     private infnet.tcc.facade.AvaliacaoFacade ejbAvaliacaoFacade;
     private ArrayList<String> comentariosSugestoes;
-
+    private ArrayList<String> respostas;
 
     public FormularioController() {
         comentariosSugestoes = new ArrayList<>();
+        respostas = new ArrayList<>();
     }
 
     public Formulario getSelected() {
@@ -48,6 +49,15 @@ public class FormularioController implements Serializable {
         }
         return current;
     }
+    
+    public ArrayList<String> getRespostas() {
+        return respostas;
+    }
+
+    public void setRespostas(ArrayList<String> respostas) {
+        this.respostas = respostas;
+    }
+    
     
     public ArrayList<String> getComentariosSugestoes() {
         return comentariosSugestoes;

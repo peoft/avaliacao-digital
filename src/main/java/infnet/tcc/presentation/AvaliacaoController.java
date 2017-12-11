@@ -59,6 +59,7 @@ public class AvaliacaoController implements Serializable {
     private Collection<String> titulos;
     private Collection<String> descricoes;
     private Integer codigo;
+    private Collection<Questao> questoes;
 
     public AvaliacaoController() {
         titulos = new HashSet<>();
@@ -100,7 +101,16 @@ public class AvaliacaoController implements Serializable {
         for (Turma turma : current.getAvaliacaoTurmaCollection()) {
             getDescricoes().add(turma.getDescricao());
         }
-    }    
+    }
+    
+    public Collection<Questao> getQuestoes() {
+        return questoes;
+    }
+
+    public void setQuestoes(Collection<Questao> questoes) {
+        this.questoes = questoes;
+    }
+    
 
     public Collection<String> getTitulos() {
         return titulos;
@@ -464,7 +474,8 @@ public class AvaliacaoController implements Serializable {
         List<Integer> codigos;
         codigos = ejbTopicoFacade.findQuestaoByTopico(codigo);
         if (codigos.size() > 0) {
-            return ejbQuestaoFacade.findFromList(codigos);
+            questoes = ejbQuestaoFacade.findFromList(codigos);
+            return questoes;
         }
         return null;
     }
