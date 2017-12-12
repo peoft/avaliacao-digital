@@ -9,8 +9,16 @@
             <var>bundle</var>
         </resource-bundle>
         <resource-bundle>
-            <base-name>/avaliacaoDitigal</base-name>
-            <var>avaliacaoDitigal</var>
+            <base-name>/avaliacaoDitital</base-name>
+            <var>avaliacaoDitital</var>
         </resource-bundle>
+        <!-- managed beans of the simple hello world app -->
+        <managed-bean>
+            <managed-bean-name>index</managed-bean-name>
+            <managed-bean-class>
+                avaliacao-digital/index
+            </managed-bean-class>
+            <managed-bean-scope>request</managed-bean-scope>
+        </managed-bean>
     </application>
 </faces-config>
