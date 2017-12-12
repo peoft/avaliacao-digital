@@ -7,12 +7,12 @@ import infnet.tcc.presentation.util.PaginationHelper;
 import infnet.tcc.facade.FormularioFacade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -34,9 +34,12 @@ public class FormularioController implements Serializable {
     private int selectedItemIndex;
     @EJB
     private infnet.tcc.facade.AvaliacaoFacade ejbAvaliacaoFacade;
-
+    private ArrayList<String> comentariosSugestoes;
+    private ArrayList<String> respostas;
 
     public FormularioController() {
+        comentariosSugestoes = new ArrayList<>();
+        respostas = new ArrayList<>();
     }
 
     public Formulario getSelected() {
@@ -46,6 +49,24 @@ public class FormularioController implements Serializable {
         }
         return current;
     }
+    
+    public ArrayList<String> getRespostas() {
+        return respostas;
+    }
+
+    public void setRespostas(ArrayList<String> respostas) {
+        this.respostas = respostas;
+    }
+    
+    
+    public ArrayList<String> getComentariosSugestoes() {
+        return comentariosSugestoes;
+    }
+
+    public void setComentariosSugestoes(ArrayList<String> comentariosSugestoes) {
+        this.comentariosSugestoes = comentariosSugestoes;
+    }
+    
 
     @PostConstruct
     public void findAvaliacao() {
