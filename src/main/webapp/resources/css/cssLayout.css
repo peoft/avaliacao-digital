@@ -41,18 +41,18 @@
 
 .center_content {
     position: relative;
-    background-color: #dddddd;
+    background-color: #ffffff;
     padding: 5px;
 }
 
 .left_content {
-    background-color: #dddddd;
+    background-color: #ffffff;
     padding: 5px;
     margin-left: 170px;
 }
 
 .right_content {
-    background-color: #dddddd;
+    background-color: #ffffff;
     padding: 5px;
     margin: 0px 170px 0px 170px;
 }
@@ -73,3 +73,78 @@ input[type=text] {
     border: none;
     border-bottom: 1px solid #000000;
 }
+column {
+    background: transparent;
+    border-bottom: solid;
+    width: 100px;    
+}
+
+table.formulario th {
+    width: 100px;
+}
+
+
+.topicos {
+    width: 500px;
+}
+
+.likert1 {
+    width: 50px;
+}
+
+.likert2 {
+    width: 50px;
+}
+
+.likert3 {
+    width: 50px;
+}
+
+.likert4 {
+    width: 50px;
+}
+
+.likert5 {
+    width: 50px;
+}
+
+.naoSeiAvaliar {
+    width: 50px;
+}
+
+.form-table{
+	border-collapse:collapse;
+}
+
+.form-table-header{
+	text-align:center;
+	background:none repeat scroll 0 0 #E5E5E5;
+	border-bottom:1px solid #BBBBBB;
+	padding:16px;
+}
+
+.form-table-odd-row{
+	text-align:center;
+	background:none repeat scroll 0 0 #FFFFFFF;
+	border-top:1px solid #BBBBBB;
+}
+
+.form-table-even-row{
+	text-align:center;
+	background:none repeat scroll 0 0 #F9F9F9;
+	border-top:1px solid #BBBBBB;
+}
+
+
+table.formulario {
+    width: 100%;
+    border-collapse: collapse;    
+}
+
+table.formulario th,
+table.formulario td {
+    padding: 5px;
+    text-align: left;
+    font-family: Arial, Verdana, sans-serif;    
+}
+

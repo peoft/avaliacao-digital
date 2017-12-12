@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <ui:composition template="/formularioTemplate.xhtml">
 
@@ -23,21 +24,85 @@
             <br/><br/>
             <h:outputLabel value="#{bundle.CreateFormularioLabel_nomeModulo}" for="nomeModulo" style="text-align: left;color: black"/>
             <h:inputText id="nomeModulo" size="137" maxlength="50" value="#{formularioController.selected.nomeModulo}" title="#{bundle.CreateFormularioTitle_nomeModulo}" required="true" requiredMessage="#{bundle.CreateFormularioRequiredMessage_nomeModulo}"/>
+            <br/>
+            <br/>            
+            <h:outputText style="text-align: left;color: black" value="Por favor, preencha essa avaliação com toda atenção. Ela é muito importante para a melhoria contínua de seu curso. É através das avaliações
+                          que poderemos construir um curso cada vez melhor, o que é importante para você agora e para o valor de seu diploma no futuro."/>                
         </ui:define>
 
         <ui:define name="content">
-            <h:panelGroup id="messagePanel" layout="block">
-                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-            </h:panelGroup>
             <h:form>
-                <h:panelGrid columns="2">
-                    <h:outputLabel value="#{bundle.CreateFormularioLabel_codigo}" for="codigo" />
-                    <h:inputText id="codigo" value="#{formularioController.selected.codigo}" title="#{bundle.CreateFormularioTitle_codigo}" required="true" requiredMessage="#{bundle.CreateFormularioRequiredMessage_codigo}"/>
+                <h:dataTable value="#{formularioController.selected.avaliacao.topicoCollection}" styleClass="formulario" var="item" border="0" cellpadding="0" cellspacing="0" rules="all" columnClasses="topicos, likert1, likert2, likert3, likert4, likert5, naoSeiAvaliar">
+                    <h:column class="column">
+                        <h:dataTable value="#{avaliacaoController.getQuestoesByTopicoCodigo(item.codigo)}" var="questao" border="0" cellpadding="0" cellspacing="0" rules="all" style="text-align: left" columnClasses="topicos, likert1, likert2, likert3, likert4, likert5, naoSeiAvaliar">
+                            <h:column class="column">
+                                <f:facet name="header" class="column" >
+                                    <h:outputText value="#{item.titulo}" style="font-weight:bold;font-size: 1.5em"/>
+                                </f:facet>                                
+                                <h:outputText value="#{questao.texto}"/>
+                            </h:column>
+                            <h:column class="column">
+                                <f:facet name="header">                                
+                                    <h:outputText value="Concordo Totalmente" rendered="#{formularioController.selected.avaliacao.topicoCollection.indexOf(item) eq 0}" style="font-weight:bold;font-size: 1em"/>
+                                </f:facet>
+                                <h:selectOneRadio value="#{formularioController.respostas}" id="likert" style="border: thick">
+                                    <f:selectItem itemValue="concordoTotalmente"/>
+                                </h:selectOneRadio>                                                        
+                            </h:column>
+                            <h:column class="column">
+                                <f:facet name="header">
+                                    <h:outputText value="Concordo" rendered="#{formularioController.selected.avaliacao.topicoCollection.indexOf(item) eq 0}" style="font-weight:bold;font-size: 1em"/>
+                                </f:facet>
+                                <h:selectOneRadio value="#{formularioController.respostas}" id="likert" style="border: thick">
+                                    <f:selectItem itemValue="concordo"/>
+                                </h:selectOneRadio>                        
+                            </h:column>
+                            <h:column class="column">
+                                <f:facet name="header">
+                                    <h:outputText value="Não concordo nem discordo" rendered="#{formularioController.selected.avaliacao.topicoCollection.indexOf(item) eq 0}" style="font-weight:bold;font-size: 1em"/>
+                                </f:facet>
+                                <h:selectOneRadio value="#{formularioController.respostas}" id="likert" style="border: thick">
+                                    <f:selectItem itemValue="naoConcordoNemDiscordo"/>
+                                </h:selectOneRadio>                        
+                            </h:column>
+                            <h:column class="column">
+                                <f:facet name="header">
+                                    <h:outputText value="Discordo" rendered="#{formularioController.selected.avaliacao.topicoCollection.indexOf(item) eq 0}" style="font-weight:bold;font-size: 1em"/>
+                                </f:facet>
+                                <h:selectOneRadio value="#{formularioController.respostas}" id="likert" style="border: thick">
+                                    <f:selectItem itemValue="discordo"/>
+                                </h:selectOneRadio>
+                            </h:column>
+                            <h:column class="column">
+                                <f:facet name="header">
+                                    <h:outputText value="Discordo Totalmente" rendered="#{formularioController.selected.avaliacao.topicoCollection.indexOf(item) eq 0}" style="font-weight:bold;font-size: 1em"/>
+                                </f:facet>
+                                <h:selectOneRadio value="#{formularioController.respostas}" id="likert" style="border: thick">
+                                    <f:selectItem itemValue="discordoTotalmente"/>
+                                </h:selectOneRadio>
+                            </h:column>
+                            <h:column class="column">
+                                <f:facet name="header">
+                                    <h:outputText value="Nao sei avaliar" rendered="#{formularioController.selected.avaliacao.topicoCollection.indexOf(item) eq 0}" style="font-weight:bold;font-size: 1em"/>
+                                </f:facet>
+                                <h:selectOneRadio value="#{formularioController.respostas}" id="likert" style="border: thick">
+                                    <f:selectItem itemValue="naoSeiAvaliar"/>
+                                </h:selectOneRadio>
+                            </h:column>
+                        </h:dataTable>
+                    </h:column>
+                </h:dataTable>
+                <h:panelGrid columns="1">
                     <h:outputLabel value="#{bundle.CreateFormularioLabel_comentariosSugestoes}" for="comentariosSugestoes" />
-                    <h:inputText id="comentariosSugestoes" value="#{formularioController.selected.comentariosSugestoes}" title="#{bundle.CreateFormularioTitle_comentariosSugestoes}" />
+                    <h:inputText id="comentariosSugestoes1" size="172" maxlength="166" value="#{formularioController.comentariosSugestoes[0]}" title="#{bundle.CreateFormularioTitle_comentariosSugestoes}"/>
+                    <h:inputText id="comentariosSugestoes2" size="172" maxlength="166" value="#{formularioController.comentariosSugestoes[1]}" title="#{bundle.CreateFormularioTitle_comentariosSugestoes}"/>
+                    <h:inputText id="comentariosSugestoes3" size="172" maxlength="166" value="#{formularioController.comentariosSugestoes[2]}" title="#{bundle.CreateFormularioTitle_comentariosSugestoes}"/>
                 </h:panelGrid>
                 <br />
             </h:form>
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>            
         </ui:define>
 
         <ui:define name="bottom">
