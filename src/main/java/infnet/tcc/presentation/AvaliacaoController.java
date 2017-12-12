@@ -515,8 +515,7 @@ public class AvaliacaoController implements Serializable {
     public void getReports() {
 
         try {
-            Excell excel = new Excell();
-            excel.getReport(ejbFacade.getReports(), "Avaliações");
+            Excell.getReport(ejbFacade.getReports(), "Avaliações");
 
         } catch (Exception e) {
             System.out.println(e.getMessage());

@@ -6,8 +6,11 @@
 package infnet.tcc.facade;
 
 import infnet.tcc.entity.Avaliacao;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -43,12 +46,30 @@ public class AvaliacaoFacade extends AbstractFacade<Avaliacao> {
         super(Avaliacao.class);
     }
 
-    public List<String> getReports() {
-        List<String> avaliacao = null;
+    public Map<String, List<String>> getReports() {
+        Map<String, List<String>> avaliacao = new HashMap<>();
 
         try {
-            avaliacao = em.createNamedQuery("Avaliacao.getReposts").getResultList();
+            List<Avaliacao> avaliacoes = em.createNamedQuery("Avaliacao.getReposts", Avaliacao.class).getResultList();
 
+            
+            avaliacao.put("Id", new ArrayList<String>());
+            avaliacao.put("Código", new ArrayList<String>());
+            avaliacao.put("Objetivo", new ArrayList<String>());
+            avaliacao.put("Data Inicial", new ArrayList<String>());
+            avaliacao.put("Data Termino", new ArrayList<String>());
+            avaliacao.put("Descrição", new ArrayList<String>());
+            avaliacao.put("Link de paginas", new ArrayList<String>());
+            
+            for (Avaliacao aval : avaliacoes) {
+                avaliacao.get("Id").add(aval.getId());
+                avaliacao.get("Código").add(aval.getCodigo().toString());
+                avaliacao.get("Objetivo").add(aval.getObjetivo());
+                avaliacao.get("Data Inicial").add(aval.getInicio().toString());
+                avaliacao.get("Data Termino").add(aval.getTermino().toString());
+                avaliacao.get("Descrição").add(aval.getTextoConvidativo());
+                avaliacao.get("Link de paginas").add(aval.getLinkPagina());
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

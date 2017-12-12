@@ -1,44 +1,62 @@
 package infnet.tcc.presentation.util;
 
-import infnet.tcc.entity.Avaliacao;
 import java.io.*;
 import java.util.*;
 import jxl.*;
 import jxl.Workbook;
-import jxl.write.DateFormat;
-import jxl.write.Number;
 
 import jxl.write.*;
-import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import jxl.write.biff.RowsExceededException;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletResponse;
 
 public class Excell {
 
-    public static void getReport(List<String> reports, String filename) {
+    public static synchronized void getReport(Map<String, List<String>> reports, String filename) {
 
         if ("".equals(filename)) {
             filename = "Relatório";
         }
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpServletResponse response = (HttpServletResponse) context.getExternalContext().getResponse();
         try {
+            response.reset();
+            response.setContentType("application/vnd.ms-excel");
+            response.setHeader("Content-Disposition", "attachment; filename="+filename+".xls");
+
             WorkbookSettings ws = new WorkbookSettings();
             WritableWorkbook workbook;
-            workbook = Workbook.createWorkbook(new File(filename + ".xls"));
+
+            workbook = Workbook.createWorkbook(response.getOutputStream());
 
             WritableSheet sheet = workbook.createSheet(filename, 0);
 
-            for (int i = 0; i < reports.size(); i++) {
-                Label label = new Label(i, 0, "Test Count");
-                sheet.addCell(label);
+            int x = 0;
+            for (Map.Entry<String, List<String>> entry : reports.entrySet()) {
+                String header = entry.getKey();
+                // St celula n1
+                Label headerLabel = new Label(x, 0, header);
 
+                sheet.addCell(headerLabel);
+
+                List<String> values = entry.getValue();
+                for (int y = 0; y < values.size(); y++) {
+                    Label valueLabel = new Label(x, y + 1, values.get(y));
+
+                    sheet.addCell(valueLabel);
+                }
+
+                x++;
             }
 
             ws.setLocale(new Locale("pt", "BR"));
 
-            //pegar valores report e criar labels e e fields
             workbook.write();
             workbook.close();
+            
+            context.responseComplete();
 
         } catch (IOException | WriteException ex) {
             Logger.getLogger(Excell.class.getName()).log(Level.SEVERE, null, ex);
