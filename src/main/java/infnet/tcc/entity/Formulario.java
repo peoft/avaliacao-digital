@@ -50,7 +50,7 @@ public class Formulario implements Serializable {
     private String nomeAluno;
     @Column(name = "cpfAluno")
     private Long cpfAluno;
-    @Size(min = 1, max = 50)
+    @Size(max = 50)
     @Column(name = "nomeModulo")
     private String nomeModulo;
     @Size(max = 500)

@@ -8,6 +8,7 @@ import infnet.tcc.facade.FormularioFacade;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -34,11 +35,14 @@ public class FormularioController implements Serializable {
     private int selectedItemIndex;
     @EJB
     private infnet.tcc.facade.AvaliacaoFacade ejbAvaliacaoFacade;
-    private ArrayList<String> comentariosSugestoes;
-    private ArrayList<String> respostas;
+    private List<String> comentariosSugestoes;
+    private List<String> respostas;
 
     public FormularioController() {
-        comentariosSugestoes = new ArrayList<>();
+        comentariosSugestoes = new ArrayList<>(3);
+        for (int i=0; i <3; i++) {
+            comentariosSugestoes.add("");
+        }
         respostas = new ArrayList<>();
     }
 
@@ -50,20 +54,20 @@ public class FormularioController implements Serializable {
         return current;
     }
     
-    public ArrayList<String> getRespostas() {
+    public List<String> getRespostas() {
         return respostas;
     }
 
-    public void setRespostas(ArrayList<String> respostas) {
+    public void setRespostas(List<String> respostas) {
         this.respostas = respostas;
     }
     
     
-    public ArrayList<String> getComentariosSugestoes() {
+    public List<String> getComentariosSugestoes() {
         return comentariosSugestoes;
     }
 
-    public void setComentariosSugestoes(ArrayList<String> comentariosSugestoes) {
+    public void setComentariosSugestoes(List<String> comentariosSugestoes) {
         this.comentariosSugestoes = comentariosSugestoes;
     }
     
