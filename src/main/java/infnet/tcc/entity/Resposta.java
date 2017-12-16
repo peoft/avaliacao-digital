@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Resposta.findAll", query = "SELECT r FROM Resposta r")
-    , @NamedQuery(name = "Resposta.getReport", query = "SELECT r FROM Resposta r")
+    , @NamedQuery(name = "Resposta.getReports", query = "SELECT r FROM Resposta r")
     , @NamedQuery(name = "Resposta.findByCodigo", query = "SELECT r FROM Resposta r WHERE r.respostaPK.codigo = :codigo")
     , @NamedQuery(name = "Resposta.findByFormularioCodigo", query = "SELECT r FROM Resposta r WHERE r.respostaPK.formularioCodigo = :formularioCodigo")
     , @NamedQuery(name = "Resposta.findByResposta", query = "SELECT r FROM Resposta r WHERE r.resposta = :resposta")})
@@ -45,6 +45,9 @@ public class Resposta implements Serializable {
     @JoinColumn(name = "formularioCodigo", referencedColumnName = "codigo", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Formulario formulario;
+    @ManyToOne
+    @JoinColumn(name = "questaoCodigo")
+    private Questao questao;
 
     public Resposta() {
     }
@@ -84,6 +87,14 @@ public class Resposta implements Serializable {
 
     public void setFormulario(Formulario formulario) {
         this.formulario = formulario;
+    }
+
+    public Questao getQuestao() {
+        return questao;
+    }
+
+    public void setQuestao(Questao questao) {
+        this.questao = questao;
     }
 
     @Override

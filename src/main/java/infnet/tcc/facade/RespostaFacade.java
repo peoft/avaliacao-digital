@@ -21,7 +21,7 @@ import javax.persistence.PersistenceContext;
 @Stateless
 public class RespostaFacade extends AbstractFacade<Resposta> {
 
-    @PersistenceContext(unitName = "respostaDigitalPU")
+    @PersistenceContext(unitName = "avaliacaoDigitalPU")
     private EntityManager em;
 
     @Override
@@ -37,14 +37,24 @@ public class RespostaFacade extends AbstractFacade<Resposta> {
         Map<String, List<String>> resposta = new HashMap<>();
 
         try {
-            List<Resposta> respostas = em.createNamedQuery("Resposta.getReposts", Resposta.class).getResultList();
+            List<Resposta> respostas = em.createNamedQuery("Resposta.getReports", Resposta.class).getResultList();
 
-            resposta.put("Id", new ArrayList<String>());
-            resposta.put("Formulário", new ArrayList<String>());
+            resposta.put("Formulário ID", new ArrayList<String>());
+            resposta.put("Módulo", new ArrayList<String>());
+            resposta.put("Aluno", new ArrayList<String>());
+            resposta.put("CPF", new ArrayList<String>());
+            resposta.put("Pergunta", new ArrayList<String>());
+            resposta.put("Resposta", new ArrayList<String>());
+            resposta.put("Sugestões", new ArrayList<String>());
 
             for (Resposta resp : respostas) {
-                resposta.get("Formulário").add(resp.getFormulario().getCodigo().toString());
-                resposta.get("ID").add(resp.getResposta());
+                resposta.get("Formulário ID").add(resp.getFormulario().getCodigo().toString());
+                resposta.get("Módulo").add(resp.getFormulario().getNomeModulo());
+                resposta.get("Aluno").add(resp.getFormulario().getNomeAluno());
+                resposta.get("CPF").add(resp.getFormulario().getCpfAluno().toString());
+                resposta.get("Resposta").add(resp.getResposta());
+                resposta.get("Pergunta").add(resp.getQuestao().getTexto());
+                resposta.get("Sugestões").add(resp.getFormulario().getComentariosSugestoes());
             }
         } catch (Exception e) {
             e.printStackTrace();

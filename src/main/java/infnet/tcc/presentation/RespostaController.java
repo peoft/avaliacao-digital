@@ -242,11 +242,10 @@ public class RespostaController implements Serializable {
                 throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Resposta.class.getName());
             }
         }
+    }
 
-        public void getReports() {
-            Excell.getReport(ejbFacade.getReports());
-        }
-
+    public void getReports() {
+        Excell.getReport(ejbFacade.getReports(), "Respostas");
     }
 
 }
