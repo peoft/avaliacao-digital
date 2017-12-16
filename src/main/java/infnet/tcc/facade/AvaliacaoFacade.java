@@ -7,6 +7,8 @@ package infnet.tcc.facade;
 
 import infnet.tcc.entity.Avaliacao;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +43,10 @@ public class AvaliacaoFacade extends AbstractFacade<Avaliacao> {
         return (Avaliacao) em.createNamedQuery("Avaliacao.findByCodigo").setParameter("codigo", codigo).getSingleResult();
     }
 
+    public List<Avaliacao> findByTermino(Date termino) {
+        return (List<Avaliacao>) em.createNamedQuery("Avaliacao.findByTermino").setParameter("termino", termino).getResultList();
+    }
+
     public AvaliacaoFacade() {
         super(Avaliacao.class);
     }
@@ -51,7 +57,6 @@ public class AvaliacaoFacade extends AbstractFacade<Avaliacao> {
         try {
             List<Avaliacao> avaliacoes = em.createNamedQuery("Avaliacao.getReposts", Avaliacao.class).getResultList();
 
-            
             avaliacao.put("Id", new ArrayList<String>());
             avaliacao.put("Código", new ArrayList<String>());
             avaliacao.put("Objetivo", new ArrayList<String>());
@@ -59,7 +64,7 @@ public class AvaliacaoFacade extends AbstractFacade<Avaliacao> {
             avaliacao.put("Data Termino", new ArrayList<String>());
             avaliacao.put("Descrição", new ArrayList<String>());
             avaliacao.put("Link de paginas", new ArrayList<String>());
-            
+
             for (Avaliacao aval : avaliacoes) {
                 avaliacao.get("Id").add(aval.getId());
                 avaliacao.get("Código").add(aval.getCodigo().toString());

@@ -16,10 +16,11 @@
             </div>
             <h:form>
                 <div class="row">
-                    <div class="col-lg-8">
+                    <div class="col-lg-7">
                         <h:link outcome="/index" value="#{bundle.ListAvaliacaoIndexLink}"/>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-5">
+                        <h:commandLink action="#{avaliacaoController.enviarEmail}" value="Enviar E-mail" class="btn btn-info"/>
                         <h:commandLink action="#{avaliacaoController.getReports}" value="#{bundle.ListAvaliacaoTitle_importarXLS}" class="btn btn-warning"/>
                         <h:commandLink action="#{avaliacaoController.prepareCreate}" value="#{bundle.ListAvaliacaoCreateLink}" class="btn btn-primary"/>
                     </div>
@@ -69,33 +70,10 @@
                         </h:column>
                         <h:column>
                             <f:facet name="header">
-                                <h:outputText value="#{bundle.ListAvaliacaoTitle_logo}"/>
-                            </f:facet>
-                            <h:graphicImage value="/upload/images/?file=#{item.logoPath}"/>
-                        </h:column>
-                        <h:column>
-                            <f:facet name="header">
                                 <h:outputText value="#{bundle.ListAvaliacaoTitle_textoConvidativo}"/>
                             </f:facet>
                             <h:outputText value="#{item.textoConvidativo}"/>
                         </h:column>                        
-                        <h:column class="topicoTitulo">
-                            <f:facet name="header">
-                                <h:outputText value="#{bundle.ListAvaliacaoTitle_topicos}"/>
-                            </f:facet>
-                            <ui:repeat value="#{item.topicoCollection}" var="topico">
-                                <h:dataTable value="#{avaliacaoController.getQuestoesByTopicoCodigo(topico.codigo)}" var="questao" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
-                                    <h:column>
-                                        <f:facet name="header">
-                                            <h:outputText value="#{topico.titulo}" style="font-weight:bold"/>
-                                        </f:facet>
-                                        <h:outputText value="Questao: " style="font-weight:bold"/>
-                                        <h:outputText value="#{questao.texto}"/>
-                                    </h:column>
-                                </h:dataTable>                                
-                                <br />
-                            </ui:repeat>
-                        </h:column>
                         <h:column>
                             <f:facet name="header">
                                 <h:outputText value="#{bundle.ListAvaliacaoTitle_turmas}"/>

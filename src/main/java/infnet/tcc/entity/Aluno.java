@@ -10,7 +10,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -21,7 +20,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -51,6 +49,11 @@ public class Aluno implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "codigo")
+    private int codigo;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "cpf")
@@ -93,7 +96,7 @@ public class Aluno implements Serializable {
     @ManyToOne(optional = false)
     private Usuario usuarioCodigo;
     @JoinTable(name = "turmaAluno", joinColumns = {
-        @JoinColumn(name = "alunoCPF", referencedColumnName = "cpf")}, inverseJoinColumns = {
+        @JoinColumn(name = "alunoCodigo", referencedColumnName = "codigo")}, inverseJoinColumns = {
         @JoinColumn(name = "turmaCodigo", referencedColumnName = "codigo")
     })
     @ManyToMany(fetch = FetchType.LAZY)
@@ -116,6 +119,14 @@ public class Aluno implements Serializable {
         this.dtNascimento = dtNascimento;
         this.carteiraIdentidade = carteiraIdentidade;
         this.sexo = sexo;
+    }
+
+    public int getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
     }
 
     public Long getCpf() {
@@ -223,5 +234,5 @@ public class Aluno implements Serializable {
     public String toString() {
         return "infnet.tcc.Aluno[ cpf=" + cpf + " ]";
     }
-    
+
 }

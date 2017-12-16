@@ -1,5 +1,6 @@
 package infnet.tcc.presentation;
 
+import infnet.tcc.entity.Aluno;
 import infnet.tcc.entity.Avaliacao;
 import infnet.tcc.entity.Questao;
 import infnet.tcc.entity.Topico;
@@ -35,7 +36,19 @@ import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.Part;
 
+import javax.inject.Named;
+import java.util.Properties;
+import javax.mail.Address;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
 import infnet.tcc.presentation.util.Excell;
+import java.time.Instant;
 
 @Named("avaliacaoController")
 @RequestScoped
@@ -522,6 +535,7 @@ public class AvaliacaoController implements Serializable {
     }
 
     public void getReports() {
+
         try {
             Excell.getReport(ejbFacade.getReports(), "Avaliações");
 
@@ -529,4 +543,68 @@ public class AvaliacaoController implements Serializable {
             System.out.println(e.getMessage());
         }
     }
+
+    public void enviarEmail() {
+        try {
+            List<Avaliacao> avaliacoes = ejbFacade.findByTermino(Date.from(Instant.now()));
+            if (avaliacoes.size() > 0) {
+                Address[] toUser = null;
+
+                for (Avaliacao av : avaliacoes) {
+                    for (Turma turma : av.getAvaliacaoTurmaCollection()) {
+                        for (Aluno aluno : turma.getAlunoCollection()) {
+
+                            Properties props = new Properties();
+                            /**
+                             * Parâmetros de conexão com servidor Gmail
+                             */
+                            props.put("mail.smtp.host", "smtp.gmail.com");
+                            props.put("mail.debug", "true");
+                            props.put("mail.smtp.socketFactory.port", "465");
+                            props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+                            props.put("mail.smtp.auth", "true");
+                            props.put("mail.smtp.port", "587");
+                            props.put("mail.smtp.ssl.enable", "true");
+                            props.put("mail.smtp.starttls.enable", "true");
+
+                            Session session = Session.getInstance(props,
+                                    new javax.mail.Authenticator() {
+                                @Override
+                                protected PasswordAuthentication getPasswordAuthentication() {
+                                    return new PasswordAuthentication("engsw2017", "infnet2017");
+                                }
+                            });
+                            /**
+                             * Ativa Debug para sessão
+                             */
+                            session.setDebug(true);
+
+                            Message message = new MimeMessage(session);
+                            message.setFrom(new InternetAddress("engsw2017"));
+
+                            toUser = InternetAddress //Destinatário(s)
+                                    .parse(aluno.getEMail());
+
+                            //Remetente                                  
+                            String link = "<a href=http://localhost:8080/avaliacaoDigital/login.xhtml/faces/ui/formulario/Create.xhtml?codigo=" + av.getId() + "&" + "id=" + aluno.getCodigo() + ">Clique aqui para acessar a avaliação.</a>";
+                            message.setRecipients(Message.RecipientType.TO, toUser);
+                            message.setSubject("Avaliação do Módulo");//Assunto
+                            message.setText(link);
+
+                            /**
+                             * Método para enviar a mensagem criada
+                             */
+                            Transport.send(message);
+                        }
+
+                    }
+                }
+
+            }
+
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

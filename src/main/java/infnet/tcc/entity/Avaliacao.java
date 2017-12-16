@@ -44,7 +44,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Avaliacao.findById", query = "SELECT a FROM Avaliacao a WHERE UPPER(a.id) = UPPER(:id)")
     , @NamedQuery(name = "Avaliacao.findByObjetivo", query = "SELECT a FROM Avaliacao a WHERE a.objetivo = :objetivo")
     , @NamedQuery(name = "Avaliacao.findByInicio", query = "SELECT a FROM Avaliacao a WHERE a.inicio = :inicio")
-    , @NamedQuery(name = "Avaliacao.findByTermino", query = "SELECT a FROM Avaliacao a WHERE a.termino = :termino")
+    , @NamedQuery(name = "Avaliacao.findByTermino", query = "SELECT a FROM Avaliacao a WHERE a.termino >= :termino")
     , @NamedQuery(name = "Avaliacao.findByCriacao", query = "SELECT a FROM Avaliacao a WHERE a.criacao = :criacao")
     , @NamedQuery(name = "Avaliacao.findByModificacao", query = "SELECT a FROM Avaliacao a WHERE a.modificacao = :modificacao")
     , @NamedQuery(name = "Avaliacao.findByTextoConvidativo", query = "SELECT a FROM Avaliacao a WHERE a.textoConvidativo = :textoConvidativo")
