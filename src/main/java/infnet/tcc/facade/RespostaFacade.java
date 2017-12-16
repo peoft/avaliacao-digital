@@ -6,6 +6,10 @@
 package infnet.tcc.facade;
 
 import infnet.tcc.entity.Resposta;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -17,7 +21,7 @@ import javax.persistence.PersistenceContext;
 @Stateless
 public class RespostaFacade extends AbstractFacade<Resposta> {
 
-    @PersistenceContext(unitName = "avaliacaoDigitalPU")
+    @PersistenceContext(unitName = "respostaDigitalPU")
     private EntityManager em;
 
     @Override
@@ -28,5 +32,24 @@ public class RespostaFacade extends AbstractFacade<Resposta> {
     public RespostaFacade() {
         super(Resposta.class);
     }
-    
+
+    public Map<String, List<String>> getReports() {
+        Map<String, List<String>> resposta = new HashMap<>();
+
+        try {
+            List<Resposta> respostas = em.createNamedQuery("Resposta.getReposts", Resposta.class).getResultList();
+
+            resposta.put("Id", new ArrayList<String>());
+            resposta.put("Formulário", new ArrayList<String>());
+
+            for (Resposta resp : respostas) {
+                resposta.get("Formulário").add(resp.getFormulario().getCodigo().toString());
+                resposta.get("ID").add(resp.getResposta());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resposta;
+    }
+
 }

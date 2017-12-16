@@ -4,6 +4,7 @@ import infnet.tcc.entity.Resposta;
 import infnet.tcc.presentation.util.JsfUtil;
 import infnet.tcc.presentation.util.PaginationHelper;
 import infnet.tcc.facade.RespostaFacade;
+import infnet.tcc.presentation.util.Excell;
 
 import java.io.Serializable;
 import java.util.ResourceBundle;
@@ -240,6 +241,10 @@ public class RespostaController implements Serializable {
             } else {
                 throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Resposta.class.getName());
             }
+        }
+
+        public void getReports() {
+            Excell.getReport(ejbFacade.getReports());
         }
 
     }

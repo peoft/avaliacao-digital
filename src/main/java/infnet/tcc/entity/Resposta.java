@@ -28,6 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Resposta.findAll", query = "SELECT r FROM Resposta r")
+    , @NamedQuery(name = "Resposta.getReport", query = "SELECT r FROM Resposta r")
     , @NamedQuery(name = "Resposta.findByCodigo", query = "SELECT r FROM Resposta r WHERE r.respostaPK.codigo = :codigo")
     , @NamedQuery(name = "Resposta.findByFormularioCodigo", query = "SELECT r FROM Resposta r WHERE r.respostaPK.formularioCodigo = :formularioCodigo")
     , @NamedQuery(name = "Resposta.findByResposta", query = "SELECT r FROM Resposta r WHERE r.resposta = :resposta")})
@@ -109,5 +110,5 @@ public class Resposta implements Serializable {
     public String toString() {
         return "infnet.tcc.Resposta[ respostaPK=" + respostaPK + " ]";
     }
-    
+
 }

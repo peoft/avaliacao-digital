@@ -522,7 +522,6 @@ public class AvaliacaoController implements Serializable {
     }
 
     public void getReports() {
-
         try {
             Excell.getReport(ejbFacade.getReports(), "Avaliações");
 
