@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <h:form id="formFormulario" prependId="false">
+        <ui:composition template="../../template/formularioTemplate.xhtml">
+            <ui:define name="top">
+                <h:graphicImage class="top" value="/upload/images/?file=#{formularioController.selected.avaliacao.logoPath}" style="vertical-align: middle;text-align: left"/>
+                <h:outputLabel value="#{formularioController.selected.avaliacao.objetivo}" style="padding-left: 1em;"/>
+                <br></br>
+            </ui:define>
+
+            <ui:define name="classData">
+                <h:outputLabel value="#{bundle.CreateFormularioLabel_nomeAluno}" for="nomeAluno" style="text-align: left;color: black"/>
+                <h:inputText id="nomeAluno" size="100" maxlength="50" value="#{formularioController.selected.nomeAluno}" title="#{bundle.CreateFormularioTitle_nomeAluno}" />
+                <h:outputLabel value="#{bundle.CreateFormularioLabel_cpfAluno}" for="cpfAluno" style="text-align: left;color: black"/>
+                <h:inputText id="cpfAluno" size="30" maxlength="11" value="#{formularioController.selected.cpfAluno}" title="#{bundle.CreateFormularioTitle_cpfAluno}">
+                    <f:validateRegex pattern="[0-9]+" for="cpfAluno" />
+                </h:inputText>
+                <br/><br/>
+                <h:outputLabel value="#{bundle.CreateFormularioLabel_nomeModulo}" for="nomeModulo" style="text-align: left;color: black"/>
+                <h:inputText id="nomeModulo" size="137" maxlength="50" value="#{formularioController.selected.nomeModulo}" title="#{bundle.CreateFormularioTitle_nomeModulo}"/>
+                <br/>
+                <br/>            
+                <h:outputText style="text-align: left;color: black" value="Por favor, preencha essa avaliação com toda atenção. Ela é muito importante para a melhoria contínua de seu curso. É através das avaliações
+                              que poderemos construir um curso cada vez melhor, o que é importante para você agora e para o valor de seu diploma no futuro."/>                
+            </ui:define>
+
+            <ui:define name="content">
+
+                <script type="text/javascript">
+                    //<![CDATA[
+                    function checkAll(inputId, state) {
+                        //alert('checkAll ' + inputId + ' ' + state + ' ');
+                        if (state === true) {
+                            var idTab = inputId.substr(0, inputId.lastIndexOf(':'));
+                            //var selectedId = inputId.substr(inputId.lastIndexOf(':') + 1);
+                            // alert('selectedId ' + selectedId);
+                            //alert('idtab ' + idTab);
+                            idTab = idTab.substr(0, idTab.lastIndexOf(':'));
+                            //alert('idtab 2 ' + idTab);
+
+                            var tab = document.getElementById(idTab);
+                            if (tab === null) {
+                                // teste por causa do id do ratio button!!!
+                                // radio button inputId exemplo: j_idt8:j_idt22:0:tableData:1:naoSeiAvaliar:0
+                                // checkbox inputId     exemplo: j_idt8:j_idt22:0:tableData:0:likertDiscordoTotalmente
+                                //alert('idTab radio ' + idTab);
+                                idTab = idTab.substr(0, idTab.lastIndexOf(':'));
+                                //alert('idTab radio 2 ' + idTab);
+                                tab = document.getElementById(idTab);
+                            }
+
+                            if (tab !== null) {
+                                var rowIndex = getRowIndexOfElement(tab, inputId);
+                                //alert('index ' + rowIndex);
+                                if (rowIndex !== -1) {
+                                    var cells = tab.rows[rowIndex].cells;
+                                    for (var cell = 0; cell < cells.length; cell++) {
+                                        //alert('chk element' + cells[cell]);
+                                        var children = cells[cell].children[0];
+                                        if (children !== undefined) {
+                                            //alert('for cell - children ' + cell + ' ' + cells[cell].length + ' ' + children);
+                                            if (children instanceof HTMLInputElement === true) {
+                                                //alert('input ' + children.name + 'inputId ' + inputId);
+                                                if (children.name !== inputId) {
+                                                    children.checked = false;
+                                                }
+                                            } else if (children instanceof HTMLTableElement === true) {
+                                                var radioRows = children.rows.length;
+                                                //alert('radioRows table= ' + radioRows);
+                                                for (var radioRow = 0; radioRow < radioRows; radioRow++) {
+                                                    var radioCells = children.rows[radioRow].cells;
+                                                    //alert('radioCells table= ' + radioCells);
+                                                    //alert('radioCells table 2 = ' + radioCells.length);
+                                                    for (var radioCell = 0; radioCell < radioCells.length; radioCell++) {
+                                                        //alert('radioCell index = ' + radioCell);
+                                                        //alert('radiocells = ' + radioCells[radioCell]);
+                                                        children = radioCells[radioCell].children[0];                                                        
+                                                        //alert('children = ' + children);
+                                                        if (children !== undefined) {                                                            
+                                                            if (children instanceof HTMLInputElement === true) {
+                                                                //alert('input ' + children.name + ' inputId ' + inputId);
+                                                                //alert('input ' + children.id + ' inputId ' + inputId);
+                                                                if (children.id !== inputId) {
+                                                                    children.checked = false;
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                    //]]>
+                </script>            
+
+                <script type="text/javascript">
+                    //<![CDATA[                    
+                    function getRowIndexOfElement(tab, element) {
+                        var index = -1;
+                        // alert('inicio ' + tab + ' ' + element);
+                        for (var row = 0; row < tab.rows.length; row++) {
+                            //alert('for row ' + row + ' ' + tab.rows[row].cells.length);
+                            var cells = tab.rows[row].cells;
+                            for (var cell = 0; cell < cells.length; cell++) {
+                                var children = cells[cell].children[0];
+                                if (children !== undefined) {
+                                    //alert('for cell - children ' + cell + ' ' + cells[cell].length + ' ' + children);
+                                    if (children instanceof HTMLInputElement === true) {
+                                        //alert('name input = ' + children.name + ' element ' + element);
+                                        //alert('name input id = ' + children.id + ' element ' + element);
+                                        // children.name para checkbox.
+                                        // children.id para radio button.
+                                        if (children.name === element ||
+                                                children.id === element) {
+                                            //alert('encontrou' );
+                                            index = row;
+                                            row = tab.rows.length;
+                                            break;
+                                        }
+                                    } else if (children instanceof HTMLTableElement === true) {
+                                        //alert('name table= ' + children.id + ' element ' + element);
+                                        index = getRowIndexOfElement(children, element);
+                                        if (index !== -1) {
+                                            index = row;
+                                            row = tab.rows.length;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        return index;
+                    }
+                    //]]>
+                </script>                
+
+
+
+                <h:dataTable  value="#{formularioController.selected.avaliacao.topicoCollection}" styleClass="formulario" var="topico" border="0" cellpadding="0" cellspacing="0" rules="all" columnClasses="topicos, likert1, likert2, likert3, likert4, likert5, naoSeiAvaliar">
+                    <h:column class="column">
+                        <h:dataTable id="tableData" value="#{avaliacaoController.getQuestoesByTopicoCodigo(topico.codigo)}" var="questao" border="0" cellpadding="0" cellspacing="0" rules="all" style="text-align: left" columnClasses="topicos, likert1, likert2, likert3, likert4, likert5, naoSeiAvaliar">
+                            <h:column class="column">
+                                <f:facet name="header" class="column" >
+                                    <h:outputText value="#{topico.titulo}" style="font-weight:bold;font-size: 1.5em"/>
+                                </f:facet>
+                                <h:outputText value="#{questao.texto}"/>
+                            </h:column>
+                            <h:column class="column" >
+                                <f:facet name="header">                                
+                                    <h:outputText value="Concordo Totalmente" rendered="#{formularioController.selected.avaliacao.topicoCollection.indexOf(topico) eq 0}" style="font-weight:bold;font-size: 1em"/>
+                                </f:facet>
+                                <h:selectBooleanCheckbox id="likertConcordoTotalmente" value="#{formularioController.concordoTotalmente}"
+                                                         onchange="checkAll(this.id, this.checked);"/>
+                            </h:column>
+                            <h:column class="column">
+                                <f:facet name="header">
+                                    <h:outputText value="Concordo" rendered="#{formularioController.selected.avaliacao.topicoCollection.indexOf(topico) eq 0}" style="font-weight:bold;font-size: 1em" />
+                                </f:facet>
+                                <h:selectBooleanCheckbox id="likertConcordo" value="#{formularioController.concordo}"
+                                                         onchange="checkAll(this.id, this.checked);"/>
+                            </h:column>
+                            <h:column class="column">
+                                <f:facet name="header">
+                                    <h:outputText value="Não concordo nem discordo" rendered="#{formularioController.selected.avaliacao.topicoCollection.indexOf(topico) eq 0}" style="font-weight:bold;font-size: 1em"/>
+                                </f:facet>
+                                <h:selectBooleanCheckbox id="likertNaoConcordoNemDiscordo" value="#{formularioController.naoConcordoNemDiscordo}"
+                                                         onchange="checkAll(this.id, this.checked);"/>
+
+                            </h:column>
+                            <h:column class="column">
+                                <f:facet name="header">
+                                    <h:outputText value="Discordo" rendered="#{formularioController.selected.avaliacao.topicoCollection.indexOf(topico) eq 0}" style="font-weight:bold;font-size: 1em"/>
+                                </f:facet>
+                                <h:selectBooleanCheckbox id="likertDiscordo" value="#{formularioController.discordo}"
+                                                         onchange="checkAll(this.id, this.checked);"/>                                
+                            </h:column>
+                            <h:column class="column">
+                                <f:facet name="header">
+                                    <h:outputText value="Discordo Totalmente" rendered="#{formularioController.selected.avaliacao.topicoCollection.indexOf(topico) eq 0}" style="font-weight:bold;font-size: 1em"/>
+                                </f:facet>
+                                <h:selectBooleanCheckbox id="likertDiscordoTotalmente" value="#{formularioController.discordoTotalmente}"
+                                                         onchange="checkAll(this.id, this.checked);"/>                                
+                            </h:column>
+                            <h:column class="column">
+                                <f:facet name="header">
+                                    <h:outputText value="Nao sei avaliar" rendered="#{formularioController.selected.avaliacao.topicoCollection.indexOf(topico) eq 0}" style="font-weight:bold;font-size: 1em"/>
+                                </f:facet>
+                                <h:selectOneRadio id="naoSeiAvaliar" value="#{formularioController.naoConcordoNemDiscordo}" style="border: thick" required="true" 
+                                                  onchange="checkAll(this.id, this.checked);">
+                                    <f:selectItem itemValue="NaoSeiAvaliar"/>
+                                </h:selectOneRadio>
+                            </h:column>
+                        </h:dataTable>
+                    </h:column>            
+                </h:dataTable>
+                <h:panelGrid columns="1">
+                    <h:outputLabel value="#{bundle.CreateFormularioLabel_comentariosSugestoes}" />
+                    <h:inputText id="comentariosSugestoes1" size="172" maxlength="166" value="#{formularioController.comentariosSugestoes[0]}" title="#{bundle.CreateFormularioTitle_comentariosSugestoes}"/>
+                    <h:inputText id="comentariosSugestoes2" size="172" maxlength="166" value="#{formularioController.comentariosSugestoes[1]}" title="#{bundle.CreateFormularioTitle_comentariosSugestoes}"/>
+                    <h:inputText id="comentariosSugestoes3" size="172" maxlength="166" value="#{formularioController.comentariosSugestoes[2]}" title="#{bundle.CreateFormularioTitle_comentariosSugestoes}"/>
+                </h:panelGrid>
+                <br />
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>            
+            </ui:define>
+
+            <ui:define name="bottom">
+                <h:commandLink action="#{formularioController.create}" value="#{bundle.CreateFormularioSaveLink}" />
+            </ui:define>
+
+        </ui:composition>
+    </h:form>
+
+</html>
+

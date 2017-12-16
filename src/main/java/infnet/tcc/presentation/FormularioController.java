@@ -22,7 +22,6 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 
-
 @Named("formularioController")
 @RequestScoped
 public class FormularioController implements Serializable {
@@ -37,13 +36,71 @@ public class FormularioController implements Serializable {
     private infnet.tcc.facade.AvaliacaoFacade ejbAvaliacaoFacade;
     private List<String> comentariosSugestoes;
     private List<String> respostas;
+    private Integer alunoCodigo;
+    private Boolean concordoTotalmente;
+    private Boolean concordo;
+    private Boolean naoConcordoNemDiscordo;
+    private Boolean discordo;
+    private Boolean discordoTotalmente;
+    private Boolean naoSeiAvaliar;
+
+    public Boolean getNaoConcordoNemDiscordo() {
+        return naoConcordoNemDiscordo;
+    }
+
+    public void setNaoConcordoNemDiscordo(Boolean naoConcordoNemDiscordo) {
+        this.naoConcordoNemDiscordo = naoConcordoNemDiscordo;
+    }
+
+    public Boolean getDiscordo() {
+        return discordo;
+    }
+
+    public void setDiscordo(Boolean discordo) {
+        this.discordo = discordo;
+    }
+
+    public Boolean getDiscordoTotalmente() {
+        return discordoTotalmente;
+    }
+
+    public void setDiscordoTotalmente(Boolean discordoTotalmente) {
+        this.discordoTotalmente = discordoTotalmente;
+    }
+
+    public Boolean getNaoSeiAvaliar() {
+        return naoSeiAvaliar;
+    }
+
+    public void setNaoSeiAvaliar(Boolean naoSeiAvaliar) {
+        this.naoSeiAvaliar = naoSeiAvaliar;
+    }
+    
+
+    public Boolean getConcordo() {
+        return concordo;
+    }
+
+    public void setConcordo(Boolean concordo) {
+        this.concordo = concordo;
+    }
+
+    public Integer getAlunoCodigo() {
+        return alunoCodigo;
+    }
+
+    public void setAlunoCodigo(Integer alunoCodigo) {
+        this.alunoCodigo = alunoCodigo;
+    }
 
     public FormularioController() {
         comentariosSugestoes = new ArrayList<>(3);
-        for (int i=0; i <3; i++) {
+        for (int i = 0; i < 3; i++) {
             comentariosSugestoes.add("");
         }
         respostas = new ArrayList<>();
+        concordoTotalmente = new Boolean(false);
+        concordo = new Boolean(false);
     }
 
     public Formulario getSelected() {
@@ -53,7 +110,15 @@ public class FormularioController implements Serializable {
         }
         return current;
     }
-    
+
+    public Boolean getConcordoTotalmente() {
+        return concordoTotalmente;
+    }
+
+    public void setConcordoTotalmente(Boolean concordoTotalmente) {
+        this.concordoTotalmente = concordoTotalmente;
+    }
+
     public List<String> getRespostas() {
         return respostas;
     }
@@ -61,8 +126,7 @@ public class FormularioController implements Serializable {
     public void setRespostas(List<String> respostas) {
         this.respostas = respostas;
     }
-    
-    
+
     public List<String> getComentariosSugestoes() {
         return comentariosSugestoes;
     }
@@ -70,21 +134,33 @@ public class FormularioController implements Serializable {
     public void setComentariosSugestoes(List<String> comentariosSugestoes) {
         this.comentariosSugestoes = comentariosSugestoes;
     }
-    
 
     @PostConstruct
     public void findAvaliacao() {
-        String requestParameter = JsfUtil.getRequestParameter("codigo");
-        Integer codigo = null;
-        if (requestParameter != null && !requestParameter.isEmpty()) {
-            codigo = new Integer(requestParameter);
-        }
+        Integer codigo = (Integer) getParameter("codigo");
         if (codigo != null) {
             Avaliacao avaliacao = ejbAvaliacaoFacade.find(codigo);
             getSelected();
             current.setAvaliacao(avaliacao);
         }
-    }    
+        setAlunoCodigo();
+    }
+
+    private void setAlunoCodigo() {
+        Integer codigo = (Integer) getParameter("id");
+        if (codigo != null) {
+            alunoCodigo = codigo;
+        }
+    }
+
+    private Object getParameter(String parameter) {
+        String requestParameter = JsfUtil.getRequestParameter(parameter);
+        Integer codigo = null;
+        if (requestParameter != null && !requestParameter.isEmpty()) {
+            codigo = new Integer(requestParameter);
+        }
+        return codigo;
+    }
 
     private FormularioFacade getFacade() {
         return ejbFacade;
@@ -140,7 +216,7 @@ public class FormularioController implements Serializable {
         current = (Formulario) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "Edit";
-    }    
+    }
 
     public DataModel getItems() {
         if (items == null) {

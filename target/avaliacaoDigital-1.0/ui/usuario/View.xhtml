@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="../../template/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewUsuarioTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="content">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">#{usuarioController.selected.nome}</h1>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-10">
+                        <h:commandLink action="#{usuarioController.prepareList}" value="#{bundle.ViewUsuarioShowAllLink}"/>
+                    </div>
+                    <div class="col-lg-2">
+                        <h:commandLink action="#{usuarioController.prepareCreate}" value="#{bundle.ListUsuarioCreateLink}" class="btn btn-primary"/>
+                    </div>
+                </div>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewUsuarioLabel_codigo}"/>
+                    <h:outputText value="#{usuarioController.selected.codigo}" title="#{bundle.ViewUsuarioTitle_codigo}"/>
+                    <h:outputText value="#{bundle.ViewUsuarioLabel_nome}"/>
+                    <h:outputText value="#{usuarioController.selected.nome}" title="#{bundle.ViewUsuarioTitle_nome}"/>
+                    <h:outputText value="#{bundle.ViewUsuarioLabel_senha}"/>
+                    <h:outputText value="#{usuarioController.selected.senha}" title="#{bundle.ViewUsuarioTitle_senha}"/>
+                    <h:outputText value="#{bundle.ViewUsuarioLabel_acesso}"/>
+                    <h:outputText value="#{usuarioController.selected.acesso}" title="#{bundle.ViewUsuarioTitle_acesso}">
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:outputText>
+                    <h:outputText value="#{bundle.ViewUsuarioLabel_login}"/>
+                    <h:outputText value="#{usuarioController.selected.login}" title="#{bundle.ViewUsuarioTitle_login}"/>
+                    <h:outputText value="#{bundle.ViewUsuarioLabel_administrador1}"/>
+                    <h:outputText value="#{usuarioController.selected.administrador1}" title="#{bundle.ViewUsuarioTitle_administrador1}"/>
+
+                </h:panelGrid>
+                <div class="row">
+                    <div class="col-lg-2">
+                        <h:commandLink  class="btn btn-outline btn-danger" action="#{usuarioController.destroyAndView}" value="#{bundle.ViewUsuarioDestroyLink}"/>
+                    </div>
+                    <div class="col-lg-10">
+                        <h:link  class="btn btn-primary" outcome="Edit" value="#{bundle.ViewUsuarioEditLink}"/>
+                    </div>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>
