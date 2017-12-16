@@ -6,6 +6,7 @@
 package infnet.tcc.facade;
 
 import infnet.tcc.entity.Resposta;
+import infnet.tcc.entity.Turma;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,8 +47,15 @@ public class RespostaFacade extends AbstractFacade<Resposta> {
             resposta.put("Pergunta", new ArrayList<String>());
             resposta.put("Resposta", new ArrayList<String>());
             resposta.put("Sugestões", new ArrayList<String>());
+            resposta.put("Professor", new ArrayList<String>());
 
             for (Resposta resp : respostas) {
+
+                String professor = "";
+                for (Turma turma : resp.getFormulario().getAvaliacao().getAvaliacaoTurmaCollection()) {
+
+                    professor = turma.getProfessorCodigo().getNome();
+                }
                 resposta.get("Formulário ID").add(resp.getFormulario().getCodigo().toString());
                 resposta.get("Módulo").add(resp.getFormulario().getNomeModulo());
                 resposta.get("Aluno").add(resp.getFormulario().getNomeAluno());
@@ -55,6 +63,7 @@ public class RespostaFacade extends AbstractFacade<Resposta> {
                 resposta.get("Resposta").add(resp.getResposta());
                 resposta.get("Pergunta").add(resp.getQuestao().getTexto());
                 resposta.get("Sugestões").add(resp.getFormulario().getComentariosSugestoes());
+                resposta.get("Professor").add(professor);
             }
         } catch (Exception e) {
             e.printStackTrace();
