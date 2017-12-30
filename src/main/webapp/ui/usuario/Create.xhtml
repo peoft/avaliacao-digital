@@ -35,21 +35,15 @@
                         </div>
                         <div class="form-group">
                             <h:outputLabel value="#{bundle.CreateUsuarioLabel_senha}" for="senha" />
-                            <h:inputText  class="form-control" id="senha" value="#{usuarioController.selected.senha}" title="#{bundle.CreateUsuarioTitle_senha}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_senha}"/>
-                        </div>
-                        <div class="form-group">
-                            <h:outputLabel value="#{bundle.CreateUsuarioLabel_acesso}" for="acesso" />
-                            <h:inputText  class="form-control" id="acesso" value="#{usuarioController.selected.acesso}" title="#{bundle.CreateUsuarioTitle_acesso}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_acesso}">
-                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
-                            </h:inputText>
+                            <h:inputSecret  class="form-control" id="senha" value="#{usuarioController.selected.senha}" title="#{bundle.CreateUsuarioTitle_senha}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_senha}"/>
                         </div>
                         <div class="form-group">
                             <h:outputLabel value="#{bundle.CreateUsuarioLabel_login}" for="login" />
                             <h:inputText  class="form-control" id="login" value="#{usuarioController.selected.login}" title="#{bundle.CreateUsuarioTitle_login}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_login}"/>
                         </div>
                         <div class="form-group">
-                            <h:outputLabel value="#{bundle.CreateUsuarioLabel_administrador1}" for="administrador1" />
-                            <h:selectOneRadio id="administrador1" value="#{usuarioController.selected.administrador1}" title="#{bundle.CreateUsuarioTitle_administrador1}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_administrador1}">
+                            <h:outputLabel value="#{bundle.CreateUsuarioLabel_administrador}" for="administrador" />
+                            <h:selectOneRadio id="administrador" value="#{usuarioController.selected.administrador1}" title="#{bundle.CreateUsuarioTitle_administrador1}" required="true" requiredMessage="#{bundle.CreateUsuarioRequiredMessage_administrador1}">
                                 <div class="checkbox">
                                     <f:selectItem itemValue="1" itemLabel="Administrador" />
                                 </div>

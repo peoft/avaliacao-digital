@@ -122,7 +122,7 @@ public class Questao implements Serializable {
     public void setTopicoCollection(Collection<Topico> topicoCollection) {
         this.topicoCollection = topicoCollection;
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;

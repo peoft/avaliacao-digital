@@ -2,17 +2,21 @@ package infnet.tcc.presentation;
 
 import infnet.tcc.entity.Avaliacao;
 import infnet.tcc.entity.Formulario;
+import infnet.tcc.entity.Questao;
+import infnet.tcc.entity.Topico;
 import infnet.tcc.presentation.util.JsfUtil;
 import infnet.tcc.presentation.util.PaginationHelper;
 import infnet.tcc.facade.FormularioFacade;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -23,7 +27,7 @@ import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 
 @Named("formularioController")
-@RequestScoped
+@SessionScoped
 public class FormularioController implements Serializable {
 
     private Formulario current;
@@ -35,54 +39,46 @@ public class FormularioController implements Serializable {
     @EJB
     private infnet.tcc.facade.AvaliacaoFacade ejbAvaliacaoFacade;
     private List<String> comentariosSugestoes;
-    private List<String> respostas;
     private Integer alunoCodigo;
-    private Boolean concordoTotalmente;
-    private Boolean concordo;
-    private Boolean naoConcordoNemDiscordo;
-    private Boolean discordo;
-    private Boolean discordoTotalmente;
-    private Boolean naoSeiAvaliar;
+    private Integer avaliacaoCodigo;
+    private Avaliacao avaliacao;
+    private static Collection<FormularioResposta> respostas;
+    @EJB
+    private infnet.tcc.facade.TopicoFacade ejbTopicoFacade;
+    @EJB
+    private infnet.tcc.facade.QuestaoFacade ejbQuestaoFacade;
 
-    public Boolean getNaoConcordoNemDiscordo() {
-        return naoConcordoNemDiscordo;
+    public FormularioController() {
+        if (comentariosSugestoes == null) {
+            comentariosSugestoes = new ArrayList<>(3);
+            for (int i = 0; i < 3; i++) {
+                comentariosSugestoes.add("");
+            }
+        }
     }
 
-    public void setNaoConcordoNemDiscordo(Boolean naoConcordoNemDiscordo) {
-        this.naoConcordoNemDiscordo = naoConcordoNemDiscordo;
+    public Collection<FormularioResposta> getRespostas() {
+        return respostas;
     }
 
-    public Boolean getDiscordo() {
-        return discordo;
+    public void setRespostas(Collection<FormularioResposta> respostas) {
+        this.respostas = respostas;
     }
 
-    public void setDiscordo(Boolean discordo) {
-        this.discordo = discordo;
+    public Integer getAvaliacaoCodigo() {
+        return avaliacaoCodigo;
     }
 
-    public Boolean getDiscordoTotalmente() {
-        return discordoTotalmente;
+    public void setAvaliacaoCodigo(Integer avaliacaoCodigo) {
+        this.avaliacaoCodigo = avaliacaoCodigo;
     }
 
-    public void setDiscordoTotalmente(Boolean discordoTotalmente) {
-        this.discordoTotalmente = discordoTotalmente;
+    public Avaliacao getAvaliacao() {
+        return avaliacao;
     }
 
-    public Boolean getNaoSeiAvaliar() {
-        return naoSeiAvaliar;
-    }
-
-    public void setNaoSeiAvaliar(Boolean naoSeiAvaliar) {
-        this.naoSeiAvaliar = naoSeiAvaliar;
-    }
-    
-
-    public Boolean getConcordo() {
-        return concordo;
-    }
-
-    public void setConcordo(Boolean concordo) {
-        this.concordo = concordo;
+    public void setAvaliacao(Avaliacao avaliacao) {
+        avaliacao = avaliacao;
     }
 
     public Integer getAlunoCodigo() {
@@ -93,38 +89,12 @@ public class FormularioController implements Serializable {
         this.alunoCodigo = alunoCodigo;
     }
 
-    public FormularioController() {
-        comentariosSugestoes = new ArrayList<>(3);
-        for (int i = 0; i < 3; i++) {
-            comentariosSugestoes.add("");
-        }
-        respostas = new ArrayList<>();
-        concordoTotalmente = new Boolean(false);
-        concordo = new Boolean(false);
-    }
-
     public Formulario getSelected() {
         if (current == null) {
             current = new Formulario();
             selectedItemIndex = -1;
         }
         return current;
-    }
-
-    public Boolean getConcordoTotalmente() {
-        return concordoTotalmente;
-    }
-
-    public void setConcordoTotalmente(Boolean concordoTotalmente) {
-        this.concordoTotalmente = concordoTotalmente;
-    }
-
-    public List<String> getRespostas() {
-        return respostas;
-    }
-
-    public void setRespostas(List<String> respostas) {
-        this.respostas = respostas;
     }
 
     public List<String> getComentariosSugestoes() {
@@ -142,8 +112,33 @@ public class FormularioController implements Serializable {
             Avaliacao avaliacao = ejbAvaliacaoFacade.find(codigo);
             getSelected();
             current.setAvaliacao(avaliacao);
+            this.setAvaliacao(avaliacao);
+            this.setAvaliacaoCodigo(codigo);
         }
         setAlunoCodigo();
+        setCodigoQuestoesFromAvaliacao();
+    }
+
+    private void setCodigoQuestoesFromAvaliacao() {
+        if (current != null) {
+            if (respostas != null) {
+                respostas = null;
+            }
+
+            respostas = new ArrayList<>();
+            if (current != null) {
+                Avaliacao avaliacao = current.getAvaliacao();
+
+                for (Topico topico : avaliacao.getTopicoCollection()) {
+                    Collection<Questao> questoes = getQuestoesByTopicoCodigo(topico.getCodigo());
+                    for (Questao questao : questoes) {
+    //                    codigoQuestoes.add(questao.getCodigo());
+                        FormularioResposta resposta = new FormularioResposta(topico.getCodigo(), questao.getCodigo(), questao.getTexto(), Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE);
+                        respostas.add(resposta);
+                    }
+                }
+            }            
+        }
     }
 
     private void setAlunoCodigo() {
@@ -211,6 +206,17 @@ public class FormularioController implements Serializable {
             return null;
         }
     }
+    
+    public Collection<FormularioResposta> getRespostasForTopico(Integer codigo) {
+        Collection<FormularioResposta> respostasTopico = new ArrayList<>();
+        for (FormularioResposta resposta: respostas ) {
+            if (resposta.getTopicoCodigo() == codigo) {                
+                respostasTopico.add(resposta);
+            }
+        }
+        return respostasTopico;
+    }
+    
 
     public String prepareEdit() {
         current = (Formulario) getItems().getRowData();
@@ -241,6 +247,9 @@ public class FormularioController implements Serializable {
         return "List";
     }
 
+//    public SelectItem[] getItemsFromConcordoTotalmente() {
+//        return JsfUtil.getSelectItems(Arrays.asList(concordoTotalmente.values()), false);        
+//    }
     public SelectItem[] getItemsAvailableSelectMany() {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), false);
     }
@@ -251,6 +260,17 @@ public class FormularioController implements Serializable {
 
     public Formulario getFormulario(java.lang.Integer id) {
         return ejbFacade.find(id);
+    }
+
+    public Collection<Questao> getQuestoesByTopicoCodigo(Integer codigo) {
+        List<Integer> codigos;
+        codigos = ejbTopicoFacade.findQuestaoByTopico(codigo);
+        if (codigos.size() > 0) {
+            List<Questao> questoes = ejbQuestaoFacade.findFromList(codigos);
+            return questoes;
+        }
+        return null;
+
     }
 
     @FacesConverter(forClass = Formulario.class)

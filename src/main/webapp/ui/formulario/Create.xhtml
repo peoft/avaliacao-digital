@@ -6,7 +6,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
-    <h:form id="formFormulario" prependId="false">
+    <h:form id="formFormulario">
         <ui:composition template="../../template/formularioTemplate.xhtml">
             <ui:define name="top">
                 <h:graphicImage class="top" value="/upload/images/?file=#{formularioController.selected.avaliacao.logoPath}" style="vertical-align: middle;text-align: left"/>
@@ -80,9 +80,9 @@
                                                     for (var radioCell = 0; radioCell < radioCells.length; radioCell++) {
                                                         //alert('radioCell index = ' + radioCell);
                                                         //alert('radiocells = ' + radioCells[radioCell]);
-                                                        children = radioCells[radioCell].children[0];                                                        
+                                                        children = radioCells[radioCell].children[0];
                                                         //alert('children = ' + children);
-                                                        if (children !== undefined) {                                                            
+                                                        if (children !== undefined) {
                                                             if (children instanceof HTMLInputElement === true) {
                                                                 //alert('input ' + children.name + ' inputId ' + inputId);
                                                                 //alert('input ' + children.id + ' inputId ' + inputId);
@@ -145,60 +145,64 @@
                     //]]>
                 </script>                
 
-
-
                 <h:dataTable  value="#{formularioController.selected.avaliacao.topicoCollection}" styleClass="formulario" var="topico" border="0" cellpadding="0" cellspacing="0" rules="all" columnClasses="topicos, likert1, likert2, likert3, likert4, likert5, naoSeiAvaliar">
                     <h:column class="column">
-                        <h:dataTable id="tableData" value="#{avaliacaoController.getQuestoesByTopicoCodigo(topico.codigo)}" var="questao" border="0" cellpadding="0" cellspacing="0" rules="all" style="text-align: left" columnClasses="topicos, likert1, likert2, likert3, likert4, likert5, naoSeiAvaliar">
+                        <h:dataTable id="tableData" value="#{formularioController.getRespostasForTopico(topico.codigo)}" var="resposta" border="0" cellpadding="0" cellspacing="0" rules="all" style="text-align: left" columnClasses="topicos, likert1, likert2, likert3, likert4, likert5, naoSeiAvaliar">
                             <h:column class="column">
                                 <f:facet name="header" class="column" >
-                                    <h:outputText value="#{topico.titulo}" style="font-weight:bold;font-size: 1.5em"/>
+                                    <h:outputText value="#{topico.titulo}" style="font-weight:bold;font-size: 1.5em"/>                                    
                                 </f:facet>
-                                <h:outputText value="#{questao.texto}"/>
+                                <h:outputText value="#{resposta.questaoTexto}" rendered="#{resposta.topicoCodigo eq topico.codigo}"/>
                             </h:column>
-                            <h:column class="column" >
-                                <f:facet name="header">                                
+
+                            <h:column class="column">
+                                <f:facet name="header">
                                     <h:outputText value="Concordo Totalmente" rendered="#{formularioController.selected.avaliacao.topicoCollection.indexOf(topico) eq 0}" style="font-weight:bold;font-size: 1em"/>
                                 </f:facet>
-                                <h:selectBooleanCheckbox id="likertConcordoTotalmente" value="#{formularioController.concordoTotalmente}"
-                                                         onchange="checkAll(this.id, this.checked);"/>
+                                <h:selectBooleanCheckbox id="likertConcordoTotalmente" onchange="checkAll(this.id, this.checked)" 
+                                                         value="#{resposta.concordoTotalmente}" >
+                                </h:selectBooleanCheckbox>
                             </h:column>
+
                             <h:column class="column">
                                 <f:facet name="header">
                                     <h:outputText value="Concordo" rendered="#{formularioController.selected.avaliacao.topicoCollection.indexOf(topico) eq 0}" style="font-weight:bold;font-size: 1em" />
                                 </f:facet>
-                                <h:selectBooleanCheckbox id="likertConcordo" value="#{formularioController.concordo}"
-                                                         onchange="checkAll(this.id, this.checked);"/>
+                                <h:selectBooleanCheckbox id="likertConcordo" required="true" requiredMessage="Bundle.CreateFormularioRequiredMessageResposta"
+                                                         onchange="checkAll(this.id, this.checked);" value="#{resposta.concordo}" rendered="#{resposta.topicoCodigo eq topico.codigo}"/>
                             </h:column>
+
                             <h:column class="column">
                                 <f:facet name="header">
                                     <h:outputText value="Não concordo nem discordo" rendered="#{formularioController.selected.avaliacao.topicoCollection.indexOf(topico) eq 0}" style="font-weight:bold;font-size: 1em"/>
                                 </f:facet>
-                                <h:selectBooleanCheckbox id="likertNaoConcordoNemDiscordo" value="#{formularioController.naoConcordoNemDiscordo}"
-                                                         onchange="checkAll(this.id, this.checked);"/>
-
+                                <h:selectBooleanCheckbox id="likertNaoConcordoNemDiscordo" required="true" requiredMessage="Bundle.CreateFormularioRequiredMessageResposta"
+                                                         onchange="checkAll(this.id, this.checked);" value="#{resposta.naoConcordoNemDiscordo}" rendered="#{resposta.topicoCodigo eq topico.codigo}"/>
                             </h:column>
+
                             <h:column class="column">
                                 <f:facet name="header">
                                     <h:outputText value="Discordo" rendered="#{formularioController.selected.avaliacao.topicoCollection.indexOf(topico) eq 0}" style="font-weight:bold;font-size: 1em"/>
                                 </f:facet>
-                                <h:selectBooleanCheckbox id="likertDiscordo" value="#{formularioController.discordo}"
-                                                         onchange="checkAll(this.id, this.checked);"/>                                
+                                <h:selectBooleanCheckbox id="likertDiscordo" required="true"  requiredMessage="Bundle.CreateFormularioRequiredMessageResposta"
+                                                         onchange="checkAll(this.id, this.checked);" value="#{resposta.discordo}" rendered="#{resposta.topicoCodigo eq topico.codigo}"/>
                             </h:column>
+
                             <h:column class="column">
                                 <f:facet name="header">
                                     <h:outputText value="Discordo Totalmente" rendered="#{formularioController.selected.avaliacao.topicoCollection.indexOf(topico) eq 0}" style="font-weight:bold;font-size: 1em"/>
                                 </f:facet>
-                                <h:selectBooleanCheckbox id="likertDiscordoTotalmente" value="#{formularioController.discordoTotalmente}"
-                                                         onchange="checkAll(this.id, this.checked);"/>                                
+                                <h:selectBooleanCheckbox id="likertDiscordoTotalmente" required="true"  requiredMessage="Bundle.CreateFormularioRequiredMessageResposta"
+                                                         onchange="checkAll(this.id, this.checked);" value="#{resposta.discordoTotalmente}" rendered="#{resposta.topicoCodigo eq topico.codigo}"/>
                             </h:column>
+
                             <h:column class="column">
                                 <f:facet name="header">
                                     <h:outputText value="Nao sei avaliar" rendered="#{formularioController.selected.avaliacao.topicoCollection.indexOf(topico) eq 0}" style="font-weight:bold;font-size: 1em"/>
                                 </f:facet>
-                                <h:selectOneRadio id="naoSeiAvaliar" value="#{formularioController.naoConcordoNemDiscordo}" style="border: thick" required="true" 
-                                                  onchange="checkAll(this.id, this.checked);">
-                                    <f:selectItem itemValue="NaoSeiAvaliar"/>
+                                <h:selectOneRadio id="naoSeiAvaliar" style="border: thick"
+                                                  onchange="checkAll(this.id, this.checked);" value="#{resposta.naoSeiAvaliar}">
+                                    <f:selectItem itemValue="true"/>
                                 </h:selectOneRadio>
                             </h:column>
                         </h:dataTable>

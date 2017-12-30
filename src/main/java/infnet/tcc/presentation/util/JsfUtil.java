@@ -6,7 +6,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
-import sun.util.calendar.BaseCalendar;
 
 public class JsfUtil {
 
