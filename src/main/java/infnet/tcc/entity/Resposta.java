@@ -45,9 +45,9 @@ public class Resposta implements Serializable {
     @JoinColumn(name = "formularioCodigo", referencedColumnName = "codigo", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Formulario formulario;
-    @ManyToOne
-    @JoinColumn(name = "questaoCodigo")
-    private Questao questao;
+    @JoinColumn(name = "questaoCodigo", referencedColumnName = "codigo")
+    @ManyToOne(optional = false)
+    private Questao questaoCodigo;
 
     public Resposta() {
     }
@@ -89,12 +89,12 @@ public class Resposta implements Serializable {
         this.formulario = formulario;
     }
 
-    public Questao getQuestao() {
-        return questao;
+    public Questao getQuestaoCodigo() {
+        return questaoCodigo;
     }
 
-    public void setQuestao(Questao questao) {
-        this.questao = questao;
+    public void setQuestaoCodigo(Questao questaoCodigo) {
+        this.questaoCodigo = questaoCodigo;
     }
 
     @Override

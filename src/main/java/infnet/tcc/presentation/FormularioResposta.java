@@ -5,15 +5,12 @@
  */
 package infnet.tcc.presentation;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 /**
  *
  * @author peof
  */
 public class FormularioResposta {
-    
+
     Boolean concordoTotalmente;
     Boolean concordo;
     Boolean naoConcordoNemDiscordo;
@@ -23,7 +20,7 @@ public class FormularioResposta {
     Integer questaoCodigo;
     String questaoTexto;
     Integer topicoCodigo;
-    
+
     public FormularioResposta(Integer topicoCodigo, Integer questaoCodigo, String questaoTexto, Boolean concordoTotalmente, Boolean concordo, Boolean naoConcordoNemDiscordo, Boolean discordo, Boolean discordoTotalmente, Boolean naoSeiAvaliar) {
         this.topicoCodigo = topicoCodigo;
         this.questaoCodigo = questaoCodigo;
@@ -34,7 +31,7 @@ public class FormularioResposta {
         this.discordo = discordo;
         this.discordoTotalmente = discordoTotalmente;
         this.naoSeiAvaliar = naoSeiAvaliar;
-    }    
+    }
 
     public Integer getTopicoCodigo() {
         return topicoCodigo;
@@ -107,4 +104,29 @@ public class FormularioResposta {
     public void setNaoSeiAvaliar(Boolean naoSeiAvaliar) {
         this.naoSeiAvaliar = naoSeiAvaliar;
     }
+
+    public Boolean isQuestaoRespondida() {
+        return concordoTotalmente != false || 
+                concordo != false ||
+                naoConcordoNemDiscordo != false ||
+                discordo != false ||
+                discordoTotalmente != false ||
+                naoSeiAvaliar != null;
+    }
+    
+    public String getStringForResposta() {
+        if (concordoTotalmente == true) {
+            return "Concordo totalmente";
+        } else if (concordo == true) {
+            return "Concordo";
+        } else if (naoConcordoNemDiscordo == true) {
+            return "Não concordo nem discordo";
+        } else if (discordo == true) {
+            return "Discordo";
+        } else if (discordoTotalmente == true) {
+            return "Discordo Totalmente";
+        }
+        return "Não sei avaliar";
+    }
+    
 }

@@ -6,6 +6,8 @@
 package infnet.tcc.entity;
 
 import java.io.Serializable;
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -36,6 +38,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Formulario.findByCodigo", query = "SELECT f FROM Formulario f WHERE f.codigo = :codigo")
     , @NamedQuery(name = "Formulario.findByNomeAluno", query = "SELECT f FROM Formulario f WHERE f.nomeAluno = :nomeAluno")
     , @NamedQuery(name = "Formulario.findByNomeModulo", query = "SELECT f FROM Formulario f WHERE f.nomeModulo = :nomeModulo")
+    , @NamedQuery(name = "Formulario.findByAvaliacaoAndAluno", query = "SELECT f FROM Formulario f WHERE f.avaliacao.codigo = :avaliacaoCodigo and f.alunoCodigo.codigo = :alunoCodigo")
     , @NamedQuery(name = "Formulario.findByComentariosSugestoes", query = "SELECT f FROM Formulario f WHERE f.comentariosSugestoes = :comentariosSugestoes")})
 public class Formulario implements Serializable {
 
@@ -49,13 +52,16 @@ public class Formulario implements Serializable {
     @Column(name = "nomeAluno")
     private String nomeAluno;
     @Column(name = "cpfAluno")
-    private Long cpfAluno;
+    private BigInteger cpfAluno;
     @Size(max = 50)
     @Column(name = "nomeModulo")
     private String nomeModulo;
     @Size(max = 500)
     @Column(name = "comentariosSugestoes")
     private String comentariosSugestoes;
+    @JoinColumn(name = "alunoCodigo", referencedColumnName = "codigo")
+    @ManyToOne(optional = false)
+    private Aluno alunoCodigo;
     @JoinColumn(name = "avaliacaoCodigo", referencedColumnName = "codigo")
     @ManyToOne(optional = false)
     private Avaliacao avaliacao;
@@ -63,6 +69,7 @@ public class Formulario implements Serializable {
     private Collection<Resposta> respostaCollection;
 
     public Formulario() {
+        respostaCollection = new ArrayList<>();
     }
 
     public Formulario(Integer codigo) {
@@ -90,11 +97,11 @@ public class Formulario implements Serializable {
         this.nomeAluno = nomeAluno;
     }
 
-    public Long getCpfAluno() {
+    public BigInteger getCpfAluno() {
         return cpfAluno;
     }
 
-    public void setCpfAluno(Long cpfAluno) {
+    public void setCpfAluno(BigInteger cpfAluno) {
         this.cpfAluno = cpfAluno;
     }
 
@@ -112,6 +119,14 @@ public class Formulario implements Serializable {
 
     public void setComentariosSugestoes(String comentariosSugestoes) {
         this.comentariosSugestoes = comentariosSugestoes;
+    }
+
+    public Aluno getAlunoCodigo() {
+        return alunoCodigo;
+    }
+
+    public void setAlunoCodigo(Aluno alunoCodigo) {
+        this.alunoCodigo = alunoCodigo;
     }
 
     public Avaliacao getAvaliacao() {

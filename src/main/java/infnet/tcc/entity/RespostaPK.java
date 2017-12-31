@@ -6,9 +6,13 @@
 package infnet.tcc.entity;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -16,20 +20,20 @@ import javax.validation.constraints.NotNull;
  * @author peof
  */
 @Embeddable
-public class RespostaPK implements Serializable {
-
+public class RespostaPK implements Serializable {    
+    @GeneratedValue(strategy = GenerationType.IDENTITY)    
     @Basic(optional = false)
     @Column(name = "codigo")
-    private int codigo;
+    private Integer codigo;
     @Basic(optional = false)
     @NotNull
     @Column(name = "formularioCodigo")
-    private int formularioCodigo;
+    private Integer formularioCodigo;
 
     public RespostaPK() {
     }
 
-    public RespostaPK(int codigo, int formularioCodigo) {
+    public RespostaPK(Integer codigo, Integer formularioCodigo) {
         this.codigo = codigo;
         this.formularioCodigo = formularioCodigo;
     }
@@ -38,41 +42,47 @@ public class RespostaPK implements Serializable {
         return codigo;
     }
 
-    public void setCodigo(int codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 
-    public int getFormularioCodigo() {
+    public Integer getFormularioCodigo() {
         return formularioCodigo;
     }
 
-    public void setFormularioCodigo(int formularioCodigo) {
+    public void setFormularioCodigo(Integer formularioCodigo) {
         this.formularioCodigo = formularioCodigo;
     }
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (int) codigo;
-        hash += (int) formularioCodigo;
+        int hash = 3;
+        hash = 89 * hash + Objects.hashCode(this.codigo);
+        hash = 89 * hash + Objects.hashCode(this.formularioCodigo);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof RespostaPK)) {
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
             return false;
         }
-        RespostaPK other = (RespostaPK) object;
-        if (this.codigo != other.codigo) {
+        if (getClass() != obj.getClass()) {
             return false;
         }
-        if (this.formularioCodigo != other.formularioCodigo) {
+        final RespostaPK other = (RespostaPK) obj;
+        if (!Objects.equals(this.codigo, other.codigo)) {
+            return false;
+        }
+        if (!Objects.equals(this.formularioCodigo, other.formularioCodigo)) {
             return false;
         }
         return true;
     }
+
 
     @Override
     public String toString() {

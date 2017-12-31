@@ -7,6 +7,7 @@ package infnet.tcc.facade;
 
 import infnet.tcc.entity.Resposta;
 import infnet.tcc.entity.Turma;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -59,9 +60,10 @@ public class RespostaFacade extends AbstractFacade<Resposta> {
                 resposta.get("Formulário ID").add(resp.getFormulario().getCodigo().toString());
                 resposta.get("Módulo").add(resp.getFormulario().getNomeModulo());
                 resposta.get("Aluno").add(resp.getFormulario().getNomeAluno());
-                resposta.get("CPF").add(resp.getFormulario().getCpfAluno().toString());
+                BigInteger  result = resp.getFormulario().getCpfAluno();
+                resposta.get("CPF").add(result == null ? "": result.toString());
                 resposta.get("Resposta").add(resp.getResposta());
-                resposta.get("Pergunta").add(resp.getQuestao().getTexto());
+                resposta.get("Pergunta").add(resp.getQuestaoCodigo().getTexto());
                 resposta.get("Sugestões").add(resp.getFormulario().getComentariosSugestoes());
                 resposta.get("Professor").add(professor);
             }

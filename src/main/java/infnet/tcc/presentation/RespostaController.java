@@ -9,8 +9,8 @@ import infnet.tcc.presentation.util.Excell;
 import java.io.Serializable;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -20,7 +20,7 @@ import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 
 @Named("respostaController")
-@SessionScoped
+@RequestScoped
 public class RespostaController implements Serializable {
 
     private Resposta current;
