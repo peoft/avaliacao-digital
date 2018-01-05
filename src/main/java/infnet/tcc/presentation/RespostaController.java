@@ -9,7 +9,7 @@ import infnet.tcc.presentation.util.Excell;
 import java.io.Serializable;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -20,7 +20,7 @@ import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 
 @Named("respostaController")
-@RequestScoped
+@SessionScoped
 public class RespostaController implements Serializable {
 
     private Resposta current;
@@ -36,7 +36,6 @@ public class RespostaController implements Serializable {
     public Resposta getSelected() {
         if (current == null) {
             current = new Resposta();
-            current.setRespostaPK(new infnet.tcc.entity.RespostaPK());
             selectedItemIndex = -1;
         }
         return current;
@@ -77,14 +76,13 @@ public class RespostaController implements Serializable {
 
     public String prepareCreate() {
         current = new Resposta();
-        current.setRespostaPK(new infnet.tcc.entity.RespostaPK());
         selectedItemIndex = -1;
         return "Create";
     }
 
     public String create() {
         try {
-            current.getRespostaPK().setFormularioCodigo(current.getFormulario().getCodigo());
+            //current.getRespostaPK().setFormulario(current.getgetFormulario().getCodigo()));
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("RespostaCreated"));
             return prepareCreate();
@@ -102,7 +100,7 @@ public class RespostaController implements Serializable {
 
     public String update() {
         try {
-            current.getRespostaPK().setFormularioCodigo(current.getFormulario().getCodigo());
+//            current.getRespostaPK().setFormularioCodigo(current.getFormulario().getCodigo());
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("RespostaUpdated"));
             return "View";
@@ -193,7 +191,7 @@ public class RespostaController implements Serializable {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
 
-    public Resposta getResposta(infnet.tcc.entity.RespostaPK id) {
+    public Resposta getResposta(java.lang.Integer id) {
         return ejbFacade.find(id);
     }
 
@@ -213,20 +211,15 @@ public class RespostaController implements Serializable {
             return controller.getResposta(getKey(value));
         }
 
-        infnet.tcc.entity.RespostaPK getKey(String value) {
-            infnet.tcc.entity.RespostaPK key;
-            String values[] = value.split(SEPARATOR_ESCAPED);
-            key = new infnet.tcc.entity.RespostaPK();
-            key.setCodigo(Integer.parseInt(values[0]));
-            key.setFormularioCodigo(Integer.parseInt(values[1]));
+        java.lang.Integer getKey(String value) {
+            java.lang.Integer key;
+            key = Integer.valueOf(value);
             return key;
         }
 
-        String getStringKey(infnet.tcc.entity.RespostaPK value) {
+        String getStringKey(java.lang.Integer value) {
             StringBuilder sb = new StringBuilder();
-            sb.append(value.getCodigo());
-            sb.append(SEPARATOR);
-            sb.append(value.getFormularioCodigo());
+            sb.append(value);
             return sb.toString();
         }
 
@@ -237,7 +230,7 @@ public class RespostaController implements Serializable {
             }
             if (object instanceof Resposta) {
                 Resposta o = (Resposta) object;
-                return getStringKey(o.getRespostaPK());
+                return getStringKey(o.getCodigo());
             } else {
                 throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Resposta.class.getName());
             }

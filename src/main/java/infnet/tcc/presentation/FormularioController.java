@@ -5,7 +5,6 @@ import infnet.tcc.entity.Avaliacao;
 import infnet.tcc.entity.Formulario;
 import infnet.tcc.entity.Questao;
 import infnet.tcc.entity.Resposta;
-import infnet.tcc.entity.RespostaPK;
 import infnet.tcc.entity.Topico;
 import infnet.tcc.presentation.util.JsfUtil;
 import infnet.tcc.presentation.util.PaginationHelper;
@@ -16,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
@@ -37,7 +35,6 @@ public class FormularioController implements Serializable {
     @EJB
     private infnet.tcc.facade.FormularioFacade ejbFacade;
     private PaginationHelper pagination;
-    private int selectedItemIndex;
     @EJB
     private infnet.tcc.facade.AvaliacaoFacade ejbAvaliacaoFacade;
     private List<String> comentariosSugestoes;
@@ -49,8 +46,6 @@ public class FormularioController implements Serializable {
     private infnet.tcc.facade.TopicoFacade ejbTopicoFacade;
     @EJB
     private infnet.tcc.facade.QuestaoFacade ejbQuestaoFacade;
-    @EJB
-    private infnet.tcc.facade.RespostaFacade ejbResposstaFacade;
 
     public FormularioController() {
         if (comentariosSugestoes == null) {
@@ -82,7 +77,7 @@ public class FormularioController implements Serializable {
     }
 
     public void setAvaliacao(Avaliacao avaliacao) {
-        avaliacao = avaliacao;
+        this.avaliacao = avaliacao;
     }
 
     public Integer getAlunoCodigo() {
@@ -96,7 +91,6 @@ public class FormularioController implements Serializable {
     public Formulario getSelected() {
         if (current == null) {            
             current = new Formulario();
-            selectedItemIndex = -1;
             findAvaliacao();
         }
         return current;
@@ -110,14 +104,13 @@ public class FormularioController implements Serializable {
         this.comentariosSugestoes = comentariosSugestoes;
     }
 
-    //@PostConstruct
     public void findAvaliacao() {
         Integer codigo = (Integer) getParameter("codigo");
         if (codigo != null) {
-            Avaliacao avaliacao = ejbAvaliacaoFacade.find(codigo);
+            Avaliacao avaliacaoFound = ejbAvaliacaoFacade.find(codigo);
             getSelected();
-            current.setAvaliacao(avaliacao);
-            this.setAvaliacao(avaliacao);
+            current.setAvaliacao(avaliacaoFound);
+            this.setAvaliacao(avaliacaoFound);
             this.setAvaliacaoCodigo(codigo);
         }
         setAlunoCodigo();
@@ -132,12 +125,11 @@ public class FormularioController implements Serializable {
 
             respostas = new ArrayList<>();
             if (current != null) {
-                Avaliacao avaliacao = current.getAvaliacao();
+                Avaliacao avaliacaoGot = current.getAvaliacao();
 
-                for (Topico topico : avaliacao.getTopicoCollection()) {
+                for (Topico topico : avaliacaoGot.getTopicoCollection()) {
                     Collection<Questao> questoes = getQuestoesByTopicoCodigo(topico.getCodigo());
                     for (Questao questao : questoes) {
-                        //                    codigoQuestoes.add(questao.getCodigo());
                         FormularioResposta resposta = new FormularioResposta(topico.getCodigo(), questao.getCodigo(), questao.getTexto(), Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE);
                         respostas.add(resposta);
                     }
@@ -193,9 +185,8 @@ public class FormularioController implements Serializable {
                     aluno.setCodigo(alunoCodigo);
                     current.setAlunoCodigo(aluno);
                     current.setComentariosSugestoes(comentariosSugestoes.toString().replaceAll("[\\]\\[]", ""));
-                    getFacade().create(current);
                     setRespostasInEntidade();
-                    saveRespostas();
+                    getFacade().create(current);
                     JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("FormularioCreated"));
                     return prepareCreate();
                 } else {
@@ -213,7 +204,6 @@ public class FormularioController implements Serializable {
     
     public String prepareCreate() {
         current = null;
-        selectedItemIndex = -1;
         alunoCodigo = null;
         avaliacaoCodigo = null;
         return "acknowledgment";
@@ -238,44 +228,27 @@ public class FormularioController implements Serializable {
         return preenchidas;
     }
 
-    private void setRespostasInEntidade() {
-        RespostaPK respostaPK = new RespostaPK();
-
-        respostaPK.setFormularioCodigo(current.getCodigo());
+    private void setRespostasInEntidade() {        
         for (FormularioResposta formularioResposta : respostas) {
             Questao questao = new Questao();
 
-            Collection<Resposta> listaResposta = current.getRespostaCollection();
             Resposta resposta = new Resposta();
-            resposta.setFormulario(current);
             questao.setCodigo(formularioResposta.getQuestaoCodigo());
             resposta.setQuestaoCodigo(questao);
             resposta.setResposta(formularioResposta.getStringForResposta());
-            resposta.setRespostaPK(respostaPK);
-            listaResposta.add(resposta);
-        }
-    }
-
-    private void saveRespostas() {
-        for (Resposta resposta : current.getRespostaCollection()) {
-            ejbResposstaFacade.create(resposta);
+            resposta.setFormulario(current);
+            current.addReposta(resposta);
         }
     }
 
     public Collection<FormularioResposta> getRespostasForTopico(Integer codigo) {
         Collection<FormularioResposta> respostasTopico = new ArrayList<>();
         for (FormularioResposta resposta : respostas) {
-            if (resposta.getTopicoCodigo() == codigo) {
+            if (resposta.getTopicoCodigo().equals(codigo) == true) {
                 respostasTopico.add(resposta);
             }
         }
         return respostasTopico;
-    }
-
-    public String prepareEdit() {
-        current = (Formulario) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
-        return "Edit";
     }
 
     public DataModel getItems() {
@@ -301,9 +274,6 @@ public class FormularioController implements Serializable {
         return "List";
     }
 
-//    public SelectItem[] getItemsFromConcordoTotalmente() {
-//        return JsfUtil.getSelectItems(Arrays.asList(concordoTotalmente.values()), false);        
-//    }
     public SelectItem[] getItemsAvailableSelectMany() {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), false);
     }
@@ -324,7 +294,6 @@ public class FormularioController implements Serializable {
             return questoes;
         }
         return null;
-
     }
 
     @FacesConverter(forClass = Formulario.class)
@@ -364,7 +333,5 @@ public class FormularioController implements Serializable {
                 throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Formulario.class.getName());
             }
         }
-
     }
-
 }

@@ -6,7 +6,6 @@
 package infnet.tcc.service;
 
 import infnet.tcc.entity.Resposta;
-import infnet.tcc.entity.RespostaPK;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -33,7 +32,7 @@ public class RespostaFacadeREST extends AbstractFacade<Resposta> {
     @PersistenceContext(unitName = "avaliacaoDigitalPU")
     private EntityManager em;
 
-    private RespostaPK getPrimaryKey(PathSegment pathSegment) {
+    private java.lang.Integer getPrimaryKey(PathSegment pathSegment) {
         /*
          * pathSemgent represents a URI path segment and any associated matrix parameters.
          * URI path part is supposed to be in form of 'somePath;codigo=codigoValue;formularioCodigo=formularioCodigoValue'.
@@ -41,15 +40,11 @@ public class RespostaFacadeREST extends AbstractFacade<Resposta> {
          * it is ignored in the following code.
          * Matrix parameters are used as field names to build a primary key instance.
          */
-        infnet.tcc.entity.RespostaPK key = new infnet.tcc.entity.RespostaPK();
+        Integer key = new Integer(0);
         javax.ws.rs.core.MultivaluedMap<String, String> map = pathSegment.getMatrixParameters();
         java.util.List<String> codigo = map.get("codigo");
         if (codigo != null && !codigo.isEmpty()) {
-            key.setCodigo(new java.lang.Integer(codigo.get(0)));
-        }
-        java.util.List<String> formularioCodigo = map.get("formularioCodigo");
-        if (formularioCodigo != null && !formularioCodigo.isEmpty()) {
-            key.setFormularioCodigo(new java.lang.Integer(formularioCodigo.get(0)));
+            key = new java.lang.Integer(codigo.get(0));
         }
         return key;
     }
@@ -75,7 +70,7 @@ public class RespostaFacadeREST extends AbstractFacade<Resposta> {
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") PathSegment id) {
-        infnet.tcc.entity.RespostaPK key = getPrimaryKey(id);
+        java.lang.Integer key = getPrimaryKey(id);
         super.remove(super.find(key));
     }
 
@@ -83,7 +78,7 @@ public class RespostaFacadeREST extends AbstractFacade<Resposta> {
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Resposta find(@PathParam("id") PathSegment id) {
-        infnet.tcc.entity.RespostaPK key = getPrimaryKey(id);
+        java.lang.Integer key = getPrimaryKey(id);
         return super.find(key);
     }
 

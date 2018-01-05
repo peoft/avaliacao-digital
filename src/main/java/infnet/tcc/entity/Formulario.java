@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -145,30 +146,63 @@ public class Formulario implements Serializable {
     public void setRespostaCollection(Collection<Resposta> respostaCollection) {
         this.respostaCollection = respostaCollection;
     }
+    
+    public void addReposta(Resposta resposta) {
+        respostaCollection.add(resposta);
+    }
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (codigo != null ? codigo.hashCode() : 0);
+        int hash = 3;
+        hash = 29 * hash + Objects.hashCode(this.codigo);
+        hash = 29 * hash + Objects.hashCode(this.nomeAluno);
+        hash = 29 * hash + Objects.hashCode(this.cpfAluno);
+        hash = 29 * hash + Objects.hashCode(this.nomeModulo);
+        hash = 29 * hash + Objects.hashCode(this.comentariosSugestoes);
+        hash = 29 * hash + Objects.hashCode(this.alunoCodigo);
+        hash = 29 * hash + Objects.hashCode(this.avaliacao);
+        hash = 29 * hash + Objects.hashCode(this.respostaCollection);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Formulario)) {
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
             return false;
         }
-        Formulario other = (Formulario) object;
-        if ((this.codigo == null && other.codigo != null) || (this.codigo != null && !this.codigo.equals(other.codigo))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Formulario other = (Formulario) obj;
+        if (!Objects.equals(this.nomeAluno, other.nomeAluno)) {
+            return false;
+        }
+        if (!Objects.equals(this.nomeModulo, other.nomeModulo)) {
+            return false;
+        }
+        if (!Objects.equals(this.comentariosSugestoes, other.comentariosSugestoes)) {
+            return false;
+        }
+        if (!Objects.equals(this.codigo, other.codigo)) {
+            return false;
+        }
+        if (!Objects.equals(this.cpfAluno, other.cpfAluno)) {
+            return false;
+        }
+        if (!Objects.equals(this.alunoCodigo, other.alunoCodigo)) {
+            return false;
+        }
+        if (!Objects.equals(this.avaliacao, other.avaliacao)) {
+            return false;
+        }
+        if (!Objects.equals(this.respostaCollection, other.respostaCollection)) {
             return false;
         }
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "infnet.tcc.Formulario[ codigo=" + codigo + " ]";
-    }
     
 }

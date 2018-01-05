@@ -6,10 +6,13 @@
 package infnet.tcc.entity;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -29,56 +32,43 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Resposta.findAll", query = "SELECT r FROM Resposta r")
     , @NamedQuery(name = "Resposta.getReports", query = "SELECT r FROM Resposta r")
-    , @NamedQuery(name = "Resposta.findByCodigo", query = "SELECT r FROM Resposta r WHERE r.respostaPK.codigo = :codigo")
-    , @NamedQuery(name = "Resposta.findByFormularioCodigo", query = "SELECT r FROM Resposta r WHERE r.respostaPK.formularioCodigo = :formularioCodigo")
+    , @NamedQuery(name = "Resposta.findByCodigo", query = "SELECT r FROM Resposta r WHERE r.codigo = :codigo")
+    , @NamedQuery(name = "Resposta.findByFormularioCodigo", query = "SELECT r FROM Resposta r WHERE r.formulario.codigo = :formularioCodigo")
     , @NamedQuery(name = "Resposta.findByResposta", query = "SELECT r FROM Resposta r WHERE r.resposta = :resposta")})
 public class Resposta implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected RespostaPK respostaPK;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "codigo")
+    private Integer codigo;        
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 25)
     @Column(name = "resposta")
     private String resposta;
-    @JoinColumn(name = "formularioCodigo", referencedColumnName = "codigo", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private Formulario formulario;
     @JoinColumn(name = "questaoCodigo", referencedColumnName = "codigo")
     @ManyToOne(optional = false)
     private Questao questaoCodigo;
+    @ManyToOne
+    @JoinColumn(name = "formularioCodigo", referencedColumnName = "codigo")
+    private Formulario formulario;
+    
 
     public Resposta() {
     }
 
-    public Resposta(RespostaPK respostaPK) {
-        this.respostaPK = respostaPK;
-    }
-
-    public Resposta(RespostaPK respostaPK, String resposta) {
-        this.respostaPK = respostaPK;
+    public Resposta(String resposta) {
         this.resposta = resposta;
     }
-
-    public Resposta(int codigo, int formularioCodigo) {
-        this.respostaPK = new RespostaPK(codigo, formularioCodigo);
+    
+    public int getCodigo() {
+        return codigo;
     }
 
-    public RespostaPK getRespostaPK() {
-        return respostaPK;
-    }
-
-    public void setRespostaPK(RespostaPK respostaPK) {
-        this.respostaPK = respostaPK;
-    }
-
-    public String getResposta() {
-        return resposta;
-    }
-
-    public void setResposta(String resposta) {
-        this.resposta = resposta;
+    public void setCodigo(Integer codigo) {
+        this.codigo = codigo;
     }
 
     public Formulario getFormulario() {
@@ -87,6 +77,14 @@ public class Resposta implements Serializable {
 
     public void setFormulario(Formulario formulario) {
         this.formulario = formulario;
+    }    
+
+    public String getResposta() {
+        return resposta;
+    }
+
+    public void setResposta(String resposta) {
+        this.resposta = resposta;
     }
 
     public Questao getQuestaoCodigo() {
@@ -99,27 +97,38 @@ public class Resposta implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (respostaPK != null ? respostaPK.hashCode() : 0);
+        int hash = 7;
+        hash = 29 * hash + Objects.hashCode(this.codigo);
+        hash = 29 * hash + Objects.hashCode(this.resposta);
+        hash = 29 * hash + Objects.hashCode(this.questaoCodigo);
+        hash = 29 * hash + Objects.hashCode(this.formulario);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Resposta)) {
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
             return false;
         }
-        Resposta other = (Resposta) object;
-        if ((this.respostaPK == null && other.respostaPK != null) || (this.respostaPK != null && !this.respostaPK.equals(other.respostaPK))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Resposta other = (Resposta) obj;
+        if (!Objects.equals(this.resposta, other.resposta)) {
+            return false;
+        }
+        if (!Objects.equals(this.codigo, other.codigo)) {
+            return false;
+        }
+        if (!Objects.equals(this.questaoCodigo, other.questaoCodigo)) {
+            return false;
+        }
+        if (!Objects.equals(this.formulario, other.formulario)) {
             return false;
         }
         return true;
     }
-
-    @Override
-    public String toString() {
-        return "infnet.tcc.Resposta[ respostaPK=" + respostaPK + " ]";
-    }
-
 }

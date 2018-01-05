@@ -32,7 +32,7 @@ public abstract class PaginationHelper {
     }
 
     public boolean isHasNextPage() {
-        return (page + 1) * pageSize + 1 <= getItemsCount();
+        return (page + 1) * pageSize <= getItemsCount();
     }
 
     public void nextPage() {
