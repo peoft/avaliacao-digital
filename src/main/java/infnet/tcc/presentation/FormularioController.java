@@ -184,7 +184,7 @@ public class FormularioController implements Serializable {
 
                     aluno.setCodigo(alunoCodigo);
                     current.setAlunoCodigo(aluno);
-                    current.setComentariosSugestoes(comentariosSugestoes.toString().replaceAll("[\\]\\[]", ""));
+                    current.setComentariosSugestoes(comentariosSugestoes.toString().replaceAll("[\\]\\[]", "").replaceAll(",", " "));
                     setRespostasInEntidade();
                     getFacade().create(current);
                     JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("FormularioCreated"));
@@ -198,6 +198,9 @@ public class FormularioController implements Serializable {
             }
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
+            current = null;
+            alunoCodigo = null;
+            avaliacaoCodigo = null;            
             return null;
         }
     }
