@@ -5,6 +5,7 @@
  */
 package infnet.tcc.facade;
 
+import infnet.tcc.entity.Aluno;
 import infnet.tcc.entity.Resposta;
 import infnet.tcc.entity.Turma;
 import java.math.BigInteger;
@@ -54,8 +55,19 @@ public class RespostaFacade extends AbstractFacade<Resposta> {
 
                 String professor = "";
                 for (Turma turma : resp.getFormulario().getAvaliacao().getAvaliacaoTurmaCollection()) {
+                    Boolean found = false;
 
-                    professor = turma.getProfessorCodigo().getNome();
+                    for (Aluno aluno : turma.getAlunoCollection()) {
+                        if (aluno.getCodigo() == resp.getFormulario().getAlunoCodigo().getCodigo()){
+                            professor = turma.getProfessorCodigo().getNome();
+                            found = true;
+                            break;
+                        }                        
+                    }
+                    if (found == true) {
+                        break;
+                    }
+                        
                 }
                 resposta.get("Formulário ID").add(resp.getFormulario().getCodigo().toString());
                 resposta.get("Módulo").add(resp.getFormulario().getNomeModulo());
